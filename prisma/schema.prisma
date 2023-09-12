@@ -7,8 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -36,15 +34,17 @@ model Session {
 }
 
 model User {
-  id            String       @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  email         String?      @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
-  credits Int @default(52)
+  credits       Int       @default(52)
   accounts      Account[]
   sessions      Session[]
 
+  Document Document[]
+  Message  Message[]
 }
 
 model VerificationToken {
@@ -55,3 +55,28 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model Document {
+  id      String    @id @default(cuid())
+  name    String
+  key     String
+  user    User      @relation(fields: [userId], references: [id])
+  userId  String
+  Message Message[]
+}
+
+model Message {
+  id       String   @id @default(cuid())
+  role     String
+  content  String
+  sources  String[]
+  user     User     @relation(fields: [userId], references: [id])
+  document Document @relation(fields: [documentId], references: [id])
+
+  userId     String
+  documentId String
+}
+
+enum role {
+  assistant
+  user
+}
