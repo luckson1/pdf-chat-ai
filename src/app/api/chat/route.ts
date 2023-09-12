@@ -12,13 +12,13 @@ export async function POST(req: NextRequest) {
 
   try {
     const transformStream = new TransformStream();
-    const readableStream = callChain({
+    const readableStrm = callChain({
       question,
       chatHistory,
       transformStream,
     });
 
-    return new Response(await readableStream);
+    return new Response(await readableStrm);
   } catch (error) {
     console.error("Internal server error ", error);
     return NextResponse.json("Error: Something went wrong. Try again!", {

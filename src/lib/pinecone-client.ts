@@ -36,6 +36,7 @@ async function initPineconeClient() {
     const existingIndexes = await pineconeClient.listIndexes();
 
     if (!existingIndexes.includes(indexName)) {
+      console.log("hello")
       createIndex(pineconeClient, indexName);
     } else {
       console.log("Your index already exists. nice !!");
