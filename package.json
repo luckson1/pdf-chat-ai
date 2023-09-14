@@ -9,7 +9,6 @@
     "start": "next start",
     "postinstall": "prisma generate",
     "lint": "next lint"
-
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.412.0",
@@ -55,6 +54,7 @@
     "nodemailer": "^6.9.5",
     "papaparse": "^5.4.1",
     "pdf-parse": "^1.1.1",
+    "pdfjs-dist": "2.7.570",
     "postcss": "8.4.27",
     "puppeteer": "^21.2.1",
     "react": "18.2.0",
