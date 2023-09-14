@@ -21,6 +21,7 @@ export  async function GET(
 ) {
   const { searchParams } = new URL(request.url)
   const type = searchParams.get('type')
+  const name = searchParams.get('name')
 
   try {
    
@@ -34,7 +35,13 @@ export  async function GET(
         status: 401,
       });
     }
-      const Key = nanoid();
+
+    if (!name) {
+      return NextResponse.json("Server Error", {
+        status: 500,
+      });
+    }
+    const Key=name
 
       const s3Params = {
         Bucket: env.BUCKET_NAME,
