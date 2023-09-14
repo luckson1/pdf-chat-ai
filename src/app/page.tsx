@@ -33,9 +33,7 @@ export default function DocumentPage() {
       await axios.get(`/api/aws/upload_file?type=${type}`);
 
     const { uploadUrl, key } = data;
-    console.log(uploadUrl);
     const d = await axios.put(uploadUrl, files[0]);
-    console.log(d);
     return { key, name, type };
   };
   const { data: document, mutate: addDoc } = api.documents.addDoc.useMutation();
