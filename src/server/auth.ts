@@ -10,7 +10,7 @@ import GoogleProvider from "next-auth/providers/google";
 import   EmailProvider, { SendVerificationRequestParams } from 'next-auth/providers/email'
 import { prisma } from "@/server/db";
 import { Resend } from "resend";
-import { env } from "@/lib/config";
+import { env } from "@/lib/env";
 import { inngest } from "@/inngest/client";
 
 
@@ -73,16 +73,21 @@ export const authOptions: NextAuthOptions = {
     }),
   },
   adapter: PrismaAdapter(prisma),
+  pages: {
+    signIn: "/auth"
+  },
   providers: [
    GoogleProvider({
       clientId: env.CLIENT_ID,
       clientSecret: env.CLIENT_SECRET,
     }),
     EmailProvider({
+   
       server: '',
       from: 'support@piccraftai.com',
       sendVerificationRequest
     }),
+  
     /**
      * 
      * ...add more providers here.
