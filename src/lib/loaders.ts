@@ -1,13 +1,21 @@
-import { PDFLoader } from "langchain/document_loaders/fs/pdf";
+import { UnstructuredLoader } from "langchain/document_loaders/fs/unstructured";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { S3Loader } from "langchain/document_loaders/web/s3";
 import { PuppeteerWebBaseLoader } from "langchain/document_loaders/web/puppeteer";
 import { env } from "./env";
 
-export async function getChunkedDocsFromPDF(path: string) {
+export async function getChunkedDocsFromUnstrucuted(path: string) {
   try {
-    console.log("hi");
-    const loader = new PDFLoader(path);
+    console.log("got it");
+    const options = {
+      apiKey: "N6ruejXdrsa815iTzQ3rsJCly9p6D0"
+  
+    };
+    
+    const loader = new UnstructuredLoader(
+      "/Users/apple/Desktop/NodeJs/pdf-chat-ai/src/scripts/llms.pdf",
+      options
+    );
     const docs = await loader.load();
     console.log("docs", docs);
     // From the docs https://www.pinecone.io/learn/chunking-strategies/
@@ -26,7 +34,7 @@ export async function getChunkedDocsFromPDF(path: string) {
 }
 
 export async function getChunkedDocsFromS3Files(key: string) {
-  console.log(key)
+
   try {
     const loader = new S3Loader({
       bucket: env.BUCKET_NAME,
@@ -35,23 +43,22 @@ export async function getChunkedDocsFromS3Files(key: string) {
         region: env.REGION,
         credentials: {
           accessKeyId: env.ACCESS_KEY,
-          secretAccessKey: env.secret_key,
+          secretAccessKey: env.SECRET_KEY,
         
         },
       },
-      unstructuredAPIURL: "https://unstructured.io/general/v0/general",
-      unstructuredAPIKey: env.UNSD_KEY,
+      unstructuredAPIURL: 'https://api.unstructured.io/general/v0/general',
+      unstructuredAPIKey: env.UNSD_KEY
     });
 
-    const docs = await loader.load();
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkSize: 1000,
       chunkOverlap: 200,
     });
+    const docs = await loader.loadAndSplit(textSplitter)
 
-    const chunkedDocs = await textSplitter.splitDocuments(docs);
 
-    return chunkedDocs;
+   return docs
   } catch (e) {
     console.error(e);
     throw new Error("PDF docs chunking failed !");

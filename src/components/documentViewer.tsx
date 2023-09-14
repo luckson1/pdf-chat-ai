@@ -12,7 +12,7 @@ import { api } from '@/app/api/_trpc/client';
 // Setting AWS config
 AWS.config.update({
     accessKeyId: env.ACCESS_KEY,
-    secretAccessKey: env.secret_key,
+    secretAccessKey: env.SECRET_KEY,
     region:env.REGION
 });
 
