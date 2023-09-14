@@ -1,6 +1,9 @@
 import { PineconeClient } from "@pinecone-database/pinecone";
-import { env } from "./config";
+import { env } from "./env";
 import { delay } from "./utils";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 let pineconeClientInstance: PineconeClient | null = null;
 
