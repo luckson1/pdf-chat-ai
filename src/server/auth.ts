@@ -10,7 +10,7 @@ import GoogleProvider from "next-auth/providers/google";
 import   EmailProvider, { SendVerificationRequestParams } from 'next-auth/providers/email'
 import { prisma } from "@/server/db";
 import { Resend } from "resend";
-import { env } from "@/lib/env";
+import { env } from "@/lib/env.mjs";
 import { inngest } from "@/inngest/client";
 
 

@@ -1,7 +1,7 @@
 'use client'
 import * as mammoth from 'mammoth';
 import React, { useEffect, useState } from 'react';
-import { env } from '@/lib/env';
+import { env } from '@/lib/env.mjs';
 import * as AWS from 'aws-sdk';
 import { Document, Page } from 'react-pdf';
 import Papa from 'papaparse';
