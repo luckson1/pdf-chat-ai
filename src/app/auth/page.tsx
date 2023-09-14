@@ -26,7 +26,7 @@ const Google = (props: LucideProps) => {
   );
 };
 
-export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
 
