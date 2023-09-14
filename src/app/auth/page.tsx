@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import React, { useState } from "react";
-import { Toaster } from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
