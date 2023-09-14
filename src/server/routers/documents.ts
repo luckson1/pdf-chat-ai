@@ -9,9 +9,9 @@ export const documentRouter = createTRPCRouter({
     addDoc: protectedProcedure.input(z.object({key: z.string(), name: z.string(), type:z.string()})).mutation(async({ctx, input})=> {
       console.log('got the message')
         const userId=ctx.session.user.id
-      const  namespace = 'LLM';
+      const  namespace = input.key;
       const pineconeClient = await getPineconeClient();
-      console.log("Preparing chunks from PDF file");
+      console.log("Preparing chunks from unstructured docs file");
       const docs = await getChunkedDocsFromS3Files(input.key);
       console.log(`Loading ${docs.length} chunks into pinecone...`);
       await pineconeEmbedAndStore(pineconeClient, docs, namespace);
