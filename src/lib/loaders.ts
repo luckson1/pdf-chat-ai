@@ -2,8 +2,7 @@ import { UnstructuredLoader } from "langchain/document_loaders/fs/unstructured";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { S3Loader } from "langchain/document_loaders/web/s3";
 import { PuppeteerWebBaseLoader } from "langchain/document_loaders/web/puppeteer";
-import { env } from "./env";
-
+import { env } from "./env.mjs";
 export async function getChunkedDocsFromUnstrucuted(path: string) {
   try {
     console.log("got it");

@@ -1,4 +1,4 @@
-import { env } from "./env";
+import { env } from "./env.mjs";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { PineconeClient } from "@pinecone-database/pinecone";

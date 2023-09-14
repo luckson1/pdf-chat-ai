@@ -1,5 +1,5 @@
 import { PineconeClient } from "@pinecone-database/pinecone";
-import { env } from "./env";
+import { env } from "./env.mjs";
 import { delay } from "./utils";
 import * as dotenv from "dotenv";
 

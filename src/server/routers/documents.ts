@@ -3,7 +3,6 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { getPineconeClient } from "@/lib/pinecone-client";
 import { getChunkedDocsFromS3Files, } from "@/lib/loaders";
 import { pineconeEmbedAndStore } from "@/lib/vector-store";
-import { env } from "@/lib/env";
 
 export const documentRouter = createTRPCRouter({
     addDoc: protectedProcedure.input(z.object({key: z.string(), name: z.string(), type:z.string()})).mutation(async({ctx, input})=> {
