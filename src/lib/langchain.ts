@@ -3,8 +3,9 @@ import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { ConversationalRetrievalQAChain } from "langchain/chains";
 import { getVectorStore } from "./vector-store";
 import { getPineconeClient } from "./pinecone-client";
+import * as dotenv from "dotenv";
 import { formatChatHistory } from "./utils";
-
+dotenv.config();
 const CONDENSE_TEMPLATE = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
 
 Chat History:
@@ -73,18 +74,20 @@ type callChainArgs = {
   question: string;
   chatHistory: [string, string][];
   transformStream: TransformStream;
+  namespace: string;
 };
 
 export async function callChain({
   question,
   chatHistory,
   transformStream,
+  namespace
 }: callChainArgs) {
   try {
     // Open AI recommendation
     const sanitizedQuestion = question.trim().replaceAll("\n", " ");
     const pineconeClient = await getPineconeClient();
-    const vectorStore = await getVectorStore(pineconeClient);
+    const vectorStore = await getVectorStore(pineconeClient, namespace);
 
     // Create encoding to convert token (string) to Uint8Array
     const encoder = new TextEncoder();

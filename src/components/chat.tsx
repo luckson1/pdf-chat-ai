@@ -5,8 +5,11 @@ import { InputMessage } from "./input-message";
 import { scrollToBottom, initialMessage } from "@/lib/utils";
 import { ChatLine } from "./chat-line";
 import { ChatGPTMessage } from "@/types";
+import { useSearchParams } from "next/navigation";
 
 export function Chat() {
+  const params=useSearchParams()
+const namespace=params?.get('namespace')
   const endpoint = "/api/chat";
   const [input, setInput] = useState("");
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -64,6 +67,7 @@ export function Chat() {
         body: JSON.stringify({
           question,
           chatHistory,
+          namespace
         }),
       });
 

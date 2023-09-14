@@ -1,12 +1,14 @@
-import { env } from "./config";
+import { env } from "./env";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { PineconeClient } from "@pinecone-database/pinecone";
-
+import * as dotenv from "dotenv";
+dotenv.config();
 export async function pineconeEmbedAndStore(
   client: PineconeClient,
   // @ts-ignore docs type error
-  docs: Document<Record<string, any>>[]
+  docs: Document<Record<string, any>>[],
+  namespace:string
 ) {
   /*create and store the embeddings in the vectorStore*/
   try {
@@ -16,7 +18,7 @@ export async function pineconeEmbedAndStore(
     //embed the PDF documents
     await PineconeStore.fromDocuments(docs, embeddings, {
       pineconeIndex: index,
-      namespace: env.PINECONE_NAME_SPACE,
+      namespace ,
       textKey: "text",
     });
   } catch (error) {
@@ -25,7 +27,7 @@ export async function pineconeEmbedAndStore(
   }
 }
 
-export async function getVectorStore(client: PineconeClient) {
+export async function getVectorStore(client: PineconeClient, namespace: string) {
   try {
     const embeddings = new OpenAIEmbeddings();
     const index = client.Index(env.PINECONE_INDEX_NAME);
@@ -33,7 +35,7 @@ export async function getVectorStore(client: PineconeClient) {
     const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
       pineconeIndex: index,
       textKey: "text",
-      namespace: env.PINECONE_NAME_SPACE,
+      namespace,
     });
 
     return vectorStore;
