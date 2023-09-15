@@ -172,7 +172,7 @@ Provide a working  link to a blog or news article (online pdfs are not valid)
         ) : docsData  && !isLoading ? (docsData.map(doc=> (
           <Link key={doc.id} href={{     pathname: '/documents/[id]',
           query: { id: doc.id }}}>
-          <Card className="w-full h-12">
+          <Card className="w-full">
 <CardHeader>
   {doc.name}
 </CardHeader>
