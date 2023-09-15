@@ -118,8 +118,8 @@ export default function DocumentPage() {
             <CardContent>No Documents</CardContent>
           </Card>
         ) : docsData  && !isLoading ? (docsData.map(doc=> (
-          <Link key={doc.id} href={{     pathname: '/documents/[slug]',
-          query: { slug: doc.id }}}>
+          <Link key={doc.id} href={{     pathname: '/documents/[id]',
+          query: { id: doc.id }}}>
           <Card className="w-full h-12">
 <CardContent>
   {doc.name}
