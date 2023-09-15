@@ -6,7 +6,7 @@ const nextConfig = {
   },
   swcMinify: true,
   webpack(config) {
-    config.experiments = { ...config.experiments, topLevelAwait: true };
+    config.experiments = { ...config.experiments, topLevelAwait: true,  externals: [nodeExternals()], };
     return config;
   },
 };
