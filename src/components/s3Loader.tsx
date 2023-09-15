@@ -1,5 +1,5 @@
 import { api } from "@/app/api/_trpc/client";
-import { CSVViewer, DocxViewer, PDFViewer } from "./viewers";
+import { PDFViewer } from "./viewers";
 
 export async function DocumentViewer({id }: { id: string }) {
   const {
