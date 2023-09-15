@@ -1,3 +1,5 @@
+
+'use client'
 import mammoth from "mammoth";
 import { useEffect, useState } from "react";
 import Papa from 'papaparse';
