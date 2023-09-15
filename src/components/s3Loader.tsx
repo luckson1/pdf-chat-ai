@@ -2,9 +2,15 @@
 import { api } from "@/app/api/_trpc/client";
 import { PDFViewer } from "./viewers";
 import { useEffect, useState } from "react";
-
+import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 export function DocumentViewer({signedUrl }: { signedUrl: string }) {
+  const docs = [
+    { uri: signedUrl }, 
 
+
+  ];
+
+  return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} />;
   
 //   switch (data.type) {
 //     // case 'pdf':
@@ -24,42 +30,42 @@ export function DocumentViewer({signedUrl }: { signedUrl: string }) {
 //       return <div>Unsupported format.</div>;
 //   }
 
-const [fileData, setFileData] = useState<Uint8Array | null>(null);
-const [loading, setLoading] = useState(false);
-const [error, setError] = useState<string | null>(null);
+// const [fileData, setFileData] = useState<Uint8Array | null>(null);
+// const [loading, setLoading] = useState(false);
+// const [error, setError] = useState<string | null>(null);
 
-useEffect(() => {
-    async function fetchUint8ArrayFromS3(url: string) {
-        try {
-          setLoading(true)
-            const response = await fetch(url);
+// useEffect(() => {
+//     async function fetchUint8ArrayFromS3(url: string) {
+//         try {
+//           setLoading(true)
+//             const response = await fetch(url);
 
-            if (!response.ok) {
-                throw new Error(`Failed to fetch file. Status: ${response.status}`);
-            }
+//             if (!response.ok) {
+//                 throw new Error(`Failed to fetch file. Status: ${response.status}`);
+//             }
 
-            const blob = await response.blob();
-            const arrayBuffer = await blob.arrayBuffer();
-            setFileData(new Uint8Array(arrayBuffer));
-        } catch (err) {
-          //@ts-ignore
-            setError(err.message);
-            console.log("here", err)
-        } finally {
-            setLoading(false);
-        }
-    }
+//             const blob = await response.blob();
+//             const arrayBuffer = await blob.arrayBuffer();
+//             setFileData(new Uint8Array(arrayBuffer));
+//         } catch (err) {
+//           //@ts-ignore
+//             setError(err.message);
+//             console.log("here", err)
+//         } finally {
+//             setLoading(false);
+//         }
+//     }
 
-    fetchUint8ArrayFromS3(signedUrl);
-}, [signedUrl]);
+//     fetchUint8ArrayFromS3(signedUrl);
+// }, [signedUrl]);
 
-if (loading) {
-    return <div>Loading...</div>;
-}
+// if (loading) {
+//     return <div>Loading...</div>;
+// }
 
-if (error) {
-    return <div>Error: {error}</div>;
-}
-if (!fileData) return null
-return <PDFViewer data={fileData} />;
+// if (error) {
+//     return <div>Error: {error}</div>;
+// }
+// if (!fileData) return null
+// return <PDFViewer data={fileData} />;
 }
