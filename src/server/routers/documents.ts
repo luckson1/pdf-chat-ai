@@ -3,6 +3,8 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { getPineconeClient } from "@/lib/pinecone-client";
 import { getChunkedDocsFromS3Files, } from "@/lib/loaders";
 import { pineconeEmbedAndStore } from "@/lib/vector-store";
+import * as AWS from 'aws-sdk';
+import { env } from "@/lib/env.mjs";
 
 export const documentRouter = createTRPCRouter({
     addDoc: protectedProcedure.input(z.object({key: z.string(), name: z.string(), type:z.string()})).mutation(async({ctx, input})=> {
@@ -45,5 +47,46 @@ return document
         }
       })
       return docs
+    }),
+    getAWSData: protectedProcedure.input(z.object({id:z.string()})).query(async({ctx, input})=> {
+      const document=await ctx.prisma.document.findUniqueOrThrow({
+        where: {
+          id: input.id
+        },
+      select: {
+        key: true,
+        name: true
+      }
+      })
+
+      // Setting AWS config
+AWS.config.update({
+  accessKeyId: env.ACCESS_KEY,
+  secretAccessKey: env.SECRET_KEY,
+  region:env.REGION
+});
+
+const s3 = new AWS.S3();
+
+async function fetchDocumentFromS3( key: string): Promise<ArrayBuffer> {
+  const params = {
+      Bucket: env.BUCKET_NAME,
+      Key: key
+  };
+
+  return new Promise((resolve, reject) => {
+      s3.getObject(params, (err, data) => {
+          if (err) reject(err);
+          else resolve(data.Body as ArrayBuffer);
+      });
+  });
+}
+function getFileExtension(filename: string) {
+ 
+  return filename.split('.').pop();
+}
+const type=getFileExtension(document.name)
+const file=await fetchDocumentFromS3(document.key)
+return{file, type}
     })
 })
