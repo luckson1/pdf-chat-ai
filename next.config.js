@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+import nodeExternals from "webpack-node-externals"
 const nextConfig = {
   reactStrictMode: true,
   images: {
