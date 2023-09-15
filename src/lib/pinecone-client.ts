@@ -12,7 +12,7 @@ async function createIndex(client: PineconeClient, indexName: string) {
     await client.createIndex({
       createRequest: {
         name: indexName,
-        dimension: 1536,
+        dimension: 1024,
         metric: "cosine",
       },
     });
