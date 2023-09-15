@@ -1,7 +1,7 @@
 import mammoth from "mammoth";
 import { useEffect, useState } from "react";
 import Papa from 'papaparse';
-// import {Page, Document} from 'react-pdf'
+import {  Document, Page } from 'react-pdf';
 
 interface DocxViewerProps {
     signedUrl: string;
@@ -49,13 +49,14 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({ signedUrl }) => {
     );
 }
 
-// export function PDFViewer({ data }: {  data: ArrayBuffer;}) {
-//     return (
-//         <Document file={{ data: data }}>
-//             <Page pageNumber={1} />
-//         </Document>
-//     );
-// }
+
+export function PDFViewer({ url }: { url:string}) {
+    return (
+        <Document file={{ url }}>
+            <Page pageNumber={1}/>
+        </Document>
+    );
+}
 
 type CsvData = {
     [key: string]: string;
