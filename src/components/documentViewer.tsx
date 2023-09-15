@@ -121,13 +121,13 @@ if(!data) return null
  
  export default function MainDocumentViewer() {
     const params=useSearchParams()
-const key=params?.get('namespace')
-if(!key) {
+const id=params?.get('id')
+if(!id) {
     return null
 }
    return (
      <div className='w-full'>
-        <DocumentViewer key={key}/>
+        <DocumentViewer key={id}/>
      </div>
    )
  }

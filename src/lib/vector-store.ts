@@ -7,18 +7,15 @@ dotenv.config();
 export async function pineconeEmbedAndStore(
   client: PineconeClient,
   // @ts-ignore docs type error
-  docs: Document<Record<string, any>>[],
-  namespace:string
+  docs: Document<Record<string, any>>[]
 ) {
   /*create and store the embeddings in the vectorStore*/
   try {
     const embeddings = new OpenAIEmbeddings();
     const index = client.Index(env.PINECONE_INDEX_NAME);
-
     //embed the PDF documents
     await PineconeStore.fromDocuments(docs, embeddings, {
       pineconeIndex: index,
-      namespace ,
       textKey: "text",
     });
   } catch (error) {
@@ -27,7 +24,11 @@ export async function pineconeEmbedAndStore(
   }
 }
 
-export async function getVectorStore(client: PineconeClient, namespace: string) {
+export async function getVectorStore(
+  client: PineconeClient,
+  userId: string,
+  id: string
+) {
   try {
     const embeddings = new OpenAIEmbeddings();
     const index = client.Index(env.PINECONE_INDEX_NAME);
@@ -35,7 +36,7 @@ export async function getVectorStore(client: PineconeClient, namespace: string) 
     const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
       pineconeIndex: index,
       textKey: "text",
-      namespace,
+      filter: { userId: { $eq: userId }, id: { $eq: id } },
     });
 
     return vectorStore;

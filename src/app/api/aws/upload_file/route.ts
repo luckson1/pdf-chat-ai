@@ -1,6 +1,5 @@
 
 import S3 from "aws-sdk/clients/s3";
-import { nanoid } from "nanoid";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
 import { NextResponse , NextRequest} from "next/server";

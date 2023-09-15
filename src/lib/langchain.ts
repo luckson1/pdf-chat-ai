@@ -74,20 +74,22 @@ type callChainArgs = {
   question: string;
   chatHistory: [string, string][];
   transformStream: TransformStream;
-  namespace: string;
+ userId:string,
+ id:string
 };
 
 export async function callChain({
   question,
   chatHistory,
   transformStream,
-  namespace
+  userId,
+  id
 }: callChainArgs) {
   try {
     // Open AI recommendation
     const sanitizedQuestion = question.trim().replaceAll("\n", " ");
     const pineconeClient = await getPineconeClient();
-    const vectorStore = await getVectorStore(pineconeClient, namespace);
+    const vectorStore = await getVectorStore(pineconeClient, userId, id);
 
     // Create encoding to convert token (string) to Uint8Array
     const encoder = new TextEncoder();

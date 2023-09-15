@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 
 export function Chat() {
   const params=useSearchParams()
-const namespace=params?.get('namespace')
+const id=params?.get('id')
   const endpoint = "/api/chat";
   const [input, setInput] = useState("");
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -67,7 +67,7 @@ const namespace=params?.get('namespace')
         body: JSON.stringify({
           question,
           chatHistory,
-          namespace
+          id
         }),
       });
 

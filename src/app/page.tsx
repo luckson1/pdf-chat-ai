@@ -118,7 +118,7 @@ export default function DocumentPage() {
             <CardContent>No Documents</CardContent>
           </Card>
         ) : docsData  && !isLoading ? (docsData.map(doc=> (
-          <Link key={doc.id} href={`/documents?namespace=${doc.key}`}>
+          <Link key={doc.id} href={`/documents?id=${doc.id}`}>
           <Card className="w-full h-12">
 <CardContent>
   {doc.name}

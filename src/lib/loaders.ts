@@ -3,7 +3,7 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { S3Loader } from "langchain/document_loaders/web/s3";
 import { PuppeteerWebBaseLoader } from "langchain/document_loaders/web/puppeteer";
 import { env } from "./env.mjs";
-export async function getChunkedDocsFromUnstrucuted(path: string) {
+export async function getChunkedDocsFromUnstrucuted(path: string, userId:string, id:string) {
   try {
     console.log("got it");
     const options = {
@@ -24,7 +24,9 @@ export async function getChunkedDocsFromUnstrucuted(path: string) {
     });
 
     const chunkedDocs = await textSplitter.splitDocuments(docs);
-
+for (const doc of chunkedDocs) {
+  doc.metadata={...doc.metadata, userId, id}
+}
     return chunkedDocs;
   } catch (e) {
     console.error(e);
@@ -32,7 +34,7 @@ export async function getChunkedDocsFromUnstrucuted(path: string) {
   }
 }
 
-export async function getChunkedDocsFromS3Files(key: string) {
+export async function getChunkedDocsFromS3Files(key: string, userId:string, id:string) {
 
   try {
     const loader = new S3Loader({
@@ -56,7 +58,9 @@ export async function getChunkedDocsFromS3Files(key: string) {
     });
     const docs = await loader.loadAndSplit(textSplitter)
 
-
+    for (const doc of docs) {
+      doc.metadata={...doc.metadata, userId, id}
+    }
    return docs
   } catch (e) {
     console.error(e);
@@ -64,7 +68,7 @@ export async function getChunkedDocsFromS3Files(key: string) {
   }
 }
 
-export async function getChunkedDocsFromWeb(path: string) {
+export async function getChunkedDocsFromWeb(path: string, userId:string, id:string) {
   try {
     const loader = new PuppeteerWebBaseLoader(path);
 
@@ -78,7 +82,9 @@ export async function getChunkedDocsFromWeb(path: string) {
     });
 
     const chunkedDocs = await textSplitter.splitDocuments(docs);
-
+    for (const doc of chunkedDocs) {
+      doc.metadata={...doc.metadata, userId, id}
+    }
     return chunkedDocs;
   } catch (e) {
     console.error(e);

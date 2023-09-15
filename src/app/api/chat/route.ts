@@ -1,8 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { callChain } from "@/lib/langchain";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/server/auth";
 
 export async function POST(req: NextRequest) {
-  const { question, chatHistory, namespace } = await req.json();
+  const { question, chatHistory, id } = await req.json();
+  const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
+
+    // make entries to image table for the product images
+
+    if (!userId) {
+      return NextResponse.json("Un authenticated", {
+        status: 401,
+      });
+    }
 
   if (!question) {
     return NextResponse.json("Error: No question in the request", {
@@ -16,7 +28,8 @@ export async function POST(req: NextRequest) {
       question,
       chatHistory,
       transformStream,
-      namespace
+     userId,
+     id
     });
 
     return new Response(await readableStrm);
