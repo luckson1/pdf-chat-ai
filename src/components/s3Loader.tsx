@@ -44,6 +44,7 @@ useEffect(() => {
         } catch (err) {
           //@ts-ignore
             setError(err.message);
+            console.log("here", err)
         } finally {
             setLoading(false);
         }
