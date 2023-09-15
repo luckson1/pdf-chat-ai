@@ -4,8 +4,8 @@ import * as AWS from 'aws-sdk';
 import { CSVViewer, DocxViewer } from "./viewers";
 // Setting AWS config
 AWS.config.update({
-    accessKeyId: env.ACCESS_KEY,
-    secretAccessKey: env.SECRET_KEY,
+    accessKeyId: process.env.ACCESS_KEY,
+    secretAccessKey: process.env.SECRET_KEY,
     region:env.REGION
 });
 
@@ -13,10 +13,10 @@ const s3 = new AWS.S3();
 
 async function fetchDocumentFromS3( key: string): Promise<ArrayBuffer> {
     const params = {
-        Bucket: env.BUCKET_NAME,
+        Bucket: process.env.BUCKET_NAME ??"",
         Key: key
     };
-
+console.log( process.env.BUCKET_NAME )
     return new Promise((resolve, reject) => {
         s3.getObject(params, (err, data) => {
             if (err) reject(err);
@@ -27,13 +27,8 @@ async function fetchDocumentFromS3( key: string): Promise<ArrayBuffer> {
 
 
 
-export async function DocumentViewer({key}: {key: string}) {
-const {data: doc}= api.documents.getOne.useQuery({key})
-function getFileExtension(filename?: string) {
-    if (!filename) return undefined
-    return filename.split('.').pop();
-  }
-const type=getFileExtension(doc?.name)
+export async function DocumentViewer({key, type}: {key: string, type?: string}) {
+
    
 const data= await  fetchDocumentFromS3(key)
     
