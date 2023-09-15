@@ -1,13 +1,10 @@
+'use client'
 import { api } from "@/app/api/_trpc/client";
 import { PDFViewer } from "./viewers";
+import { useEffect, useState } from "react";
 
-export async function DocumentViewer({id }: { id: string }) {
-  const {
-    data
-  } = api.documents.getAWSData.useQuery({id });
+export function DocumentViewer({signedUrl }: { signedUrl: string }) {
 
-  if (!data?.fileUrl) return null;
-  if (!data.type) return null;
   
 //   switch (data.type) {
 //     // case 'pdf':
@@ -26,5 +23,42 @@ export async function DocumentViewer({id }: { id: string }) {
 //     default:
 //       return <div>Unsupported format.</div>;
 //   }
-return <PDFViewer url={data.fileUrl} />;
+
+const [fileData, setFileData] = useState<Uint8Array | null>(null);
+const [loading, setLoading] = useState(false);
+const [error, setError] = useState<string | null>(null);
+
+useEffect(() => {
+    async function fetchUint8ArrayFromS3(url: string) {
+        try {
+          setLoading(true)
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch file. Status: ${response.status}`);
+            }
+
+            const blob = await response.blob();
+            const arrayBuffer = await blob.arrayBuffer();
+            setFileData(new Uint8Array(arrayBuffer));
+        } catch (err) {
+          //@ts-ignore
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    fetchUint8ArrayFromS3(signedUrl);
+}, [signedUrl]);
+
+if (loading) {
+    return <div>Loading...</div>;
+}
+
+if (error) {
+    return <div>Error: {error}</div>;
+}
+if (!fileData) return null
+return <PDFViewer data={fileData} />;
 }

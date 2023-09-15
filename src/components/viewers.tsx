@@ -52,16 +52,14 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({ signedUrl }) => {
 }
 
 
-export function PDFViewer({ url }: { url:string}) {
-    console.log("pdf" ,url)
+export function PDFViewer({ data}: { data:Uint8Array}) {
+ 
 
     return (
-        // <Document file={{ url }}>
-        //     <Page pageNumber={1}/>
-        // </Document>
-        <div>
-            File
-        </div>
+        <Document file={{ data }}>
+            <Page pageNumber={1}/>
+        </Document>
+      
     );
 }
 

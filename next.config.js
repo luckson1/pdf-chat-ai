@@ -7,6 +7,10 @@ const nextConfig = {
   },
   swcMinify: true,
   webpack(config) {
+    config.module.rules.push({
+         test: /\.node/,
+        use: 'raw-loader',
+       });
     config.experiments = { ...config.experiments, topLevelAwait: true, };
     return config;
   },

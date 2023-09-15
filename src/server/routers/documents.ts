@@ -82,7 +82,7 @@ function getFileExtension(filename: string) {
   return filename.split('.').pop();
 }
 const type=getFileExtension(document.name)
-const fileUrl=generateSignedUrl()
-return{fileUrl, type}
+const signedUrl=generateSignedUrl()
+return{signedUrl, type}
     })
 })
