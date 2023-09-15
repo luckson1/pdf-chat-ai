@@ -3,19 +3,29 @@ import { useEffect, useState } from "react";
 import Papa from 'papaparse';
 // import {Page, Document} from 'react-pdf'
 
-export function DocxViewer({ data }: {  data: ArrayBuffer}) {
-    const [content, setContent] = useState("");
+export function DocxViewer({ signedUrl }: { signedUrl: string }) {
+    const [content, setContent] = useState<string>('');
 
     useEffect(() => {
-        mammoth.convertToHtml({ arrayBuffer: data })
-            .then((result) => setContent(result.value))
-            .catch((error) => console.error(error));
-    }, [data]);
+        fetch(signedUrl)
+            .then(response => response.blob())
+            .then(blob => {
+                blob.arrayBuffer()
+                    .then(arrayBuffer => {
+                        const buffer = new Uint8Array(arrayBuffer);
 
-    return <div className='w-full' dangerouslySetInnerHTML={{ __html: content }} />;
+                        mammoth.convertToHtml({ arrayBuffer: buffer })
+                            .then(displayResult => {
+                                setContent(displayResult.value);
+                            });
+                    });
+            });
+    }, [signedUrl]);
+
+    return (
+        <div dangerouslySetInnerHTML={{ __html: content }} />
+    );
 }
-
-
 // export function PDFViewer({ data }: {  data: ArrayBuffer;}) {
 //     return (
 //         <Document file={{ data: data }}>
@@ -24,31 +34,41 @@ export function DocxViewer({ data }: {  data: ArrayBuffer}) {
 //     );
 // }
 
-export function CSVViewer({ data }:  {  data: ArrayBuffer}) {
-    const [rows, setRows] =useState([]);
+type CsvData = {
+    [key: string]: string;
+};
 
-   useEffect(() => {
-        const results =Papa.parse(new TextDecoder().decode(data), { header: true });
-        //@ts-expect-error
-        setRows(results?.data);
-    }, [data])
+interface CsvDisplayProps {
+    signedUrl: string;
+}
+
+export const CSVViewer: React.FC<CsvDisplayProps> = ({ signedUrl }) => {
+    const [data, setData] = useState<CsvData[]>([]);
+
+    useEffect(() => {
+        fetch(signedUrl)
+            .then(response => response.text())
+            .then(csvData => {
+                const parsedData = Papa.parse<CsvData>(csvData, { header: true, skipEmptyLines: true });
+                setData(parsedData.data);
+            });
+    }, [signedUrl]);
+
     return (
-        <table className='w-full'>
+        <table>
             <thead>
-                {/* Dynamically generate header using first row keys */}
                 <tr>
-                    {rows[0] && Object.keys(rows[0]).map((key) => <th key={key}>{key}</th>)}
+                    {data[0] && Object.keys(data[0]).map((key, index) => (
+                        <th key={index}>{key}</th>
+                    ))}
                 </tr>
             </thead>
             <tbody>
-                {rows.map((row, index) => (
-                    <tr key={index}>
-                      
-                        {Object.values(row).map((cell, idx) => <td key={idx}>
-                       
-                            {cell as any}
-                            
-                            </td>)}
+                {data.map((row, rowIndex) => (
+                    <tr key={rowIndex}>
+                        {Object.values(row).map((cell, cellIndex) => (
+                            <td key={cellIndex}>{cell}</td>
+                        ))}
                     </tr>
                 ))}
             </tbody>

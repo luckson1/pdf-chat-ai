@@ -68,25 +68,21 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-async function fetchDocumentFromS3( key: string): Promise<ArrayBuffer> {
+function generateSignedUrl() {
   const params = {
       Bucket: env.BUCKET_NAME,
-      Key: key
+      Key: document.key,
+
   };
 
-  return new Promise((resolve, reject) => {
-      s3.getObject(params, (err, data) => {
-          if (err) reject(err);
-          else resolve(data.Body as ArrayBuffer);
-      });
-  });
+  return s3.getSignedUrl('getObject', params);
 }
 function getFileExtension(filename: string) {
  
   return filename.split('.').pop();
 }
 const type=getFileExtension(document.name)
-const file=await fetchDocumentFromS3(document.key)
-return{file, type}
+const fileUrl=generateSignedUrl()
+return{fileUrl, type}
     })
 })

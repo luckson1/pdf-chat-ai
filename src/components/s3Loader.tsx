@@ -7,16 +7,16 @@ export async function DocumentViewer({id }: { id: string }) {
     data
   } = api.documents.getAWSData.useQuery({id });
 
-  if (!data?.file) return null;
+  if (!data?.fileUrl) return null;
   if (!data.type) return null;
   
   switch (data.type) {
     // case 'pdf':
     //     return <PDFViewer data={data} />;
     case "docx":
-      return <DocxViewer data={data.file} />;
+      return <DocxViewer signedUrl={data.fileUrl} />;
     case "csv":
-      return <CSVViewer data={data.file} />;
+      return <CSVViewer signedUrl={data.fileUrl} />;
     case "ppt":
       return (
         <div>
