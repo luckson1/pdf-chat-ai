@@ -12,14 +12,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import React, { useState } from "react";
-import { api } from "../api/_trpc/client";
 import axios from "axios";
+import Link from "next/link";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { api } from "../api/_trpc/client";
 
 export default function DocumentPage() {
-  const [files, setFiles] = useState<File[]>([]);
+  const [docs, setDocs] = useState<File[]>([]);
+  const [audio, setAudio] = useState<File[]>([]);
   const [url, setUrl] = useState<string>();
   const [loading, setLoading] = useState(false);
-  const uploadToS3 = async () => {
+  const uploadToS3 = async (files:  File[]) => {
     if (!files || files.length <= 0) {
       return null;
     }
@@ -29,20 +32,23 @@ export default function DocumentPage() {
       return null;
     }
     const { data }: { data: { uploadUrl: string; key: string } } =
-      await axios.get(`/api/aws/upload_file?type=${type}`);
+      await axios.get(`/api/aws/upload_file?type=${type}&name=${name}`);
 
     const { uploadUrl, key } = data;
-    console.log(uploadUrl);
     const d = await axios.put(uploadUrl, files[0]);
-    console.log(d);
     return { key, name, type };
   };
-  const { data: document, mutate: addDoc } = api.documents.addDoc.useMutation();
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const ctx=api.useContext()
+  const {  mutate: addDoc } = api.documents.addDoc.useMutation( {
+    onSuccess: ()=> {
+      ctx.documents.getAll.invalidate()
+    }
+  });
+  const handleSubmitDocs = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       setLoading(true);
-      const data = await uploadToS3();
+      const data = await uploadToS3(docs);
       if (!data) {
         setLoading(false);
         return;
@@ -53,33 +59,50 @@ export default function DocumentPage() {
   const { data: docsData, isLoading } = api.documents.getAll.useQuery();
   return (
     <div className="w-full h-fit flex flex-col md:flex-row space-x-0 md:space-x-5 space-y-5 md:space-y-0">
+        <Tabs defaultValue="docs" className="w-full max-w-sm">
+      <TabsList className="grid w-full grid-cols-3">
+      <TabsTrigger value="docs">Documents</TabsTrigger>
+        <TabsTrigger value="url"> Online Article</TabsTrigger>
+        <TabsTrigger value="audio">Audio</TabsTrigger>
+        
+      </TabsList>
+      <TabsContent value="docs">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>Add a source</CardTitle>
+          <CardTitle>Upload a study material</CardTitle>
           <CardDescription>
-            Upload a pdf, word, txt, epub or power point
+            Upload a pdf, word, text, epub or power point
           </CardDescription>
+          </CardHeader>
           <CardContent className="flex flex-col space-y-5 py-5">
             <form
               className="flex flex-col space-y-5"
-              onSubmit={(e) => handleSubmit(e)}
+              onSubmit={(e) => handleSubmitDocs(e)}
+              id="docs"
             >
-              <Dropzone files={files} setFiles={setFiles} />
-              <Button type="submit" disabled={files.length <= 0}>
-                Upload to add source
+              <Dropzone files={docs} setFiles={setDocs} audio={false}/>
+              <Button type="submit" disabled={docs.length <= 0}>
+                chat with your document
               </Button>
             </form>
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background text-muted-foreground px-2">
-                  Or provide a link
-                </span>
-              </div>
-            </div>
-            <form
+          
+           
+          </CardContent>
+      
+      </Card>
+      </TabsContent>
+      <TabsContent value='url'>
+        <Card>
+          <CardHeader>
+            <CardTitle>
+Link to your online study material
+            </CardTitle>
+            <CardDescription>
+Provide a working  link to a blog or news article (online pdfs are not valid)
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+          <form
               onSubmit={(e) => {
                 try {
                   e.preventDefault();
@@ -89,7 +112,7 @@ export default function DocumentPage() {
                   setLoading(false);
                 }
               }}
-              className="flex w-full  max-w-sm items-center space-x-2 mt-10"
+              className="flex w-full  max-w-sm items-center space-y-5 mt-10  flex-col"
             >
               <div className="w-full space-y-2">
                 <Label htmlFor="url">Add url to your source</Label>
@@ -100,13 +123,40 @@ export default function DocumentPage() {
                   onChange={(e) => setUrl(e.target.value)}
                 />
               </div>
-              <Button className="mt-8" type="submit">
-                Add
+              <Button className="mt-8 w-full" type="submit">
+                Chat with your web page
               </Button>
             </form>
           </CardContent>
-        </CardHeader>
+        </Card>
+
+      </TabsContent>
+      <TabsContent value="audio">
+      <Card className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle>Upload an audio recording</CardTitle>
+          <CardDescription>
+            Record your professor lecture and chat with him/her later
+          </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col space-y-5 py-5">
+            <form
+              className="flex flex-col space-y-5"
+              // onSubmit={(e) => handleSubmitDocs(e)}
+              id="audio"
+            >
+              <Dropzone files={audio} setFiles={setAudio} audio={true}/>
+              <Button type="submit" disabled={audio.length <= 0}>
+              Chat with your audio
+              </Button>
+            </form>
+          
+           
+          </CardContent>
+      
       </Card>
+      </TabsContent>
+      </Tabs>
       <div className="w-full max-w-4xl flex flex-col space-y-5">
         {isLoading &&
           Array.from({ length: 5 })
@@ -115,10 +165,20 @@ export default function DocumentPage() {
               <Skeleton className="w-full h-16" key={index} />
             ))}
         {(!docsData || docsData.length <= 0) && !isLoading ? (
-          <Card className="w-full h-12">
-            <CardContent>No Documents</CardContent>
+          <Card className="w-full">
+          
+            <CardHeader>No Documents</CardHeader>
           </Card>
-        ) : null}
+        ) : docsData  && !isLoading ? (docsData.map(doc=> (
+          <Link key={doc.id} href={{     pathname: '/documents/[id]',
+          query: { id: doc.id }}}>
+          <Card className="w-full h-12">
+<CardHeader>
+  {doc.name}
+</CardHeader>
+          </Card>
+          </Link>
+        ))): null}
       </div>
     </div>
   );
