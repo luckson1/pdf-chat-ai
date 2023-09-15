@@ -4,22 +4,29 @@ import { useDropzone } from "react-dropzone";
 import { Button } from "./ui/button";
 
 
-const Dropzone=({files, setFiles  }: {
+const Dropzone=({files, setFiles, audio }: {
   files: File[],
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>,
+  audio: boolean
 }) => {
- 
+ const docFiles={
+  "text/csv": [],
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [],
+  "application/epub+zip": [],
+  "application/pdf": [],
+  "text/plain": [],
+  "application/vnd.ms-powerpoint": [],
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation": []
+}
+const audioFiles = {
+  "audio/*": [],
+  "video/*": []
+
+}
+console.log(files)
     const { getRootProps, getInputProps, isDragActive  } = useDropzone({
       maxFiles: 1,
-      accept: {
-        "text/csv": [],
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [],
-        "application/epub+zip": [],
-        "application/pdf": [],
-        "text/plain": [],
-        "application/vnd.ms-powerpoint": [],
-        "application/vnd.openxmlformats-officedocument.presentationml.presentation": []
-      },
+      accept:audio? audioFiles :docFiles,
       onDrop: (acceptedFiles) => {
         setFiles(acceptedFiles);
      
@@ -30,7 +37,7 @@ const Dropzone=({files, setFiles  }: {
     });
  
     return (
-      <section className=" item-center flex h-32 justify-center  w-full max-w-xs  flex-col rounded-[0.5rem] border-2 border-dashed border-border  px-2 py-4">
+      <section className=" item-center flex h-48 justify-center  w-full max-w-xs  flex-col rounded-[0.5rem] border-2 border-dashed border-border  px-4 py-4">
   
       <div
         {...getRootProps({ className: "dropzone" })}
@@ -68,15 +75,15 @@ const Dropzone=({files, setFiles  }: {
         </label>
       </div>
 
-      <aside className="mt-2 flex flex-col h-fit w-full  flex-wrap md:mt-6 overflow-hidden">
-    { files.length>0 &&  <strong><h2>Files</h2></strong>}
+      <aside className=" w-full  ">
+    { files.length>0 &&  <strong><h2>File {" "} : {" "}</h2></strong>}
   
          <ul>
   
           { files.map(file => 
           
           
-          <li key={file.name}>{file.name}</li>)}</ul>
+          <li key={file.name} className="w-full overflow-x-hidden">{file.name}</li>)}</ul>
        </aside>
   </section>
     );
