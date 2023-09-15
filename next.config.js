@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-import nodeExternals from "webpack-node-externals"
+
 const nextConfig = {
   reactStrictMode: true,
   images: {
@@ -7,7 +7,7 @@ const nextConfig = {
   },
   swcMinify: true,
   webpack(config) {
-    config.experiments = { ...config.experiments, topLevelAwait: true,  externals: [nodeExternals()], };
+    config.experiments = { ...config.experiments, topLevelAwait: true, };
     return config;
   },
 };

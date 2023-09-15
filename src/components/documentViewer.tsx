@@ -3,7 +3,7 @@ import * as mammoth from 'mammoth';
 import React, { useEffect, useState } from 'react';
 import { env } from '@/lib/env.mjs';
 import * as AWS from 'aws-sdk';
-import { Document, Page } from 'react-pdf';
+// import { Document, Page } from 'react-pdf';
 import Papa from 'papaparse';
 import { useSearchParams } from 'next/navigation';
 import { api } from '@/app/api/_trpc/client';
@@ -34,13 +34,13 @@ async function fetchDocumentFromS3( key: string): Promise<ArrayBuffer> {
 
 
 
-function PDFViewer({ data }: {  data: ArrayBuffer;}) {
-    return (
-        <Document file={{ data: data }}>
-            <Page pageNumber={1} />
-        </Document>
-    );
-}
+// function PDFViewer({ data }: {  data: ArrayBuffer;}) {
+//     return (
+//         <Document file={{ data: data }}>
+//             <Page pageNumber={1} />
+//         </Document>
+//     );
+// }
 
 
 
@@ -105,8 +105,8 @@ const type=doc?.type
 
 if(!data) return null
     switch (type) {
-        case 'pdf':
-            return <PDFViewer data={data} />;
+        // case 'pdf':
+        //     return <PDFViewer data={data} />;
         case 'docx':
             return <DocxViewer data={data} />;
         case 'csv':
