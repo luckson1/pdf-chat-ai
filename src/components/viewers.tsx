@@ -3,29 +3,52 @@ import { useEffect, useState } from "react";
 import Papa from 'papaparse';
 // import {Page, Document} from 'react-pdf'
 
-export function DocxViewer({ signedUrl }: { signedUrl: string }) {
+interface DocxViewerProps {
+    signedUrl: string;
+}
+
+export const DocxViewer: React.FC<DocxViewerProps> = ({ signedUrl }) => {
     const [content, setContent] = useState<string>('');
 
     useEffect(() => {
-        fetch(signedUrl)
-            .then(response => response.blob())
-            .then(blob => {
-                blob.arrayBuffer()
-                    .then(arrayBuffer => {
-                        const buffer = new Uint8Array(arrayBuffer);
+        let isMounted = true;
 
-                        mammoth.convertToHtml({ arrayBuffer: buffer })
-                            .then(displayResult => {
+        fetch(signedUrl)
+            .then(response => {
+                if (isMounted) {
+                    return response.blob();
+                }
+                return null;
+            })
+            .then(blob => {
+                if (blob && isMounted) {
+                    return blob.arrayBuffer();
+                }
+                return null;
+            })
+            .then(arrayBuffer => {
+                if (arrayBuffer && isMounted) {
+                    const buffer = new Uint8Array(arrayBuffer);
+                    mammoth.convertToHtml({ arrayBuffer: buffer })
+                        .then(displayResult => {
+                            if (isMounted) {
                                 setContent(displayResult.value);
-                            });
-                    });
+                            }
+                        });
+                }
             });
+
+        // Cleanup function
+        return () => {
+            isMounted = false;
+        };
     }, [signedUrl]);
 
     return (
         <div dangerouslySetInnerHTML={{ __html: content }} />
     );
 }
+
 // export function PDFViewer({ data }: {  data: ArrayBuffer;}) {
 //     return (
 //         <Document file={{ data: data }}>
@@ -38,20 +61,34 @@ type CsvData = {
     [key: string]: string;
 };
 
-interface CsvDisplayProps {
+interface CSVViewerProps {
     signedUrl: string;
 }
 
-export const CSVViewer: React.FC<CsvDisplayProps> = ({ signedUrl }) => {
+export const CSVViewer: React.FC<CSVViewerProps> = ({ signedUrl }) => {
     const [data, setData] = useState<CsvData[]>([]);
 
     useEffect(() => {
+        let isMounted = true;
+
         fetch(signedUrl)
-            .then(response => response.text())
+            .then(response => {
+                if (isMounted) {
+                    return response.text();
+                }
+                return null;
+            })
             .then(csvData => {
-                const parsedData = Papa.parse<CsvData>(csvData, { header: true, skipEmptyLines: true });
-                setData(parsedData.data);
+                if (csvData && isMounted) {
+                    const parsedData = Papa.parse<CsvData>(csvData, { header: true, skipEmptyLines: true });
+                    setData(parsedData.data);
+                }
             });
+
+        // Cleanup function
+        return () => {
+            isMounted = false;
+        };
     }, [signedUrl]);
 
     return (
