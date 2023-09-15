@@ -3,8 +3,8 @@
 import mammoth from "mammoth";
 import { useEffect, useState } from "react";
 import Papa from 'papaparse';
-import {  Document, Page } from 'react-pdf';
-
+import {  Document, Page , pdfjs} from 'react-pdf';
+pdfjs.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/react-pdf@7.3/dist/cjs/index.min.js`;
 interface DocxViewerProps {
     signedUrl: string;
 }
