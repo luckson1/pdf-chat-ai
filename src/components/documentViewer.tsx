@@ -2,11 +2,14 @@
 
 
 import { useSearchParams } from "next/navigation";
-import { ReactNode } from "react";
-import { DocumentViewer } from "./s3Loader";
+// import { ReactNode } from "react";
+// import { DocumentViewer } from "./s3Loader";
+import { api } from "@/app/api/_trpc/client";
 
-export function ViewLoader({ children }: { children: ReactNode }) {
-  return <div className="w-full">{children}</div>;
+export function ViewLoader({ id }: { id:  string}) {
+  const {data}=api.documents.getAWSData.useQuery({id})
+  console.log(data?.fileUrl)
+  return <div className="w-full">Hello</div>;
 }
 
 export default function MainDocumentViewer() {
@@ -19,9 +22,8 @@ export default function MainDocumentViewer() {
   }
   return (
     <div className="w-full">
-      <ViewLoader>
-        <DocumentViewer id={id}/>
-      </ViewLoader>
+      <ViewLoader id={id}/>
+     
     </div>
   );
 }
