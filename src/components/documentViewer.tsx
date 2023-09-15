@@ -105,8 +105,8 @@ const type=doc?.type
 
 if(!data) return null
     switch (type) {
-        case 'pdf':
-            return <PDFViewer data={data} />;
+        // case 'pdf':
+        //     return <PDFViewer data={data} />;
         case 'docx':
             return <DocxViewer data={data} />;
         case 'csv':
