@@ -10,7 +10,7 @@ export function DocumentViewer({signedUrl, type }: { signedUrl: string, type:str
 
   ];
 
-  return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} className="h-auto w-full"/>;
+  return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} className="h-auto min-h-[80vh] w-full"/>;
   
 //   switch (data.type) {
 //     // case 'pdf':
