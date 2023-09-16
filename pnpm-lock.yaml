@@ -110,8 +110,8 @@ dependencies:
     specifier: ^2.6.0
     version: 2.6.0(encoding@0.1.13)(typescript@5.1.6)
   langchain:
-    specifier: ^0.0.150
-    version: 0.0.150(@aws-sdk/client-s3@3.412.0)(@pinecone-database/pinecone@0.1.6)(axios@1.5.0)(encoding@0.1.13)(mammoth@1.6.0)(pdf-parse@1.1.1)(puppeteer@21.2.1)
+    specifier: 0.0.146
+    version: 0.0.146(@aws-sdk/client-s3@3.412.0)(@pinecone-database/pinecone@0.1.6)(axios@1.5.0)(encoding@0.1.13)(mammoth@1.6.0)(pdf-parse@1.1.1)(puppeteer@21.2.1)
   lucide-react:
     specifier: ^0.265.0
     version: 0.265.0(react@18.2.0)
@@ -5952,8 +5952,8 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
-  /langchain@0.0.150(@aws-sdk/client-s3@3.412.0)(@pinecone-database/pinecone@0.1.6)(axios@1.5.0)(encoding@0.1.13)(mammoth@1.6.0)(pdf-parse@1.1.1)(puppeteer@21.2.1):
-    resolution: {integrity: sha512-UXpz9vbMgIOfSmV705FxBRaooleaKITcWcZVgLntetaJmciFTzAlMmF4ca63XGwiGPSpPb/cfLFkE55x8jxUFg==}
+  /langchain@0.0.146(@aws-sdk/client-s3@3.412.0)(@pinecone-database/pinecone@0.1.6)(axios@1.5.0)(encoding@0.1.13)(mammoth@1.6.0)(pdf-parse@1.1.1)(puppeteer@21.2.1):
+    resolution: {integrity: sha512-WPkvlYNBH1cqPH0/mcDzfNjht5VJSD7dJMHCjhagLneVD7v69yMiNNkrme+DKHOqnPBbNUHDmlXGLAnTs4gpDQ==}
     engines: {node: '>=18'}
     peerDependencies:
       '@aws-crypto/sha256-js': ^5.0.0
@@ -5976,7 +5976,7 @@ packages:
       '@google-cloud/storage': ^6.10.1
       '@huggingface/inference': ^1.5.1
       '@mozilla/readability': '*'
-      '@notionhq/client': ^2.2.10
+      '@notionhq/client': ^2.2.5
       '@opensearch-project/opensearch': '*'
       '@pinecone-database/pinecone': '*'
       '@planetscale/database': ^1.8.0
@@ -6024,7 +6024,7 @@ packages:
       playwright: ^1.32.1
       puppeteer: ^19.7.2
       redis: ^4.6.4
-      replicate: ^0.18.0
+      replicate: ^0.12.3
       sonix-speech-recognition: ^2.1.1
       srt-parser-2: ^1.2.2
       typeorm: ^0.3.12
@@ -6033,7 +6033,6 @@ packages:
       vectordb: ^0.1.4
       voy-search: 0.6.2
       weaviate-ts-client: ^1.4.0
-      web-auth-library: ^1.0.3
       youtube-transcript: ^1.0.6
       youtubei.js: ^5.8.0
     peerDependenciesMeta:
@@ -6190,8 +6189,6 @@ packages:
       voy-search:
         optional: true
       weaviate-ts-client:
-        optional: true
-      web-auth-library:
         optional: true
       youtube-transcript:
         optional: true
