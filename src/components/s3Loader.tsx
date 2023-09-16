@@ -1,6 +1,4 @@
 'use client'
-import { api } from "@/app/api/_trpc/client";
-import { PDFViewer } from "./viewers";
 import { memo, useEffect, useState } from "react";
 import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
  function Viewer({signedUrl, type }: { signedUrl: string, type:string }) {
@@ -10,7 +8,7 @@ import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 
   ];
 
-  return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} className="h-auto min-h-[90vh] w-full"/>;
+  return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} className="h-auto min-h-[90vh] w-full rounded-lg"/>;
   
 }
 
