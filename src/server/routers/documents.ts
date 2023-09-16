@@ -3,7 +3,7 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 import * as AWS from "aws-sdk";
 import { env } from "@/lib/env.mjs";
 import { inngest } from "@/inngest/client";
-
+import { nanoid } from 'nanoid'
 export const documentRouter = createTRPCRouter({
   addDoc: protectedProcedure
     .input(z.object({ key: z.string(), name: z.string(), type: z.string() }))
@@ -21,6 +21,26 @@ export const documentRouter = createTRPCRouter({
       inngest.send({
         name: "docs/s3.create",
         data: { key: input.key, userId: document.userId, id: document.id },
+      });
+
+      return document;
+    }),
+    addWebDoc: protectedProcedure
+    .input(z.object({  url: z.string().url() }))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+const key= nanoid()
+      const document = await ctx.prisma.document.create({
+        data: {
+          key,
+          name: input.url,
+          userId,
+          type: 'web',
+        },
+      });
+      inngest.send({
+        name: 'docs/web.create',
+        data: { url: input.url, userId: document.userId, id: document.id },
       });
 
       return document;
