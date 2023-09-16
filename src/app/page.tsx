@@ -88,7 +88,7 @@ export default function DocumentPage() {
       console.log(error)
     } finally {
       setLoading(false);
-      setDocs([])
+      setAudio([])
     }
   };
   const handleSubmitWebPage = async (e: React.FormEvent<HTMLFormElement>) => {
