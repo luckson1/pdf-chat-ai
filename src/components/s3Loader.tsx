@@ -1,9 +1,9 @@
 'use client'
 import { api } from "@/app/api/_trpc/client";
 import { PDFViewer } from "./viewers";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
-export function DocumentViewer({signedUrl, type }: { signedUrl: string, type:string }) {
+ function Viewer({signedUrl, type }: { signedUrl: string, type:string }) {
   const docs = [
     { uri: signedUrl, fileType:type }, 
 
@@ -69,3 +69,5 @@ export function DocumentViewer({signedUrl, type }: { signedUrl: string, type:str
 // if (!fileData) return null
 // return <PDFViewer data={fileData} />;
 }
+
+export const  DocumentViewer = memo(Viewer)
