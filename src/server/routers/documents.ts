@@ -60,7 +60,7 @@ export const documentRouter = createTRPCRouter({
       //   name: "docs/s3.create",
       //   data: { key: input.key, userId: document.userId, id: document.id },
       // });
-
+console.log('here')
       function generateSignedUrl() {
         const params = {
           Bucket: env.BUCKET_NAME,
@@ -72,15 +72,14 @@ export const documentRouter = createTRPCRouter({
     
       const signedUrl = generateSignedUrl();
       const response = await fetch(signedUrl);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+   
       const blob = await response.blob();
       const loader = new OpenAIWhisperAudio(blob);
 
       const docs = await loader.load();
       
       console.log(docs);
+      return docs
     
     }),
     addWebDoc: protectedProcedure
