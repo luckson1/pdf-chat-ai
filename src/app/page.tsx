@@ -72,6 +72,9 @@ export default function DocumentPage() {
    addWebDoc({url:validUrl})
     } catch (error) {
       console.log(error)
+    } finally{
+      setLoading(false)
+      setUrl('')
     }
   };
   const { data: docsData, isLoading } = api.documents.getAll.useQuery();
@@ -136,7 +139,7 @@ Provide a working  link to a blog or news article (online pdfs are not valid)
                 />
               </div>
               <Button className="mt-8 w-full" type="submit" disabled={!urlSchema.safeParse(url).success} >
-                Chat with your web page
+             {loading? "Loading..." : "Chat with your web page"}
               </Button>
             </form>
           </CardContent>
