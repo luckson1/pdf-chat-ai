@@ -10,7 +10,7 @@ import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 
   ];
 
-  return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} className="h-auto min-h-[60vh] w-full"/>;
+  return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} className="h-auto min-h-[70vh] w-full"/>;
   
 //   switch (data.type) {
 //     // case 'pdf':
