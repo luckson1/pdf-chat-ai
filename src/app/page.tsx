@@ -16,6 +16,7 @@ import axios from "axios";
 import { api } from "./api/_trpc/client";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { z } from "zod";
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
@@ -44,6 +45,12 @@ export default function DocumentPage() {
       ctx.documents.getAll.invalidate()
     }
   });
+  const {  mutate: addWebDoc } = api.documents.addWebDoc.useMutation( {
+    onSuccess: ()=> {
+      ctx.documents.getAll.invalidate()
+    }
+  });
+  const urlSchema= z.string().url()
   const handleSubmitDocs = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -55,6 +62,17 @@ export default function DocumentPage() {
       }
       addDoc(data);
     } catch (error) {}
+  };
+  const handleSubmitWebPage = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+  
+   const validUrl = urlSchema.parse(url);
+   addWebDoc({url:validUrl})
+    } catch (error) {
+      console.log(error)
+    }
   };
   const { data: docsData, isLoading } = api.documents.getAll.useQuery();
   return (
@@ -123,7 +141,7 @@ Provide a working  link to a blog or news article (online pdfs are not valid)
                   onChange={(e) => setUrl(e.target.value)}
                 />
               </div>
-              <Button className="mt-8 w-full" type="submit">
+              <Button className="mt-8 w-full" type="submit" disabled={!urlSchema.safeParse(url).success} >
                 Chat with your web page
               </Button>
             </form>
