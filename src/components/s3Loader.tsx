@@ -1,5 +1,5 @@
 'use client'
-import { memo, useEffect, useState } from "react";
+import { memo } from "react";
 import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
  function Viewer({signedUrl, type }: { signedUrl: string, type:string }) {
   const docs = [
