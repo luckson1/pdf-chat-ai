@@ -72,5 +72,6 @@ module.exports = {
       },
     },
   },
+  //@ts-expect-error
   plugins: [require("tailwindcss-animate")],
 }
