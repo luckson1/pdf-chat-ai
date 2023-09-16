@@ -47,7 +47,7 @@
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.13",
     "inngest": "^2.6.0",
-    "langchain": "0.0.146",
+    "langchain": "0.0.150",
     "lucide-react": "^0.265.0",
     "mammoth": "^1.6.0",
     "nanoid": "^5.0.1",
