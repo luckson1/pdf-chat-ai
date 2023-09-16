@@ -8,7 +8,7 @@ import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 
   ];
 
-  return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} className="h-auto min-h-[90vh] w-full rounded-lg"/>;
+  return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} className="h-auto min-h-[85vh] w-full rounded-lg"/>;
   
 }
 
