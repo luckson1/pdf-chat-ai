@@ -116,7 +116,7 @@ export default function DocumentPage() {
         
       </TabsList>
       <TabsContent value="docs">
-      <Card className="w-full max-w-sm h-fit min-h-[600px]">
+      <Card className="w-full max-w-sm h-fit min-h-[500px]">
         <CardHeader>
           <CardTitle>Upload a study material</CardTitle>
           <CardDescription>
@@ -130,7 +130,7 @@ export default function DocumentPage() {
               id="docs"
             >
               <Dropzone files={docs} setFiles={setDocs} audio={false}/>
-              <Button type="submit" disabled={docs.length <= 0}>
+              <Button type="submit" disabled={docs.length <= 0} className="w-full max-w-xs">
               {loading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           
@@ -145,7 +145,7 @@ export default function DocumentPage() {
       </Card>
       </TabsContent>
       <TabsContent value='url'>
-        <Card>
+      <Card className="w-full max-w-sm h-fit min-h-[500px]">
           <CardHeader>
             <CardTitle>
 Link to your online study material
@@ -170,7 +170,7 @@ Provide a working  link to a blog or news article (online pdfs are not valid)
                   onChange={(e) => setUrl(e.target.value)}
                 />
               </div>
-              <Button className="mt-8 w-full" type="submit" disabled={!urlSchema.safeParse(url).success} >
+              <Button className="mt-8 w-full max-w-xs" type="submit" disabled={!urlSchema.safeParse(url).success} >
               {loading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           
@@ -183,7 +183,7 @@ Provide a working  link to a blog or news article (online pdfs are not valid)
 
       </TabsContent>
       <TabsContent value="audio">
-      <Card className="w-full max-w-sm h-fit min-h-[600px]">
+      <Card className="w-full max-w-sm h-fit min-h-[500px]">
         <CardHeader>
           <CardTitle>Upload an audio recording</CardTitle>
           <CardDescription>
@@ -197,7 +197,7 @@ Provide a working  link to a blog or news article (online pdfs are not valid)
               id="audio"
             >
               <Dropzone files={audio} setFiles={setAudio} audio={true}/>
-              <Button type="submit" disabled={audio.length <= 0}>
+              <Button type="submit" disabled={audio.length <= 0} className="max-w-xs w-full">
             {loading && (  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           
           )}
