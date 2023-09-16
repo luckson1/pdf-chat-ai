@@ -4,6 +4,24 @@ import * as AWS from "aws-sdk";
 import { env } from "@/lib/env.mjs";
 import { inngest } from "@/inngest/client";
 import { nanoid } from 'nanoid'
+import { OpenAIWhisperAudio } from "langchain/document_loaders/fs/openai_whisper_audio";
+
+  // Setting AWS config
+  AWS.config.update({
+    accessKeyId: env.ACCESS_KEY,
+    secretAccessKey: env.SECRET_KEY,
+    region: env.REGION,
+  });
+
+  const s3 = new AWS.S3(); 
+    // Setting AWS config
+    AWS.config.update({
+      accessKeyId: env.ACCESS_KEY,
+      secretAccessKey: env.SECRET_KEY,
+      region: env.REGION,
+    });
+
+  
 export const documentRouter = createTRPCRouter({
   addDoc: protectedProcedure
     .input(z.object({ key: z.string(), name: z.string(), type: z.string() }))
@@ -25,6 +43,46 @@ export const documentRouter = createTRPCRouter({
 
       return document;
     }),
+    addAudioDoc: protectedProcedure
+    .input(z.object({ key: z.string(), name: z.string(), type: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+
+      // const document = await ctx.prisma.document.create({
+      //   data: {
+      //     key: input.key,
+      //     name: input.name,
+      //     userId,
+      //     type: input.type,
+      //   },
+      // });
+      // inngest.send({
+      //   name: "docs/s3.create",
+      //   data: { key: input.key, userId: document.userId, id: document.id },
+      // });
+
+      function generateSignedUrl() {
+        const params = {
+          Bucket: env.BUCKET_NAME,
+          Key: input.key,
+        };
+
+        return s3.getSignedUrl("getObject", params);
+      }
+    
+      const signedUrl = generateSignedUrl();
+      const response = await fetch(signedUrl);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const blob = await response.blob();
+      const loader = new OpenAIWhisperAudio(blob);
+
+      const docs = await loader.load();
+      
+      console.log(docs);
+    
+    }),
     addWebDoc: protectedProcedure
     .input(z.object({  url: z.string().url() }))
     .mutation(async ({ ctx, input }) => {
@@ -45,6 +103,7 @@ const key= nanoid()
 
       return document;
     }),
+    
   getAll: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id;
     const docs = await ctx.prisma.document.findMany({
@@ -77,14 +136,7 @@ const key= nanoid()
         },
       });
 
-      // Setting AWS config
-      AWS.config.update({
-        accessKeyId: env.ACCESS_KEY,
-        secretAccessKey: env.SECRET_KEY,
-        region: env.REGION,
-      });
-
-      const s3 = new AWS.S3();
+    
 
       function generateSignedUrl() {
         const params = {
