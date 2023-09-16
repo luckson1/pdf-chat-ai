@@ -13,9 +13,9 @@ const signedUrl=data?.signedUrl
 const type=data?.type
 if(!signedUrl) return null
 if(!type) return null
-  return (<>
+  return (<div className="w-full h-auto">
   <DocumentViewer signedUrl={signedUrl}  type={type}/>
-  </>)
+  </div>)
 }
 
 export default function MainDocumentViewer() {
@@ -27,7 +27,7 @@ export default function MainDocumentViewer() {
     return null;
   }
   return (
-    <div className="w-full">
+    <div className="w-full h-auto">
       <ViewLoader id={id}/>
      
     </div>
