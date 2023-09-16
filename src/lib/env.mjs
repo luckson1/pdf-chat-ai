@@ -31,7 +31,7 @@ export const env = createEnv({
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     CLIENT_ID: z.string(),
     CLIENT_SECRET: z.string(),
-    ACCESS_KEY: z.string(), 
+  ACCESS_KEY: z.string(), 
   SECRET_KEY: z.string(),
   BUCKET_NAME: z.string(), 
   REGION: z.string(), 

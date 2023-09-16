@@ -122,13 +122,7 @@ Provide a working  link to a blog or news article (online pdfs are not valid)
           <CardContent>
           <form
               onSubmit={(e) => {
-                try {
-                  e.preventDefault();
-                  // setLoading(true)
-                } catch (error) {
-                } finally {
-                  setLoading(false);
-                }
+                handleSubmitWebPage(e)
               }}
               className="flex w-full  max-w-sm items-center space-y-5 mt-10  flex-col"
             >
