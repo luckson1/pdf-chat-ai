@@ -5,7 +5,7 @@ import { PuppeteerWebBaseLoader } from "langchain/document_loaders/web/puppeteer
 import { env } from "./env.mjs";
 export async function getChunkedDocsFromUnstrucuted(path: string, userId:string, id:string) {
   try {
-    console.log("got it");
+  
     const options = {
       apiKey: "N6ruejXdrsa815iTzQ3rsJCly9p6D0"
   
@@ -16,7 +16,7 @@ export async function getChunkedDocsFromUnstrucuted(path: string, userId:string,
       options
     );
     const docs = await loader.load();
-    console.log("docs", docs);
+  
     // From the docs https://www.pinecone.io/learn/chunking-strategies/
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkSize: 1000,
@@ -74,8 +74,6 @@ export async function getChunkedDocsFromWeb(path: string, userId:string, id:stri
 
     const docs = await loader.load();
 
-    console.log("web", docs);
-    // From the docs https://www.pinecone.io/learn/chunking-strategies/
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkSize: 1000,
       chunkOverlap: 200,
