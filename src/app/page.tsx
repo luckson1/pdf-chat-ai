@@ -17,6 +17,7 @@ import { api } from "./api/_trpc/client";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
+import { Icons } from "@/components/Icons";
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
@@ -61,7 +62,12 @@ export default function DocumentPage() {
         return;
       }
       addDoc(data);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false);
+      setDocs([])
+    }
   };
   const handleSubmitWebPage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -88,7 +94,7 @@ export default function DocumentPage() {
         
       </TabsList>
       <TabsContent value="docs">
-      <Card className="w-full max-w-sm">
+      <Card className="w-full max-w-sm h-fit min-h-[400px]">
         <CardHeader>
           <CardTitle>Upload a study material</CardTitle>
           <CardDescription>
@@ -103,6 +109,10 @@ export default function DocumentPage() {
             >
               <Dropzone files={docs} setFiles={setDocs} audio={false}/>
               <Button type="submit" disabled={docs.length <= 0}>
+              {loading && (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+          
+            )}
                 chat with your document
               </Button>
             </form>
@@ -139,7 +149,11 @@ Provide a working  link to a blog or news article (online pdfs are not valid)
                 />
               </div>
               <Button className="mt-8 w-full" type="submit" disabled={!urlSchema.safeParse(url).success} >
-             {loading? "Loading..." : "Chat with your web page"}
+              {loading && (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+          
+            )}
+                Chat with your web page
               </Button>
             </form>
           </CardContent>
@@ -147,7 +161,7 @@ Provide a working  link to a blog or news article (online pdfs are not valid)
 
       </TabsContent>
       <TabsContent value="audio">
-      <Card className="w-full max-w-sm">
+      <Card className="w-full max-w-sm h-fit min-h-[400px]">
         <CardHeader>
           <CardTitle>Upload an audio recording</CardTitle>
           <CardDescription>
