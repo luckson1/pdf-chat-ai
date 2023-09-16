@@ -60,7 +60,9 @@ export const documentRouter = createTRPCRouter({
       //   name: "docs/s3.create",
       //   data: { key: input.key, userId: document.userId, id: document.id },
       // });
-console.log('here')
+
+      try {
+        console.log('here')
       function generateSignedUrl() {
         const params = {
           Bucket: env.BUCKET_NAME,
@@ -80,6 +82,9 @@ console.log('here')
       
       console.log(docs);
       return docs
+      } catch (error) {
+        console.log(error)
+      }
     
     }),
     addWebDoc: protectedProcedure
