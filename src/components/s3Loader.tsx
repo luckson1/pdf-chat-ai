@@ -2,7 +2,7 @@
 import { api } from "@/app/api/_trpc/client";
 import { PDFViewer } from "./viewers";
 import { useEffect, useState } from "react";
-import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
+import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 export function DocumentViewer({signedUrl, type }: { signedUrl: string, type:string }) {
   const docs = [
     { uri: signedUrl, fileType:type }, 

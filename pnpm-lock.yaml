@@ -10,9 +10,6 @@ dependencies:
   '@aws-sdk/s3-request-presigner':
     specifier: ^3.412.0
     version: 3.412.0
-  '@cyntler/react-doc-viewer':
-    specifier: ^1.13.0
-    version: 1.13.0(@babel/core@7.22.19)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(webpack@5.88.2)(worker-loader@3.0.8)
   '@next-auth/prisma-adapter':
     specifier: ^1.0.7
     version: 1.0.7(@prisma/client@5.2.0)(next-auth@4.23.1)
@@ -154,6 +151,9 @@ dependencies:
   react:
     specifier: 18.2.0
     version: 18.2.0
+  react-doc-viewer:
+    specifier: ^0.1.5
+    version: 0.1.5(@babel/core@7.22.19)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(webpack@5.88.2)
   react-dom:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
@@ -1056,28 +1056,6 @@ packages:
       '@babel/helper-string-parser': 7.22.5
       '@babel/helper-validator-identifier': 7.22.19
       to-fast-properties: 2.0.0
-    dev: false
-
-  /@cyntler/react-doc-viewer@1.13.0(@babel/core@7.22.19)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(webpack@5.88.2)(worker-loader@3.0.8):
-    resolution: {integrity: sha512-skrgvgpRQw7yhS8VmHP6vkBU9HiWAkvwQYNY1u7JZWOSN6Tro/iKZzrZ8Fv/cOheAnhliHxWbj1TZeMz4b+A9Q==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      react: '>=16.13.1'
-      react-dom: '>=16.13.1'
-    dependencies:
-      '@types/mustache': 4.2.2
-      '@types/papaparse': 5.3.8
-      mustache: 4.2.0
-      papaparse: 5.4.1
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      react-pdf: 5.7.2(react-dom@18.2.0)(react@18.2.0)(webpack@5.88.2)(worker-loader@3.0.8)
-      styled-components: 5.3.11(@babel/core@7.22.19)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - react-is
-      - webpack
-      - worker-loader
     dev: false
 
   /@emotion/is-prop-valid@1.2.1:
@@ -3126,10 +3104,6 @@ packages:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
     dev: false
 
-  /@types/mustache@4.2.2:
-    resolution: {integrity: sha512-MUSpfpW0yZbTgjekDbH0shMYBUD+X/uJJJMm9LXN1d5yjl5lCY1vN/eWKD6D1tOtjA6206K0zcIPnUaFMurdNA==}
-    dev: false
-
   /@types/node-fetch@2.6.4:
     resolution: {integrity: sha512-1ZX9fcN4Rvkvgv4E6PAY5WXUFWFcRWxZa3EW83UjycOB9ljJCedb2CupIP4RZMEwF/M3eTcCihbBRgwtGbg5Rg==}
     dependencies:
@@ -3148,6 +3122,7 @@ packages:
     resolution: {integrity: sha512-ArKIEOOWULbhi53wkAiRy1ze4wvrTfhpAj7Yfzva+EkmX2sV8PpFB+xqzJfzXNzK4me95FJH9QZt5NXFVGzOoQ==}
     dependencies:
       '@types/node': 20.4.9
+    dev: true
 
   /@types/pdf-parse@1.1.1:
     resolution: {integrity: sha512-lDBKAslCwvfK2uvS1Uk+UCpGvw+JRy5vnBFANPKFSY92n/iEnunXi0KVBjPJXhsM4jtdcPnS7tuZ0zjA9x6piQ==}
@@ -5010,17 +4985,6 @@ packages:
       flat-cache: 3.1.0
     dev: false
 
-  /file-loader@6.2.0(webpack@5.88.2):
-    resolution: {integrity: sha512-qo3glqyTa61Ytg4u73GultjHGjdRyig3tG6lPtyX/jOEJvHif9uB0/OCI2Kif6ctF3caQTW2G5gym21oAsI4pw==}
-    engines: {node: '>= 10.13.0'}
-    peerDependencies:
-      webpack: ^4.0.0 || ^5.0.0
-    dependencies:
-      loader-utils: 2.0.4
-      schema-utils: 3.3.0
-      webpack: 5.88.2
-    dev: false
-
   /file-selector@0.6.0:
     resolution: {integrity: sha512-QlZ5yJC0VxHxQQsQhXvBaC7VRJ2uaxTf+Tfpu4Z/OcVQJVpZO+DGU0rkoVW5ce2SccxugvpBJoMvUs59iILYdw==}
     engines: {node: '>= 12'}
@@ -6806,11 +6770,6 @@ packages:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
     dev: false
 
-  /mustache@4.2.0:
-    resolution: {integrity: sha512-71ippSywq5Yb7/tVYyGbkBggbU8H3u5Rz56fH60jGFgr8uHwxs+aSKeqmluIVzM0m0kB7xQjKS6qPfd0b2ZoqQ==}
-    hasBin: true
-    dev: false
-
   /mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
     dependencies:
@@ -7315,15 +7274,8 @@ packages:
       - supports-color
     dev: false
 
-  /pdfjs-dist@2.12.313(worker-loader@3.0.8):
-    resolution: {integrity: sha512-1x6iXO4Qnv6Eb+YFdN5JdUzt4pAkxSp3aLAYPX93eQCyg/m7QFzXVWJHJVtoW48CI8HCXju4dSkhQZwoheL5mA==}
-    peerDependencies:
-      worker-loader: ^3.0.8
-    peerDependenciesMeta:
-      worker-loader:
-        optional: true
-    dependencies:
-      worker-loader: 3.0.8(webpack@5.88.2)
+  /pdfjs-dist@2.4.456:
+    resolution: {integrity: sha512-yckJEHq3F48hcp6wStEpbN9McOj328Ib09UrBlGAKxvN2k+qYPN5iq6TH6jD1C0pso7zTep+g/CKsYgdrQd5QA==}
     dev: false
 
   /pdfjs-dist@2.7.570(worker-loader@3.0.8):
@@ -7629,6 +7581,21 @@ packages:
       webpack: 5.88.2
     dev: true
 
+  /react-doc-viewer@0.1.5(@babel/core@7.22.19)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(webpack@5.88.2):
+    resolution: {integrity: sha512-hLhjSlc0Ffe/PUjfgvEhM/SEgZ9ql1ujFYnkOMlJquBLj7iHlSM0cGAENXPbI2VK03+r92nM2Re+vT0Dwfyifg==}
+    dependencies:
+      pdfjs-dist: 2.4.456
+      react-pdf: 5.0.0(react-dom@18.2.0)(react@18.2.0)(webpack@5.88.2)
+      styled-components: 5.3.11(@babel/core@7.22.19)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
+      wl-msg-reader: 0.2.1
+    transitivePeerDependencies:
+      - '@babel/core'
+      - react
+      - react-dom
+      - react-is
+      - webpack
+    dev: false
+
   /react-dom@18.2.0(react@18.2.0):
     resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
     peerDependencies:
@@ -7686,27 +7653,23 @@ packages:
       - supports-color
     dev: false
 
-  /react-pdf@5.7.2(react-dom@18.2.0)(react@18.2.0)(webpack@5.88.2)(worker-loader@3.0.8):
-    resolution: {integrity: sha512-hdDwvf007V0i2rPCqQVS1fa70CXut17SN3laJYlRHzuqcu8sLLjEoeXihty6c0Ev5g1mw31b8OT8EwRw1s8C4g==}
+  /react-pdf@5.0.0(react-dom@18.2.0)(react@18.2.0)(webpack@5.88.2):
+    resolution: {integrity: sha512-VpqZjpZGEevmotLYl6acU6GYQeJ0dxn9+5sth5QjWLFhKu0xy3zSZgt3U3m97zW6UWzQ/scvw5drfPyun5l4eA==}
     peerDependencies:
-      react: ^16.3.0 || ^17.0.0 || ^18.0.0
-      react-dom: ^16.3.0 || ^17.0.0 || ^18.0.0
+      react: ^16.3.0
+      react-dom: ^16.3.0
     dependencies:
       '@babel/runtime': 7.22.15
-      file-loader: 6.2.0(webpack@5.88.2)
       make-cancellable-promise: 1.3.1
       make-event-props: 1.6.1
       merge-class-names: 1.4.2
-      merge-refs: 1.2.1
-      pdfjs-dist: 2.12.313(worker-loader@3.0.8)
+      pdfjs-dist: 2.4.456
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      tiny-invariant: 1.3.1
-      tiny-warning: 1.0.3
+      worker-loader: 3.0.8(webpack@5.88.2)
     transitivePeerDependencies:
       - webpack
-      - worker-loader
     dev: false
 
   /react-pdf@7.3.3(@types/react@18.2.19)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0):
@@ -9007,6 +8970,10 @@ packages:
       string-width: 4.2.3
     dev: false
     optional: true
+
+  /wl-msg-reader@0.2.1:
+    resolution: {integrity: sha512-PFK8vjdaGUmj0EqBKL/ECSeSgxI/QBy2njuxX+UaCKjDaN6H0UYVLmmizmMJsrzkQ9QmDvsJiSE0H1o7wY4Zfg==}
+    dev: false
 
   /worker-loader@3.0.8(webpack@5.88.2):
     resolution: {integrity: sha512-XQyQkIFeRVC7f7uRhFdNMe/iJOdO6zxAaR3EWbDp45v3mDhrTi+++oswKNxShUNjPC/1xUp5DB29YKLhFo129g==}
