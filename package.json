@@ -80,7 +80,6 @@
     "@types/papaparse": "^5.3.8",
     "@types/pdf-parse": "^1.1.1",
     "prisma": "^5.2.0",
-    "raw-loader": "^4.0.2",
     "tsx": "^3.12.7",
     "webpack-node-externals": "^3.0.0"
   }
