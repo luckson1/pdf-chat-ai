@@ -51,6 +51,11 @@ export default function DocumentPage() {
       ctx.documents.getAll.invalidate()
     }
   });
+  const {  mutate: addAudio } = api.documents.addAudioDoc.useMutation( {
+    onSuccess: ()=> {
+      ctx.documents.getAll.invalidate()
+    }
+  });
   const urlSchema= z.string().url()
   const handleSubmitDocs = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -62,6 +67,23 @@ export default function DocumentPage() {
         return;
       }
       addDoc(data);
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false);
+      setDocs([])
+    }
+  };
+  const handleSubmitAudio = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const data = await uploadToS3(audio);
+      if (!data) {
+        setLoading(false);
+        return;
+      }
+      addAudio(data);
     } catch (error) {
       console.log(error)
     } finally {
@@ -94,7 +116,7 @@ export default function DocumentPage() {
         
       </TabsList>
       <TabsContent value="docs">
-      <Card className="w-full max-w-sm h-fit min-h-[400px]">
+      <Card className="w-full max-w-sm h-fit min-h-[600px]">
         <CardHeader>
           <CardTitle>Upload a study material</CardTitle>
           <CardDescription>
@@ -161,7 +183,7 @@ Provide a working  link to a blog or news article (online pdfs are not valid)
 
       </TabsContent>
       <TabsContent value="audio">
-      <Card className="w-full max-w-sm h-fit min-h-[400px]">
+      <Card className="w-full max-w-sm h-fit min-h-[600px]">
         <CardHeader>
           <CardTitle>Upload an audio recording</CardTitle>
           <CardDescription>
@@ -171,12 +193,15 @@ Provide a working  link to a blog or news article (online pdfs are not valid)
           <CardContent className="flex flex-col space-y-5 py-5">
             <form
               className="flex flex-col space-y-5"
-              // onSubmit={(e) => handleSubmitDocs(e)}
+              onSubmit={(e) => handleSubmitAudio(e)}
               id="audio"
             >
               <Dropzone files={audio} setFiles={setAudio} audio={true}/>
               <Button type="submit" disabled={audio.length <= 0}>
-              Chat with your audio
+            {loading && (  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+          
+          )}
+              Chat with your web page
               </Button>
             </form>
           
