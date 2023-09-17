@@ -85,7 +85,7 @@ try {
       const arrayBuffer = await response.arrayBuffer();
 console.log(input.type)
       // Create a blob from the ArrayBuffer with the specified content type
-      const blob = new Blob([arrayBuffer], { type: input.type });
+      const blob = new Blob([arrayBuffer], { type:"audio/x-m4a"});
       console.log(blob)
       const loader = new OpenAIWhisperAudio(blob);
 
@@ -108,7 +108,7 @@ const key= nanoid()
           key,
           name: input.url,
           userId,
-          type: 'web',
+          type: 'html',
         },
       });
       inngest.send({
@@ -154,7 +154,7 @@ const key= nanoid()
       });
       let signedUrl=''
       const type = getFileExtension(document.name);
-    if (document.type==='web') {
+    if (document.type==='html') {
       signedUrl = document.name
       return  { signedUrl, type}
      
