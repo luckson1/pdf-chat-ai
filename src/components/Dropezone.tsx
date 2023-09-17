@@ -23,7 +23,7 @@ const audioFiles = {
   "video/*": []
 
 }
-console.log(files)
+
     const { getRootProps, getInputProps, isDragActive  } = useDropzone({
       maxFiles: 1,
       accept:audio? audioFiles :docFiles,
