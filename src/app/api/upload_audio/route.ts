@@ -19,7 +19,7 @@ try {
             body: formData,
           });
           const data = await res.json();
-          console.log(data.text)
+          console.log(data)
         // const file = formDataEntryValue as unknown as Blob;
         // const buffer = Buffer.from(await file.arrayBuffer());
         // fs.writeFileSync(`/tmp/${file.name}`, buffer);
