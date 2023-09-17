@@ -26,22 +26,26 @@ export const documentRouter = createTRPCRouter({
   addDoc: protectedProcedure
     .input(z.object({ key: z.string(), name: z.string(), type: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session.user.id;
+try {
+  const userId = ctx.session.user.id;
 
-      const document = await ctx.prisma.document.create({
-        data: {
-          key: input.key,
-          name: input.name,
-          userId,
-          type: input.type,
-        },
-      });
-      inngest.send({
-        name: "docs/s3.create",
-        data: { key: input.key, userId: document.userId, id: document.id },
-      });
+  const document = await ctx.prisma.document.create({
+    data: {
+      key: input.key,
+      name: input.name,
+      userId,
+      type: input.type,
+    },
+  });
+  inngest.send({
+    name: "docs/s3.create",
+    data: { key: input.key, userId: document.userId, id: document.id },
+  });
 
-      return document;
+  return document;
+} catch (error) {
+  console.log(error)
+}
     }),
     addAudioDoc: protectedProcedure
     .input(z.object({ key: z.string(), name: z.string(), type: z.string() }))
@@ -73,10 +77,11 @@ export const documentRouter = createTRPCRouter({
       }
     
       const signedUrl = generateSignedUrl();
-      const response = await fetch(signedUrl);
+      console.log(signedUrl)
+      // const response = await fetch(signedUrl);
    
-      const blob = await response.blob();
-      const loader = new OpenAIWhisperAudio(blob);
+      // const blob = await response.blob();
+      const loader = new OpenAIWhisperAudio(signedUrl);
 
       const docs = await loader.load();
       
