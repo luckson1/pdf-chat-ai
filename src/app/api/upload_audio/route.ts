@@ -5,14 +5,16 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
 try {
     const formData = await req.formData();
+   
     const formDataEntryValues = Array.from(formData.values());
     for (const formDataEntryValue of formDataEntryValues) {
+        formDataEntryValue
       if (typeof formDataEntryValue === "object" && "arrayBuffer" in formDataEntryValue) {
         const file = formDataEntryValue as unknown as Blob;
-      //   const buffer = Buffer.from(await file.arrayBuffer());
-      //   fs.writeFileSync(`public/${file.name}`, buffer);
+        const buffer = Buffer.from(await file.arrayBuffer());
+        fs.writeFileSync(`/tmp/${file.name}`, buffer);
   console.log(file)
-      const loader = new OpenAIWhisperAudio(file);
+      const loader = new OpenAIWhisperAudio(`/tmp/${file.name}`);
   
       const docs = await loader.load();
       
