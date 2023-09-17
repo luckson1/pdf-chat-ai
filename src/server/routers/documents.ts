@@ -5,6 +5,7 @@ import { env } from "@/lib/env.mjs";
 import { inngest } from "@/inngest/client";
 import { nanoid } from 'nanoid'
 import { OpenAIWhisperAudio } from "langchain/document_loaders/fs/openai_whisper_audio";
+import { name } from "inngest/next";
 
   // Setting AWS config
   AWS.config.update({
@@ -137,7 +138,7 @@ const key= nanoid()
       });
       return docs;
     }),
-  getAWSData: protectedProcedure
+  getUrlInfo: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       const document = await ctx.prisma.document.findUniqueOrThrow({
@@ -147,10 +148,18 @@ const key= nanoid()
         select: {
           key: true,
           name: true,
+          type: true
+
         },
       });
+      let signedUrl=''
+      const type = getFileExtension(document.name);
+    if (document.type==='web') {
+      signedUrl = document.name
+      return  { signedUrl, type}
+     
 
-    
+    }
 
       function generateSignedUrl() {
         const params = {
@@ -163,8 +172,8 @@ const key= nanoid()
       function getFileExtension(filename: string) {
         return filename.split(".").pop();
       }
-      const type = getFileExtension(document.name);
-      const signedUrl = generateSignedUrl();
+    
+      signedUrl = generateSignedUrl();
       return { signedUrl, type };
     }),
 });
