@@ -6,12 +6,9 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
 try {
     const formData = await req.formData();
-   
-    const formDataEntryValues = Array.from(formData.values());
-    for (const formDataEntryValue of formDataEntryValues) {
-        formDataEntryValue
-      if (typeof formDataEntryValue === "object" && "arrayBuffer" in formDataEntryValue) {
-        const res = await fetch("https://api.openai.com/v1/audio/transcriptions", {
+   console.log(formData)
+    // const formDataEntryValues = Array.from(formData.values());
+    const res = await fetch("https://api.openai.com/v1/audio/transcriptions", {
             headers: {
               Authorization: `Bearer ${env.OPENAI_API_KEY}`,
             },
@@ -20,9 +17,13 @@ try {
           });
           const data = await res.json();
           console.log(data)
-        // const file = formDataEntryValue as unknown as Blob;
-        // const buffer = Buffer.from(await file.arrayBuffer());
-        // fs.writeFileSync(`/tmp/${file.name}`, buffer);
+    // for (const formDataEntryValue of formDataEntryValues) {
+    //     formDataEntryValue
+    //   if (typeof formDataEntryValue === "object" && "arrayBuffer" in formDataEntryValue) {
+        
+    //     const file = formDataEntryValue as unknown as Blob;
+    //     const buffer = Buffer.from(await file.arrayBuffer());
+    //     fs.writeFileSync(`/tmp/${file.name}`, buffer);
  
     //   const loader = new OpenAIWhisperAudio(`/tmp/${file.name}`);
   
@@ -30,8 +31,8 @@ try {
       
     //   console.log(docs);
     //   return docs
-      }
-    }
+    //   }
+    // }
     return NextResponse.json({ success: true });
 } catch (error) {
    console.log(error) 
