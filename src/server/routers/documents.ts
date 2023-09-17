@@ -85,7 +85,10 @@ try {
       };
       const response = await fetch(signedUrl, requestOptions);
    
-      const blob = await response.blob();
+      const arrayBuffer = await response.arrayBuffer();
+console.log(input.type)
+      // Create a blob from the ArrayBuffer with the specified content type
+      const blob = new Blob([arrayBuffer], { type: input.type });
       console.log(blob)
       const loader = new OpenAIWhisperAudio(signedUrl);
 
