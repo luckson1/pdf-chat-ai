@@ -77,13 +77,9 @@ try {
       }
     
       const signedUrl = generateSignedUrl();
-      console.log(signedUrl)
-      const requestOptions = {
-        headers: {
-          'Content-Type': 'audio/x-m4a' // or whatever type you expect
-        }
-      };
-      const response = await fetch(signedUrl, requestOptions);
+    
+    
+      const response = await fetch(signedUrl);
    
       const arrayBuffer = await response.arrayBuffer();
 console.log(input.type)
