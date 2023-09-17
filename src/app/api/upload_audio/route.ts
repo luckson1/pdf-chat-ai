@@ -11,7 +11,7 @@ try {
         const file = formDataEntryValue as unknown as Blob;
       //   const buffer = Buffer.from(await file.arrayBuffer());
       //   fs.writeFileSync(`public/${file.name}`, buffer);
-  
+  console.log(file)
       const loader = new OpenAIWhisperAudio(file);
   
       const docs = await loader.load();
