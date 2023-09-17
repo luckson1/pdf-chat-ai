@@ -86,7 +86,7 @@ console.log(input.type)
       // Create a blob from the ArrayBuffer with the specified content type
       const blob = new Blob([arrayBuffer], { type: input.type });
       console.log(blob)
-      const loader = new OpenAIWhisperAudio(signedUrl);
+      const loader = new OpenAIWhisperAudio(blob);
 
       const docs = await loader.load();
       
