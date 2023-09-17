@@ -81,6 +81,8 @@ export default function DocumentPage() {
    const formData= new FormData()
    audio.forEach((a, i)=> {
     formData.append(a.name, a)
+    formData.append("model", "whisper-1");
+
    })
    await axios.post('api/upload_audio', formData)
     } catch (error) {
