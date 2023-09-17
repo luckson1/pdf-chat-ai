@@ -78,9 +78,15 @@ try {
     
       const signedUrl = generateSignedUrl();
       console.log(signedUrl)
-      // const response = await fetch(signedUrl);
+      const requestOptions = {
+        headers: {
+          'Content-Type': 'audio/x-m4a' // or whatever type you expect
+        }
+      };
+      const response = await fetch(signedUrl, requestOptions);
    
-      // const blob = await response.blob();
+      const blob = await response.blob();
+      console.log(blob)
       const loader = new OpenAIWhisperAudio(signedUrl);
 
       const docs = await loader.load();
