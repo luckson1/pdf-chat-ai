@@ -78,12 +78,11 @@ export default function DocumentPage() {
     e.preventDefault();
     try {
       setLoading(true);
-      const data = await uploadToS3(audio);
-      if (!data) {
-        setLoading(false);
-        return;
-      }
-      addAudio(data);
+   const formData= new FormData()
+   audio.forEach((a, i)=> {
+    formData.append(a.name, a)
+   })
+   await axios.post('api/upload_audio', formData)
     } catch (error) {
       console.log(error)
     } finally {
