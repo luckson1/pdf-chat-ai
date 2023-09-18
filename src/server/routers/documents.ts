@@ -6,6 +6,9 @@ import { inngest } from "@/inngest/client";
 import { nanoid } from 'nanoid'
 import { OpenAIWhisperAudio } from "langchain/document_loaders/fs/openai_whisper_audio";
 import { name } from "inngest/next";
+import { spawn } from 'child_process';
+import { Readable } from 'stream';
+import  { Buffer } from 'buffer';
 
   // Setting AWS config
   AWS.config.update({
@@ -83,10 +86,56 @@ try {
       const response = await fetch(signedUrl);
    
       const arrayBuffer = await response.arrayBuffer();
-      const base64Data = btoa(new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), ''));
-      const rawData = `base64,${base64Data}`;
-   
-      const loader = new OpenAIWhisperAudio(rawData);
+    
+
+      
+      
+      async function pipecopy(inputBuffer: ArrayBuffer) {
+        const ffmpeg = spawn('ffmpeg', [
+          '-hide_banner',
+          '-i', 'pipe:0',
+          '-codec', 'copy',
+          '-movflags', 'empty_moov',
+          '-f', 'ipod', 
+          'pipe:1'
+        ]);
+      
+        const stream = new Readable();
+        stream._read = () => {};
+      
+        ffmpeg.stdout.on('data', (data) => {
+          stream.push(data);
+        });
+      
+        ffmpeg.on('exit', (code, signal) => {
+          console.log(`ffmpeg process exited with code ${code} and signal ${signal}`);
+          stream.push(null)
+        });
+      
+        ffmpeg.stdin.write(inputBuffer);
+        ffmpeg.stdin.end();
+      
+        const buffer = await new Promise((resolve, reject) => {
+          //@ts-ignore
+          let chunks = [];
+          stream.on('data', (chunk) => {
+            chunks.push(chunk);
+          });
+          stream.on('end', () => {
+            //@ts-expect-error
+            resolve(ArrayBuffer.concat(chunks));
+          });
+          stream.on('error', (err) => {
+            reject(err);
+          });
+        });
+      
+        return buffer as ArrayBuffer;
+      }
+      const newBuffer= await pipecopy(arrayBuffer)
+      const blob=new Blob([newBuffer])
+      const path="https://storage.googleapis.com/aai-docs-samples/espn.m4a"
+      const loader = new OpenAIWhisperAudio(path);
    
 
       const docs = await loader.load();
