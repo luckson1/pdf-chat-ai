@@ -28,7 +28,7 @@ export async function GET(req: Request) {
 
     
 
-    return response
+    return response.data
   } catch (error) {
     console.log(error);
   }
