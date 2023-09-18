@@ -27,8 +27,6 @@ export  async function GET(
     const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
-    // make entries to image table for the product images
-
     if (!userId) {
       return NextResponse.json("Un authenticated", {
         status: 401,
