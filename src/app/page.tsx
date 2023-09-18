@@ -85,10 +85,12 @@ export default function DocumentPage() {
     console.log("start", id)
     await wait( 1000);
     console.log("progress", id)
-    if (!id) return;
+
 
     while (true) {
+    if(id) {
       getTranscription({ id });
+    } else null
 
       if (transcription?.status === "completed") {
         console.log(transcription.text);
