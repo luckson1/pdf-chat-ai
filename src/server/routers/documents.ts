@@ -91,7 +91,7 @@ try {
 
       const docs = await loader.load();
       
-      console.log(docs);
+      console.log(docs[0]?.pageContent);
       return docs
       } catch (error) {
         console.log(error)
