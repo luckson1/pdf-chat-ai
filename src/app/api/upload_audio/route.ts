@@ -1,12 +1,10 @@
 import { env } from "@/lib/env.mjs";
-import fs from "fs";
-import { OpenAIWhisperAudio } from "langchain/document_loaders/fs/openai_whisper_audio";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
 try {
     const formData = await req.formData();
-    formData.append("model", "whisper-1");
+        formData.append("model", "whisper-1");
    console.log(formData)
     // const formDataEntryValues = Array.from(formData.values());
     const res = await fetch("https://api.openai.com/v1/audio/transcriptions", {
