@@ -1,9 +1,10 @@
 import { env } from "@/lib/env.mjs";
 import { TRPCError } from "@trpc/server";
 import axios from "axios";
+import { NextResponse } from "next/server";
 import { z } from "zod";
 
-async function handler (req: Request) {
+export async function POST(req: Request) {
   try {
     const assembly = axios.create({
         baseURL: "https://api.assemblyai.com/v2",
@@ -14,7 +15,6 @@ async function handler (req: Request) {
     });
     const idSchema = z.string().url();
     const { id } = await req.json();
-    console.log(id)
     const isValidId = idSchema.safeParse(id);
     if (!isValidId.success) {
         throw new TRPCError({
@@ -28,9 +28,8 @@ async function handler (req: Request) {
 
     
 
-    return response.data
+    return NextResponse.json(response.data)
   } catch (error) {
     console.log(error);
   }
 }
-export { handler as GET, handler as POST };
