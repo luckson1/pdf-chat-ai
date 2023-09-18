@@ -51,10 +51,35 @@ export default function DocumentPage() {
       ctx.documents.getAll.invalidate();
     },
   });
-  const { mutate: addAudio } = api.documents.addAudioDoc.useMutation({
-    onSuccess: () => {
-      ctx.documents.getAll.invalidate();
+  const wait = (time: number) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, time);
+    });
+  };
+  const { mutate: getTranscription , data: transcription} = api.documents.getTranscription.useMutation({
+    onSuccess: (transcriptionResult) => {
+      while (true) {
+     console.log(transcriptionResult?.status)
+      
+        if (transcriptionResult?.status === 'completed') {
+          console.log(transcriptionResult.text)
+          break
+        } else if (transcriptionResult?.status === 'error') {
+          throw new Error(`Transcription failed`)
+        } else {
+        wait(2000)
+        getTranscription({id: transcriptionResult?.id ?? ""})
+        }
+      }
     },
+  });
+
+  const { mutate: addTranscription , data: id} = api.documents.transcribe.useMutation({
+  onSuccess(id) {
+    if(id) {
+      getTranscription({id})
+    } return
+  },
   });
   const urlSchema = z.string().url();
   const handleSubmitDocs = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -74,28 +99,23 @@ export default function DocumentPage() {
       setDocs([]);
     }
   };
-  const wait = (time: number) => {
-    return new Promise((resolve) => {
-      setTimeout(resolve, time);
-    });
-  };
-  const transcribe = async (key: string) => {
-    const response = await axios.post("/api/assembly/transcribe", { key  });
-   
-  
-    let data = response?.data?.data;
-   const id=data?.id
-  console.log("id" , id)
 
-    while (data?.status !== "completed" || data?.status !== "error") {
-      await wait(1000);
-      const response = await axios.post("/api/assembly/results", {  id });
-  console.log(response?.data)
-      data = response?.data?.data;
-      console.log(data)
-    }
+  const transcribe = async (key: string) => {
+    
+   addTranscription({key})
   
-    return data;
+  
+
+
+  //   while (data?.status !== "completed" || data?.status !== "error") {
+  //     await wait(1000);
+  //     const response = await axios.post("/api/assembly/results", {  id });
+  // console.log(response?.data)
+  //     data = response?.data?.data;
+  //     console.log(data)
+  //   }
+  
+  //   return data;
   };
   const handleSubmitAudio = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -106,7 +126,7 @@ export default function DocumentPage() {
         setLoading(false);
         return;
       }
-    await transcribe(data.key)
+  addTranscription({key: data.key})
       // addAudio(data);
       // const formData = new FormData();
       // audio.forEach((a, i) => {
