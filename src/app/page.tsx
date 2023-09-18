@@ -59,7 +59,7 @@ export default function DocumentPage() {
   };
   const { mutate: getTranscription, data: transcription } =
     api.documents.getTranscription.useMutation();
-
+console.log(transcription)
   const { mutate: addTranscription, data: id } =
     api.documents.transcribe.useMutation({
       onSuccess(id) {
@@ -88,15 +88,15 @@ export default function DocumentPage() {
   const transcribe = async (key: string) => {
     addTranscription({ key });
     console.log("start", id)
-    await wait( 1000);
+    await wait( 3000);
     console.log("progress", id)
 
 
     while (true) {
   
-     if(id) {
-      getTranscription({ id});
-     }
+   
+      getTranscription({ id:id ?? ""});
+   
  
 
       if (transcription?.status === "completed") {
