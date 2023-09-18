@@ -89,7 +89,7 @@ export default function DocumentPage() {
 
     while (data?.status !== "completed" && data?.status !== "error") {
       await wait(1000);
-      const response = await axios.post("/api/assembly/result", {  id });
+      const response = await axios.post("/api/assembly/results", {  id });
   console.log(response?.data)
       data = response?.data?.data;
       console.log(data)
