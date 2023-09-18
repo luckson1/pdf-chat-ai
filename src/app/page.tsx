@@ -83,7 +83,7 @@ export default function DocumentPage() {
         formData.append("file", a);
       });
 
-      //  await axios.post('api/upload_audio', formData)
+       await axios.post('api/upload_audio', formData)
     } catch (error) {
       console.log(error);
     } finally {
