@@ -6,9 +6,7 @@ import { inngest } from "@/inngest/client";
 import { nanoid } from 'nanoid'
 import { OpenAIWhisperAudio } from "langchain/document_loaders/fs/openai_whisper_audio";
 import { name } from "inngest/next";
-import { spawn } from 'child_process';
-import { Readable } from 'stream';
-import  { Buffer } from 'buffer';
+
 
   // Setting AWS config
   AWS.config.update({
