@@ -4,7 +4,7 @@ import axios from "axios";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-export async function POST(req: Request) {
+async function handler (req: Request) {
   try {
     const assembly = axios.create({
         baseURL: "https://api.assemblyai.com/v2",
@@ -33,3 +33,4 @@ export async function POST(req: Request) {
     console.log(error);
   }
 }
+export { handler as GET, handler as POST };
