@@ -59,7 +59,6 @@ export default function DocumentPage() {
   };
   const { mutate: getTranscription, data: transcription } =
     api.documents.getTranscription.useMutation();
-  console.log(transcription);
   const { mutate: addTranscription, data: id } =
     api.documents.transcribe.useMutation({
       onSuccess(id) {
@@ -107,14 +106,15 @@ export default function DocumentPage() {
 
           if (status === "completed") {
             console.log(text);
+            return
           } else if (status === "error") {
             throw new Error(`Transcription failed`);
           } else if (status === "queued") {
             console.log("status", status);
-            timeoutId = setTimeout(fetchTranscription, 2000);
+            timeoutId = setTimeout(fetchTranscription, 5000);
           } else if (status === "processing") {
             console.log("status", status);
-            timeoutId = setTimeout(fetchTranscription, 2000);
+            timeoutId = setTimeout(fetchTranscription, 5000);
           } else {
             return;
           }
