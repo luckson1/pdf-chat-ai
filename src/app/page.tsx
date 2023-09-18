@@ -81,11 +81,11 @@ export default function DocumentPage() {
   };
   const transcribe = async (key: string) => {
     const response = await axios.post("/api/assembly/transcribe", { key  });
-    const id = response.data.id;
+    const id = response?.data?.data?.id;
   
-    let data = response.data.data;
+    let data = response?.data?.data;
    
-  console.log(data.data.id)
+  console.log(id)
     while (data.status !== "completed" && data.status !== "error") {
       await wait(1000);
       const response = await axios.post("/api/assembly/result", {  id });
