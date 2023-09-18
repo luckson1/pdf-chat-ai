@@ -102,9 +102,9 @@ export default function DocumentPage() {
     const fetchTranscription = async () => {
       try {
         if (id && (status==="processing" || status==="queued")) {
-          getTranscription({ id });
+         
           console.log("status", status);
-          timeoutId = setTimeout(fetchTranscription, 5000);
+          setTimeout(()=>  getTranscription({ id }), 5000);
 console.log("hi")
           
         }
