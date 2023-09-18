@@ -13,7 +13,7 @@ export async function POST(req: Request)  {
             "content-type": "application/json",
         },
     });
-    const idSchema = z.string().url();
+    const idSchema = z.string();
     const { id } = await req.json();
     const isValidId = idSchema.safeParse(id);
     if (!isValidId.success) {
