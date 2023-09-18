@@ -128,7 +128,7 @@ export default function DocumentPage() {
 
     // Cleanup function to clear the timeout when the component is unmounted or if dependencies change
     return () => clearTimeout(timeoutId);
-  }, [getTranscription, id, status, text]);
+  }, [ id, status, text]);
   const handleSubmitAudio = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
