@@ -102,10 +102,9 @@ export default function DocumentPage() {
     const fetchTranscription = async () => {
       try {
         if (id && (status==="processing" || status==="queued")) {
-         
+         setLoading(true)
           console.log("status", status);
           setTimeout(()=>  getTranscription({ id }), 5000);
-console.log("hi")
           
         }
         if(status==="completed" ) {
@@ -113,6 +112,8 @@ console.log("hi")
         } return 
       } catch (error) {
         console.error(error);
+      } finally{
+        setLoading(false)
       }
     };
 
