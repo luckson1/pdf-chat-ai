@@ -23,6 +23,7 @@ export async function POST(req: Request) {
   try {
     const keySchema = z.string()
     const { key } = await req.json();
+    console.log(key)
     const isValidKey = keySchema.safeParse(key);
     if (!isValidKey.success) {
       throw new TRPCError({
@@ -53,7 +54,7 @@ export async function POST(req: Request) {
     const response = await assembly.post("/transcript", {
       audio_url: signedUrl,
     });
-
+console.log(response)
     return response
   } catch (error) {
     console.log(error);
