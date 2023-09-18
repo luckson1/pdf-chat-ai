@@ -4,7 +4,7 @@ import axios from "axios";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-export async function GET(req: Request) {
+export async function POST(req: Request) {
   try {
     const assembly = axios.create({
         baseURL: "https://api.assemblyai.com/v2",
