@@ -74,6 +74,27 @@ export default function DocumentPage() {
       setDocs([]);
     }
   };
+  const wait = (time: number) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, time);
+    });
+  };
+  const transcribe = async (key: string) => {
+    const response = await axios.post("/api/assembly/transcribe", { key  });
+    const id = response.data.id;
+  
+    let data = response.data;
+  
+    while (data.status !== "completed" && data.status !== "error") {
+      await wait(1000);
+      const response = await axios.post("/api/assembly/result", {  id });
+  
+      data = response.data;
+      console.log(data)
+    }
+  
+    return data;
+  };
   const handleSubmitAudio = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -83,7 +104,8 @@ export default function DocumentPage() {
         setLoading(false);
         return;
       }
-      addAudio(data);
+    await transcribe(data.key)
+      // addAudio(data);
       // const formData = new FormData();
       // audio.forEach((a, i) => {
       //   formData.append("file", a);
