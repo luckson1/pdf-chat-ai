@@ -3,129 +3,140 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 import * as AWS from "aws-sdk";
 import { env } from "@/lib/env.mjs";
 import { inngest } from "@/inngest/client";
-import { nanoid } from 'nanoid'
-    
-import {
-  AudioTranscriptLoader,
-  // AudioTranscriptParagraphsLoader,
-  // AudioTranscriptSentencesLoader
-} from "langchain/document_loaders/web/assemblyai";
+import { nanoid } from "nanoid";
+import axios, { AxiosResponse } from "axios";
+import { TRPCError } from "@trpc/server";
 
+type TranscriptionData = {
+  id: string;
+  language_model: string;
+  acoustic_model: string;
+  language_code: string;
+  status: string;
+  audio_url: string;
+  text: string;
+  words: Array<string>;
+  utterances: Array<string>;
+  confidence: number;
+  audio_duration: number;
+  punctuate: boolean;
+};
+AWS.config.update({
+  accessKeyId: env.ACCESS_KEY,
+  secretAccessKey: env.SECRET_KEY,
+  region: env.REGION,
+});
 
-  // Setting AWS config
-  AWS.config.update({
-    accessKeyId: env.ACCESS_KEY,
-    secretAccessKey: env.SECRET_KEY,
-    region: env.REGION,
-  });
+const s3 = new AWS.S3();
+// Setting AWS config
+AWS.config.update({
+  accessKeyId: env.ACCESS_KEY,
+  secretAccessKey: env.SECRET_KEY,
+  region: env.REGION,
+});
 
-  const s3 = new AWS.S3(); 
-    // Setting AWS config
-    AWS.config.update({
-      accessKeyId: env.ACCESS_KEY,
-      secretAccessKey: env.SECRET_KEY,
-      region: env.REGION,
-    });
-
-  
 export const documentRouter = createTRPCRouter({
   addDoc: protectedProcedure
     .input(z.object({ key: z.string(), name: z.string(), type: z.string() }))
     .mutation(async ({ ctx, input }) => {
-try {
-  const userId = ctx.session.user.id;
-
-  const document = await ctx.prisma.document.create({
-    data: {
-      key: input.key,
-      name: input.name,
-      userId,
-      type: input.type,
-    },
-  });
-  inngest.send({
-    name: "docs/s3.create",
-    data: { key: input.key, userId: document.userId, id: document.id },
-  });
-
-  return document;
-} catch (error) {
-  console.log(error)
-}
-    }),
-    addAudioDoc: protectedProcedure
-    .input(z.object({ key: z.string(), name: z.string(), type: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session.user.id;
-
-      // const document = await ctx.prisma.document.create({
-      //   data: {
-      //     key: input.key,
-      //     name: input.name,
-      //     userId,
-      //     type: input.type,
-      //   },
-      // });
-      // inngest.send({
-      //   name: "docs/s3.create",
-      //   data: { key: input.key, userId: document.userId, id: document.id },
-      // });
-
       try {
-        console.log('here')
-      function generateSignedUrl() {
-        const params = {
-          Bucket: env.BUCKET_NAME,
-          Key: input.key,
-        };
+        const userId = ctx.session.user.id;
 
-        return s3.getSignedUrl("getObject", params);
-      }
-    
-      const signedUrl = generateSignedUrl();
+        const document = await ctx.prisma.document.create({
+          data: {
+            key: input.key,
+            name: input.name,
+            userId,
+            type: input.type,
+          },
+        });
+        inngest.send({
+          name: "docs/s3.create",
+          data: { key: input.key, userId: document.userId, id: document.id },
+        });
 
-      
-
-      console.log('starting')
-      // Use `AudioTranscriptParagraphsLoader` or `AudioTranscriptSentencesLoader` for splitting the transcript into paragraphs or sentences
-      const loader = new AudioTranscriptLoader(
-        {
-          audio_url:  signedUrl ,
-          // any other parameters as documented here: https://www.assemblyai.com/docs/API%20reference/transcript#create-a-transcript
-        },
-        {
-          apiKey: env.ASSEMBLYAI_API_KEY, // or set the `ASSEMBLYAI_API_KEY` env variable
-        }
-      );
-      const docs = await loader.load();
-console.log('done')
-console.log(docs[0]?.pageContent)
+        return document;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    
     }),
-    addWebDoc: protectedProcedure
-    .input(z.object({  url: z.string().url() }))
+  transcribe: protectedProcedure
+    .input(z.object({ key: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        function generateSignedUrl() {
+          const params = {
+            Bucket: env.BUCKET_NAME,
+            Key: input.key,
+          };
+
+          return s3.getSignedUrl("getObject", params);
+        }
+
+        const signedUrl = generateSignedUrl();
+        const assembly = axios.create({
+          baseURL: "https://api.assemblyai.com/v2",
+          headers: {
+            authorization: env.ASSEMBLYAI_API_KEY,
+            "content-type": "application/json",
+          },
+        });
+
+        const response: AxiosResponse<TranscriptionData> = await assembly.post(
+          "/transcript",
+          {
+            audio_url: signedUrl,
+          }
+        );
+        const id = response.data.id;
+
+        return id;
+      } catch (error) {
+        console.log(error);
+      }
+    }),
+    getTranscription: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const assembly = axios.create({
+          baseURL: "https://api.assemblyai.com/v2",
+          headers: {
+              authorization: process.env.ASSEMBLYAI_API_KEY,
+              "content-type": "application/json",
+          },
+      });
+    
+     
+  
+          const response: AxiosResponse<TranscriptionData> = await assembly.get(`/transcript/${input.id}`);
+          const data=response.data
+          return data
+      } catch (error) {
+        console.log(error);
+      }
+    }),
+  addWebDoc: protectedProcedure
+    .input(z.object({ url: z.string().url() }))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
-const key= nanoid()
+      const key = nanoid();
       const document = await ctx.prisma.document.create({
         data: {
           key,
           name: input.url,
           userId,
-          type: 'html',
+          type: "html",
         },
       });
       inngest.send({
-        name: 'docs/web.create',
+        name: "docs/web.create",
         data: { url: input.url, userId: document.userId, id: document.id },
       });
 
       return document;
     }),
-    
+
   getAll: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id;
     const docs = await ctx.prisma.document.findMany({
@@ -155,18 +166,15 @@ const key= nanoid()
         select: {
           key: true,
           name: true,
-          type: true
-
+          type: true,
         },
       });
-      let signedUrl=''
+      let signedUrl = "";
       const type = getFileExtension(document.name);
-    if (document.type==='html') {
-      signedUrl = document.name
-      return  { signedUrl, type}
-     
-
-    }
+      if (document.type === "html") {
+        signedUrl = document.name;
+        return { signedUrl, type };
+      }
 
       function generateSignedUrl() {
         const params = {
@@ -179,7 +187,7 @@ const key= nanoid()
       function getFileExtension(filename: string) {
         return filename.split(".").pop();
       }
-    
+
       signedUrl = generateSignedUrl();
       return { signedUrl, type };
     }),
