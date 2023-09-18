@@ -86,54 +86,7 @@ try {
       const response = await fetch(signedUrl);
    
       const arrayBuffer = await response.arrayBuffer();
-    
 
-      
-      
-      async function pipecopy(inputBuffer: ArrayBuffer) {
-        const ffmpeg = spawn('ffmpeg', [
-          '-hide_banner',
-          '-i', 'pipe:0',
-          '-codec', 'copy',
-          '-movflags', 'empty_moov',
-          '-f', 'ipod', 
-          'pipe:1'
-        ]);
-      
-        const stream = new Readable();
-        stream._read = () => {};
-      
-        ffmpeg.stdout.on('data', (data) => {
-          stream.push(data);
-        });
-      
-        ffmpeg.on('exit', (code, signal) => {
-          console.log(`ffmpeg process exited with code ${code} and signal ${signal}`);
-          stream.push(null)
-        });
-      
-        ffmpeg.stdin.write(inputBuffer);
-        ffmpeg.stdin.end();
-      
-        const buffer = await new Promise((resolve, reject) => {
-          //@ts-ignore
-          let chunks = [];
-          stream.on('data', (chunk) => {
-            chunks.push(chunk);
-          });
-          stream.on('end', () => {
-            //@ts-expect-error
-            resolve(ArrayBuffer.concat(chunks));
-          });
-          stream.on('error', (err) => {
-            reject(err);
-          });
-        });
-      
-        return buffer as ArrayBuffer;
-      }
-      const newBuffer= await pipecopy(arrayBuffer)
-      const blob=new Blob([newBuffer])
       const path="https://storage.googleapis.com/aai-docs-samples/espn.m4a"
       const loader = new OpenAIWhisperAudio(path);
    
