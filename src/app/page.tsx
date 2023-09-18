@@ -84,16 +84,18 @@ export default function DocumentPage() {
     const id = response.data.id;
   
     let data = response.data;
+    console.log(data)
   console.log(id)
-    while (data.status !== "completed" && data.status !== "error") {
-      await wait(1000);
-      const response = await axios.post("/api/assembly/result", {  id });
+  console.log(data.data.id)
+    // while (data.status !== "completed" && data.status !== "error") {
+    //   await wait(1000);
+    //   const response = await axios.post("/api/assembly/result", {  id });
   
-      data = response.data;
-      console.log(data)
-    }
+    //   data = response.data;
+    //   console.log(data)
+    // }
   
-    return data;
+    // return data;
   };
   const handleSubmitAudio = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
