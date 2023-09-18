@@ -83,11 +83,11 @@ try {
       const response = await fetch(signedUrl);
    
       const arrayBuffer = await response.arrayBuffer();
-console.log(input.type)
-      // Create a blob from the ArrayBuffer with the specified content type
-      const blob = new Blob([arrayBuffer], { type:"audio/x-m4a"});
-      console.log(blob)
-      const loader = new OpenAIWhisperAudio(blob);
+      const base64Data = btoa(new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), ''));
+      const rawData = `base64,${base64Data}`;
+   
+      const loader = new OpenAIWhisperAudio(rawData);
+   
 
       const docs = await loader.load();
       
