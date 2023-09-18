@@ -38,7 +38,8 @@ export const env = createEnv({
   secret_key: z.string(),
   // API_KEY: z.string(),
   RESEND_API_KEY:z.string(),
-  UNSD_KEY:z.string()
+  UNSD_KEY:z.string(),
+  ASSEMBLYAI_API_KEY: z.string()
   },
 
   /**
@@ -72,7 +73,8 @@ export const env = createEnv({
   secret_key: process.env.   secret_key,
   // API_KEY: process.env
   RESEND_API_KEY:process.env.  RESEND_API_KEY,
-  UNSD_KEY:process.env. UNSD_KEY
+  UNSD_KEY:process.env. UNSD_KEY,
+  ASSEMBLYAI_API_KEY: process.env.ASSEMBLYAI_API_KEY
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

@@ -4,8 +4,12 @@ import * as AWS from "aws-sdk";
 import { env } from "@/lib/env.mjs";
 import { inngest } from "@/inngest/client";
 import { nanoid } from 'nanoid'
-import { OpenAIWhisperAudio } from "langchain/document_loaders/fs/openai_whisper_audio";
-import { name } from "inngest/next";
+    
+import {
+  AudioTranscriptLoader,
+  // AudioTranscriptParagraphsLoader,
+  // AudioTranscriptSentencesLoader
+} from "langchain/document_loaders/web/assemblyai";
 
 
   // Setting AWS config
@@ -79,20 +83,22 @@ try {
       }
     
       const signedUrl = generateSignedUrl();
-    
-    
-      const response = await fetch(signedUrl);
-   
-      const arrayBuffer = await response.arrayBuffer();
 
-      const path="https://storage.googleapis.com/aai-docs-samples/espn.m4a"
-      const loader = new OpenAIWhisperAudio(path);
-   
-
-      const docs = await loader.load();
       
-      console.log(docs[0]?.pageContent);
-      return docs
+
+      
+      // Use `AudioTranscriptParagraphsLoader` or `AudioTranscriptSentencesLoader` for splitting the transcript into paragraphs or sentences
+      const loader = new AudioTranscriptLoader(
+        {
+          audio_url:  signedUrl ,
+          // any other parameters as documented here: https://www.assemblyai.com/docs/API%20reference/transcript#create-a-transcript
+        },
+        {
+          apiKey: env.ASSEMBLYAI_API_KEY, // or set the `ASSEMBLYAI_API_KEY` env variable
+        }
+      );
+      const docs = await loader.load();
+      console.dir(docs, { depth: Infinity });
       } catch (error) {
         console.log(error)
       }
