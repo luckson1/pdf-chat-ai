@@ -86,6 +86,8 @@ export const documentRouter = createTRPCRouter({
           "/transcript",
           {
             audio_url: signedUrl,
+            dual_channel: true
+
           }
         );
         const id = response.data.id;
