@@ -18,6 +18,7 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
 import { Icons } from "@/components/Icons";
+import { truncate } from "fs/promises";
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
@@ -86,6 +87,8 @@ console.log(transcription)
   };
 
   const transcribe = async (key: string) => {
+    try {
+      setLoading(true)
     addTranscription({ key });
     console.log("start", id)
     await wait( 3000);
@@ -108,6 +111,11 @@ console.log(transcription)
         console.log('status', transcription?.status);
         await wait(2000);
       }
+    }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
     }
   };
   const handleSubmitAudio = async (e: React.FormEvent<HTMLFormElement>) => {
