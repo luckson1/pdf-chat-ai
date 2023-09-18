@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { api } from "./api/_trpc/client";
 import Link from "next/link";
@@ -49,7 +49,6 @@ export default function DocumentPage() {
   });
   const { mutate: addWebDoc } = api.documents.addWebDoc.useMutation({
     onSuccess: (data) => {
-   
       ctx.documents.getAll.invalidate();
     },
   });
@@ -60,11 +59,11 @@ export default function DocumentPage() {
   };
   const { mutate: getTranscription, data: transcription } =
     api.documents.getTranscription.useMutation();
-console.log(transcription)
+  console.log(transcription);
   const { mutate: addTranscription, data: id } =
     api.documents.transcribe.useMutation({
       onSuccess(id) {
-        getTranscription({ id : id ?? ""})
+        getTranscription({ id: id ?? "" });
       },
     });
   const urlSchema = z.string().url();
@@ -88,36 +87,48 @@ console.log(transcription)
 
   const transcribe = async (key: string) => {
     try {
-      setLoading(true)
-    addTranscription({ key });
-    console.log("start", id)
-    await wait( 3000);
-    console.log("progress", id)
-
-
-    while (true) {
-  
-   
-      getTranscription({ id:id ?? ""});
-   
- 
-
-      if (transcription?.status === "completed") {
-        console.log(transcription.text);
-        break;
-      } else if (transcription?.status === "error") {
-        throw new Error(`Transcription failed`);
-      } else {
-        console.log('status', transcription?.status);
-        await wait(2000);
-      }
-    }
+      setLoading(true);
+      addTranscription({ key });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
+  const status = transcription?.status;
+  const text = transcription?.text;
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    const fetchTranscription = async () => {
+      try {
+        if (id) {
+          getTranscription({ id });
+
+          if (status === "completed") {
+            console.log(text);
+          } else if (status === "error") {
+            throw new Error(`Transcription failed`);
+          } else if (status === "queued") {
+            console.log("status", status);
+            timeoutId = setTimeout(fetchTranscription, 2000);
+          } else if (status === "processing") {
+            console.log("status", status);
+            timeoutId = setTimeout(fetchTranscription, 2000);
+          } else {
+            return;
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchTranscription();
+
+    // Cleanup function to clear the timeout when the component is unmounted or if dependencies change
+    return () => clearTimeout(timeoutId);
+  }, [getTranscription, id, status, text]);
   const handleSubmitAudio = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
