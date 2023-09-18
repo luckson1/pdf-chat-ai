@@ -81,13 +81,14 @@ export default function DocumentPage() {
   };
 
   const transcribe = async (key: string) => {
-     addTranscription({ key });
-     await wait(1000)
-if(!id)  return 
+    addTranscription({ key });
+    console.log("start", id)
+    await wait( 1000);
+    console.log("progress", id)
+    if (!id) return;
 
-    
     while (true) {
-      getTranscription({ id});
+      getTranscription({ id });
 
       if (transcription?.status === "completed") {
         console.log(transcription.text);
@@ -109,7 +110,7 @@ if(!id)  return
         setLoading(false);
         return;
       }
-     transcribe(data.key)
+      transcribe(data.key);
     } catch (error) {
       console.log(error);
     } finally {
