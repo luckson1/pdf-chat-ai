@@ -47,7 +47,8 @@ export default function DocumentPage() {
     },
   });
   const { mutate: addWebDoc } = api.documents.addWebDoc.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
+   
       ctx.documents.getAll.invalidate();
     },
   });
@@ -60,7 +61,11 @@ export default function DocumentPage() {
     api.documents.getTranscription.useMutation();
 
   const { mutate: addTranscription, data: id } =
-    api.documents.transcribe.useMutation();
+    api.documents.transcribe.useMutation({
+      onSuccess(id) {
+        getTranscription({ id : id ?? ""})
+      },
+    });
   const urlSchema = z.string().url();
   const handleSubmitDocs = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -88,9 +93,11 @@ export default function DocumentPage() {
 
 
     while (true) {
-    if(id) {
-      getTranscription({ id });
-    } else null
+  
+     if(id) {
+      getTranscription({ id});
+     }
+ 
 
       if (transcription?.status === "completed") {
         console.log(transcription.text);
@@ -98,7 +105,7 @@ export default function DocumentPage() {
       } else if (transcription?.status === "error") {
         throw new Error(`Transcription failed`);
       } else {
-        console.log(transcription?.status);
+        console.log('status', transcription?.status);
         await wait(2000);
       }
     }
