@@ -28,7 +28,7 @@ export async function GET(req: Request) {
 
     
 
-    return NextResponse.json({ response });
+    return response
   } catch (error) {
     console.log(error);
   }

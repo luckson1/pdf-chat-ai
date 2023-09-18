@@ -54,7 +54,7 @@ export async function POST(req: Request) {
       audio_url: signedUrl,
     });
 
-    return NextResponse.json({ response });
+    return response
   } catch (error) {
     console.log(error);
   }
