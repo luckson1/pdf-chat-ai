@@ -54,8 +54,9 @@ export async function POST(req: Request) {
     const response = await assembly.post("/transcript", {
       audio_url: signedUrl,
     });
-console.log(response)
-    return response
+    const data=response.data
+console.log(data)
+   return NextResponse.json({data})
   } catch (error) {
     console.log(error);
   }
