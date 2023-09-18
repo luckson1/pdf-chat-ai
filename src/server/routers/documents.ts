@@ -86,7 +86,7 @@ try {
 
       
 
-      
+      console.log('starting')
       // Use `AudioTranscriptParagraphsLoader` or `AudioTranscriptSentencesLoader` for splitting the transcript into paragraphs or sentences
       const loader = new AudioTranscriptLoader(
         {
@@ -98,7 +98,8 @@ try {
         }
       );
       const docs = await loader.load();
-      console.dir(docs, { depth: Infinity });
+console.log('done')
+console.log(docs[0]?.pageContent)
       } catch (error) {
         console.log(error)
       }
