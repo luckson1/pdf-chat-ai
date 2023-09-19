@@ -145,10 +145,7 @@ export default function DocumentPage() {
       transcribe(data.key);
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
-    
-    }
+    } 
   };
   const handleSubmitWebPage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
