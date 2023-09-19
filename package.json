@@ -59,6 +59,7 @@
     "pdf-parse": "^1.1.1",
     "pdfjs-dist": "2.7.570",
     "postcss": "8.4.27",
+    "puppeteer": "^21.2.1",
     "react": "18.2.0",
     "react-doc-viewer": "^0.1.5",
     "react-dom": "18.2.0",
