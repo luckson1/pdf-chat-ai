@@ -100,11 +100,11 @@ export default function DocumentPage() {
   const text = transcription?.text;
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
-
+    setLoading(true)
     const fetchTranscription = async () => {
       try {
         if (id && (status==="processing" || status==="queued")) {
-         setLoading(true)
+        
           console.log("status", status);
           setTimeout(()=>  getTranscription({ id, name:audio[0]?.name ?? id}), 5000);
           
@@ -112,7 +112,9 @@ export default function DocumentPage() {
         if(status==="completed" ) {
           console.log(text)
           ctx.documents.getAll.invalidate()
-        } return 
+        } 
+
+        setLoading(false)
       } catch (error) {
         console.error(error);
       } finally{
