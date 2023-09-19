@@ -27,6 +27,6 @@ const styles = StyleSheet.create({
   </Document>
 );
 export const streamValue = async (text: string)=>  {
-    const value= await renderToStream(<MyDocument text={text}/>)
-    return value
+    return await renderToStream(<MyDocument text={text}/>)
+    
 }

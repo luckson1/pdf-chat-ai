@@ -127,8 +127,6 @@ export const createTxtAws=inngest.createFunction(
   
    
   const pdfStream= await streamValue(text)
-
-    const body = Buffer.from(text, 'utf-8')
     const params = {
       Bucket: env.BUCKET_NAME,
       Key,
