@@ -151,9 +151,8 @@ export const createPdfDocs=inngest.createFunction(
 
       return s3.getSignedUrl("getObject", params);
     }
-
     const signedUrl = generateSignedUrl();
-
+console.log('url', signedUrl)
     async function fetchBlobFromSignedUrl(signedUrl: string) {
       try {
         const response = await fetch(signedUrl);
@@ -161,12 +160,14 @@ export const createPdfDocs=inngest.createFunction(
           throw new Error('An error occured');
         }
         const blob = await response.blob();
+        
 return blob
       } catch (err) {
           throw new Error(`Failed to fetch Blob: ${err}`);
       }
   }
   const blob = await fetchBlobFromSignedUrl(signedUrl);
+  console.log('blob', blob)
   const pineconeClient = await getPineconeClient();
 
   const docs = await getChunkedDocsFromPDF(blob, userId, id);
