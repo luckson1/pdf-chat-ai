@@ -6,7 +6,13 @@ const nextConfig = {
     domains: ['res.cloudinary.com']
   },
   swcMinify: true,
-  webpack(config) {
+  webpack(config, { isServer }) {
+    config.resolve.fallback = {
+      fs: false,
+      path: false,
+      http: false,
+      https: false,
+  }
     config.experiments = { ...config.experiments, topLevelAwait: true, };
     return config;
   },
