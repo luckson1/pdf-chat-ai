@@ -9,7 +9,4 @@ import {
 export const { GET, POST, PUT } = serve(
   inngest,
   [createS3Embeddings, createAudioEmbeddings, createTxtAws],
-  {
-    streaming: "force",
-  }
 );
