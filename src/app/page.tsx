@@ -95,26 +95,22 @@ export default function DocumentPage() {
   const text = transcription?.text;
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
-    setLoading(true)
-    console.log(status)
     const fetchTranscription = async () => {
       try {
-        if (id && (status==="processing" || status==="queued" || !status)) {
+        if (id && (status==="processing" || status==="queued" )) {
         
           console.log("status", status);
           setTimeout(()=>  getTranscription({ id, name:audio[0]?.name ?? id}), 5000);
           
         }
         if(status==="completed" ) {
-          setLoading(false)
-          setAudio([]);
+         setAudio([]);  
           ctx.documents.getAll.invalidate()
         } 
         if(status==="error" ) {
-          setLoading(false)
-          setAudio([]);
-          console.log("Error occured")
-        } 
+          setAudio([]);  
+          console.log("an error occurred")
+         } 
 
        
       } catch (error) {
@@ -127,6 +123,16 @@ export default function DocumentPage() {
     // Cleanup function to clear the timeout when the component is unmounted or if dependencies change
     return () => clearTimeout(timeoutId);
   }, [ id, status, text]);
+  useEffect(()=> {
+    if ((status==="processing" || status==="queued" )) {
+   setLoading(true)
+      
+    }
+    if (status==="error" || status==="completed" ) {
+      setLoading(false)
+         
+       }
+  }, [status])
   const handleSubmitAudio = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
