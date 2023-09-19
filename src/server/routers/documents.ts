@@ -52,11 +52,13 @@ export const documentRouter = createTRPCRouter({
             name: 'docs/pdf.create',
             data: { Key: input.key, userId: document.userId, id: document.id },
           });
+        } else {
+          inngest.send({
+            name: "docs/s3.create",
+            data: { key: input.key, userId: document.userId, id: document.id },
+          });
         }
-        inngest.send({
-          name: "docs/s3.create",
-          data: { key: input.key, userId: document.userId, id: document.id },
-        });
+        
 
         return document;
       } catch (error) {
