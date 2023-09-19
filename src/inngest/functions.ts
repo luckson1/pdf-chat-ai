@@ -6,6 +6,8 @@ import { Document } from "langchain/document";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { env } from "@/lib/env.mjs";
 import * as AWS from "aws-sdk";
+import ReactPDF, {renderToStream} from "@react-pdf/renderer";
+import {  streamValue } from "@/components/pdf";
 AWS.config.update({
   accessKeyId: env.ACCESS_KEY,
   secretAccessKey: env.SECRET_KEY,
@@ -123,14 +125,16 @@ export const createTxtAws=inngest.createFunction(
   async ({event, step})=> {
     const upload= await step.run("create and upload txt file to AWS", async () => {
     const {text, Key}=event.data
+  
    
+  const pdfStream= await streamValue(text)
 
     const body = Buffer.from(text, 'utf-8')
     const params = {
       Bucket: env.BUCKET_NAME,
       Key,
-      Body: body,
-      ContentType: "text/plain",
+      Body: pdfStream, 
+      ContentType: 'application/pdf'
     };
 
     await s3.upload(params).promise();
