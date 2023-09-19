@@ -6,7 +6,6 @@ import { Document } from "langchain/document";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { env } from "@/lib/env.mjs";
 import * as AWS from "aws-sdk";
-import ReactPDF, {renderToStream} from "@react-pdf/renderer";
 import {  streamValue } from "@/components/pdf";
 AWS.config.update({
   accessKeyId: env.ACCESS_KEY,
