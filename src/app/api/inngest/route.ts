@@ -10,6 +10,6 @@ export const { GET, POST, PUT } = serve(
   inngest,
   [createS3Embeddings, createAudioEmbeddings, createTxtAws],
   {
-    streaming: "allow",
+    streaming: "force",
   }
 );
