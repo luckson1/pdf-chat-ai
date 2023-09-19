@@ -113,10 +113,11 @@ export const createTxtAws=inngest.createFunction(
   { name: "text file uploaded on AWS" },
   { event: 'aws/txt.create'},
   async ({event, step})=> {
-    const embeddings = await step.run("create and upload txt file to AWS", async () => {
+    const upload= await step.run("create and upload txt file to AWS", async () => {
     const {text, Key}=event.data
-    const blob = new Blob([text], { type: "text/plain" });
-    const body = blob.stream();
+   
+
+    const body = Buffer.from(text, 'utf-8')
     const params = {
       Bucket: env.BUCKET_NAME,
       Key,
