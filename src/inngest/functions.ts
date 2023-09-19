@@ -1,6 +1,6 @@
 import { getPineconeClient } from "@/lib/pinecone-client";
 import { inngest } from "./client";
-import { getChunkedDocsFromS3Files, getChunkedDocsFromWeb } from "@/lib/loaders";
+import { getChunkedDocsFromPDF, getChunkedDocsFromS3Files, getChunkedDocsFromWeb } from "@/lib/loaders";
 import { pineconeEmbedAndStore } from "@/lib/vector-store";
 import { Document } from "langchain/document";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
@@ -41,11 +41,19 @@ type TextPrams = {
    Key: string;
   };
 };
+type PDFPrams = {
+  data: {
+    userId: string;
+  id:string
+   Key: string;
+  };
+};
 export type Events = {
   "docs/s3.create" :  s3Prams;
   "docs/web.create" :  webPrams;
   "docs/audio.create" :  AudioPrams;
   "aws/txt.create" : TextPrams
+  "docs/pdf.create" : PDFPrams
 
 };
 export const createS3Embeddings = inngest.createFunction(
@@ -127,4 +135,45 @@ export const createTxtAws=inngest.createFunction(
 
     await s3.upload(params).promise();
   })}
+)
+
+export const createPdfDocs=inngest.createFunction(
+  { name: "pdf file docs created" },
+  { event: 'docs/pdf.create'},
+  async ({event, step})=> {
+    const pdfDocs= await step.run("create pdf docs from s3 url", async () => {
+    const {userId, id, Key}=event.data
+    function generateSignedUrl() {
+      const params = {
+        Bucket: env.BUCKET_NAME,
+        Key,
+      };
+
+      return s3.getSignedUrl("getObject", params);
+    }
+
+    const signedUrl = generateSignedUrl();
+
+    async function fetchBlobFromSignedUrl(signedUrl: string) {
+      try {
+        const response = await fetch(signedUrl);
+        if (!response.ok) {
+          throw new Error('An error occured');
+        }
+        const blob = await response.blob();
+return blob
+      } catch (err) {
+          throw new Error(`Failed to fetch Blob: ${err}`);
+      }
+  }
+  const blob = await fetchBlobFromSignedUrl(signedUrl);
+  const pineconeClient = await getPineconeClient();
+
+  const docs = await getChunkedDocsFromPDF(blob, userId, id);
+
+  await pineconeEmbedAndStore(pineconeClient, docs);
+
+  })
+return pdfDocs
+}
 )

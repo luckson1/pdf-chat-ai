@@ -2,7 +2,30 @@ import { UnstructuredLoader } from "langchain/document_loaders/fs/unstructured";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { S3Loader } from "langchain/document_loaders/web/s3";
 import { PuppeteerWebBaseLoader } from "langchain/document_loaders/web/puppeteer";
+import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { env } from "./env.mjs";
+
+export async function getChunkedDocsFromPDF(blob: Blob, userId:string, id:string) {
+  try {
+    const loader = new PDFLoader(blob);
+    const docs = await loader.load();
+
+
+    const textSplitter = new RecursiveCharacterTextSplitter({
+      chunkSize: 1000,
+      chunkOverlap: 200,
+    });
+
+    const chunkedDocs = await textSplitter.splitDocuments(docs);
+    for (const doc of chunkedDocs) {
+      doc.metadata={...doc.metadata, userId, id}
+    }
+    return chunkedDocs;
+  } catch (e) {
+    console.error(e);
+    throw new Error("PDF docs chunking failed !");
+  }
+}
 export async function getChunkedDocsFromUnstrucuted(path: string, userId:string, id:string) {
   try {
   
@@ -47,6 +70,7 @@ export async function getChunkedDocsFromS3Files(key: string, userId:string, id:s
           secretAccessKey: env.SECRET_KEY,
         
         },
+        
       },
       unstructuredAPIURL: 'https://api.unstructured.io/general/v0/general',
       unstructuredAPIKey: env.UNSD_KEY

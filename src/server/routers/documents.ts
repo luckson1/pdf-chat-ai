@@ -5,7 +5,7 @@ import { env } from "@/lib/env.mjs";
 import { inngest } from "@/inngest/client";
 import { nanoid } from "nanoid";
 import axios, { AxiosResponse } from "axios";
-
+import path from "path";
 
 type TranscriptionData = {
   id: string;
@@ -44,6 +44,15 @@ export const documentRouter = createTRPCRouter({
             type: input.type,
           },
         });
+        const extention=path.extname(input.name).slice(1)
+        const isPdf=extention==='pdf'
+        if (isPdf) {
+          console.log('this is a pdf')
+          inngest.send({
+            name: 'docs/pdf.create',
+            data: { Key: input.key, userId: document.userId, id: document.id },
+          });
+        }
         inngest.send({
           name: "docs/s3.create",
           data: { key: input.key, userId: document.userId, id: document.id },
