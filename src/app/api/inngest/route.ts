@@ -1,4 +1,4 @@
-// export const runtime = "edge";
+export const runtime = "edge";
 import { serve } from "inngest/next";
 import { inngest } from "../../../inngest/client";
 import {
@@ -10,7 +10,7 @@ import {
 export const { GET, POST, PUT } = serve(
   inngest,
   [createS3Embeddings, createAudioEmbeddings, createTxtAws],
-//   {
-//     streaming: "allow",
-//   }
+  {
+    streaming: "allow",
+  }
 );
