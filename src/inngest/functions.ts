@@ -167,10 +167,11 @@ return blob
       }
   }
   const blob = await fetchBlobFromSignedUrl(signedUrl);
-  console.log('blob', blob)
-  const pineconeClient = await getPineconeClient();
+  
+
 
   const docs = await getChunkedDocsFromPDF(blob, userId, id);
+  const pineconeClient = await getPineconeClient();
 
   await pineconeEmbedAndStore(pineconeClient, docs);
 
