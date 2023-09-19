@@ -17,6 +17,11 @@ const nextConfig = {
       stream: false,
       os: false,
       crypto: false,
+      constants: false,
+      dns: false,
+      module: false,
+      zlib : false,
+
 
 
 
