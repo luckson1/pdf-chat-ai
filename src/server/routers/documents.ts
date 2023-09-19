@@ -32,12 +32,6 @@ AWS.config.update({
 });
 
 const s3 = new AWS.S3();
-// Setting AWS config
-AWS.config.update({
-  accessKeyId: env.ACCESS_KEY,
-  secretAccessKey: env.SECRET_KEY,
-  region: env.REGION,
-});
 
 export const documentRouter = createTRPCRouter({
   addDoc: protectedProcedure
@@ -120,17 +114,8 @@ export const documentRouter = createTRPCRouter({
         const text = response.data.text;
         const userId = ctx.session.user.id;
         if (status === "completed") {
-          const blob = new Blob([text], { type: "text/plain" });
-          const body = blob.stream();
           const Key = nanoid();
-          const params = {
-            Bucket: env.BUCKET_NAME,
-            Key,
-            Body: body,
-            ContentType: "text/plain",
-          };
 
-          await s3.upload(params).promise();
           const document = await ctx.prisma.document.create({
             data: {
               key: Key,
@@ -146,6 +131,14 @@ export const documentRouter = createTRPCRouter({
               text,
               userId,
               id: document.id,
+            },
+          });
+
+          inngest.send({
+            name: "aws/txt.create",
+            data: {
+              text,
+              Key,
             },
           });
         }
