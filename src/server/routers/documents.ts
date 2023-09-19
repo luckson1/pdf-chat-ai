@@ -6,6 +6,10 @@ import { inngest } from "@/inngest/client";
 import { nanoid } from "nanoid";
 import axios, { AxiosResponse } from "axios";
 import { TRPCError } from "@trpc/server";
+import { Document } from "langchain/document";
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+import { getPineconeClient } from "@/lib/pinecone-client";
+import { pineconeEmbedAndStore } from "@/lib/vector-store";
 
 type TranscriptionData = {
   id: string;
@@ -86,8 +90,7 @@ export const documentRouter = createTRPCRouter({
           "/transcript",
           {
             audio_url: signedUrl,
-            dual_channel: true
-
+            dual_channel: true,
           }
         );
         const id = response.data.id;
@@ -97,23 +100,56 @@ export const documentRouter = createTRPCRouter({
         console.log(error);
       }
     }),
-    getTranscription: protectedProcedure
-    .input(z.object({ id: z.string() }))
+  getTranscription: protectedProcedure
+    .input(z.object({ id: z.string(), name: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
         const assembly = axios.create({
           baseURL: "https://api.assemblyai.com/v2",
           headers: {
-              authorization: process.env.ASSEMBLYAI_API_KEY,
-              "content-type": "application/json",
+            authorization: process.env.ASSEMBLYAI_API_KEY,
+            "content-type": "application/json",
           },
-      });
-    
-     
-  
-          const response: AxiosResponse<TranscriptionData> = await assembly.get(`/transcript/${input.id}`);
-          const data=response.data
-          return data
+        });
+
+        const response: AxiosResponse<TranscriptionData> = await assembly.get(
+          `/transcript/${input.id}`
+        );
+        const data = response.data;
+        const status = response.data.status;
+        const text = response.data.text;
+        const userId = ctx.session.user.id;
+        if (status === "completed") {
+          const blob = new Blob([text], { type: "text/plain" });
+          const body = blob.stream();
+          const Key = nanoid();
+          const params = {
+            Bucket: env.BUCKET_NAME,
+            Key,
+            Body: body,
+            ContentType: "text/plain",
+          };
+
+          await s3.upload(params).promise();
+          const document = await ctx.prisma.document.create({
+            data: {
+              key: Key,
+              name: input.name,
+              userId,
+              type: "text/plain",
+            },
+          });
+
+          inngest.send({
+            name: "docs/audio.create",
+            data: {
+              text,
+              userId,
+              id: document.id,
+            },
+          });
+        }
+        return data;
       } catch (error) {
         console.log(error);
       }
