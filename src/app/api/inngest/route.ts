@@ -1,7 +1,5 @@
 
-export const config = {
-    runtime: "edge",
-  };
+export const runtime = 'edge';
 import { serve } from "inngest/next";
 import { inngest } from "../../../inngest/client";
 import { createAudioEmbeddings, createS3Embeddings, createTxtAws, createWebEmbeddings } from "@/inngest/functions";
