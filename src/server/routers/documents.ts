@@ -5,11 +5,7 @@ import { env } from "@/lib/env.mjs";
 import { inngest } from "@/inngest/client";
 import { nanoid } from "nanoid";
 import axios, { AxiosResponse } from "axios";
-import { TRPCError } from "@trpc/server";
-import { Document } from "langchain/document";
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { getPineconeClient } from "@/lib/pinecone-client";
-import { pineconeEmbedAndStore } from "@/lib/vector-store";
+
 
 type TranscriptionData = {
   id: string;
