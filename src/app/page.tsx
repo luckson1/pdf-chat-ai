@@ -18,7 +18,6 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
 import { Icons } from "@/components/Icons";
-import { truncate } from "fs/promises";
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
@@ -52,11 +51,7 @@ export default function DocumentPage() {
       ctx.documents.getAll.invalidate();
     },
   });
-  const wait = (time: number) => {
-    return new Promise((resolve) => {
-      setTimeout(resolve, time);
-    });
-  };
+
   const { mutate: getTranscription, data: transcription } =
     api.documents.getTranscription.useMutation();
   const { mutate: addTranscription, data: id } =
@@ -119,6 +114,7 @@ export default function DocumentPage() {
         console.error(error);
       } finally{
         setLoading(false)
+        setAudio([]);
       }
     };
 
@@ -141,7 +137,7 @@ export default function DocumentPage() {
       console.log(error);
     } finally {
       setLoading(false);
-      setAudio([]);
+    
     }
   };
   const handleSubmitWebPage = async (e: React.FormEvent<HTMLFormElement>) => {
