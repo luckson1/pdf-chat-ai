@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.section}>
-        <Text>{text}</Text>
+      <Text>This is the transcription of your video</Text>
+      <Text>{text}</Text>
       </View>
     </Page>
   </Document>
