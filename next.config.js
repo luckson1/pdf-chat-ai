@@ -12,6 +12,11 @@ const nextConfig = {
       path: false,
       http: false,
       https: false,
+      tls: false,
+      net: false,
+      stream: false,
+
+
   }
     config.experiments = { ...config.experiments, topLevelAwait: true, };
     return config;
