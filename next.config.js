@@ -15,6 +15,9 @@ const nextConfig = {
       tls: false,
       net: false,
       stream: false,
+      os: false,
+      crypto: false,
+
 
 
   }
