@@ -126,7 +126,7 @@ export const documentRouter = createTRPCRouter({
           const document = await ctx.prisma.document.create({
             data: {
               key: Key,
-              name: input.name,
+              name: `${input.name}.pdf`,
               userId,
               type: "text/plain",
             },
