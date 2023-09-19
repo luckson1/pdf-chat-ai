@@ -62,7 +62,9 @@ export default function DocumentPage() {
   const { mutate: addTranscription, data: id } =
     api.documents.transcribe.useMutation({
       onSuccess(id) {
-        getTranscription({ id: id ?? "" });
+       if(id) {
+        getTranscription({ id: id, name: audio[0]?.name ?? id });
+       }
       },
     });
   const urlSchema = z.string().url();
@@ -104,11 +106,12 @@ export default function DocumentPage() {
         if (id && (status==="processing" || status==="queued")) {
          setLoading(true)
           console.log("status", status);
-          setTimeout(()=>  getTranscription({ id }), 5000);
+          setTimeout(()=>  getTranscription({ id, name:audio[0]?.name ?? id}), 5000);
           
         }
         if(status==="completed" ) {
           console.log(text)
+          ctx.documents.getAll.invalidate()
         } return 
       } catch (error) {
         console.error(error);
