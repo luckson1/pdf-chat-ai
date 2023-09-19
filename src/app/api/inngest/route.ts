@@ -1,4 +1,3 @@
-export const runtime = "edge";
 import { serve } from "inngest/next";
 import { inngest } from "../../../inngest/client";
 import {
