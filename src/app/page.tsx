@@ -18,7 +18,7 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
 import { Icons } from "@/components/Icons";
-import {  ChevronLeft, ChevronRight, } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
@@ -40,7 +40,7 @@ export default function DocumentPage() {
       await axios.get(`/api/aws/upload_file?type=${type}&name=${name}`);
 
     const { uploadUrl, key } = data;
-     await axios.put(uploadUrl, files[0]);
+    await axios.put(uploadUrl, files[0]);
     return { key, name, type };
   };
   const ctx = api.useContext();
@@ -161,10 +161,29 @@ export default function DocumentPage() {
       setUrl("");
     }
   };
-  const { data: docsData, isLoading } = api.documents.getAll.useQuery({
-    skip: (page - 1) * itemsPerPage,
-    take: itemsPerPage,
-  });
+
+  const {
+    data: docsData,
+    isLoading,
+    isPreviousData,
+  } = api.documents.getAll.useQuery(
+    {
+      skip: (page - 1) * itemsPerPage,
+      take: itemsPerPage,
+    },
+    { keepPreviousData: true }
+  );
+  const hasMore = docsData && docsData?.length < itemsPerPage;
+
+  useEffect(() => {
+    if (!isPreviousData && hasMore) {
+      ctx.documents.getAll.prefetch({
+        skip: (page - 1) * itemsPerPage,
+        take: itemsPerPage,
+      });
+    }
+  }, [isPreviousData, page, hasMore]);
+
   return (
     <div className="w-full h-fit flex flex-col md:flex-row space-x-0 md:space-x-5 space-y-5 md:space-y-0">
       <Tabs defaultValue="docs" className="w-full max-w-sm">
@@ -296,16 +315,14 @@ export default function DocumentPage() {
             ))}
             <div className="flex flex-row w-full justify-center items-center text-sm space-x-2">
               <Button
-               variant="outline"
-               size="sm"
+                variant="outline"
+                size="sm"
                 onClick={() => setPage((p) => p - 1)}
                 disabled={page === 1}
               >
-               <ChevronLeft className="w-6 h-6"/>
-              Previous
-               
+                <ChevronLeft className="w-6 h-6" />
+                Previous
               </Button>
-            
 
               <span>Page {page}</span>
 
@@ -313,10 +330,10 @@ export default function DocumentPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => setPage((p) => p + 1)}
-                disabled={docsData.length < itemsPerPage}
+                disabled={hasMore}
               >
                 Next
-                < ChevronRight className="w-6 h-6"/>
+                <ChevronRight className="w-6 h-6" />
               </Button>
             </div>
           </div>
