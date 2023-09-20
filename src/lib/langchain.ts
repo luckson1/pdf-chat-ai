@@ -2,9 +2,9 @@ import { ChatOpenAI } from "langchain/chat_models/openai";
 import { type PineconeStore } from "langchain/vectorstores/pinecone";
 import { ConversationalRetrievalQAChain } from "langchain/chains";
 import { getVectorStore } from "./vector-store";
-import { getHttpPineconeClient } from "./pinecone-client";
 import * as dotenv from "dotenv";
 import { formatChatHistory } from "./utils";
+import { getPineconeClient } from "./pinecone-client";
 dotenv.config();
 const CONDENSE_TEMPLATE = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
 
@@ -88,7 +88,7 @@ export async function callChain({
   try {
     // Open AI recommendation
     const sanitizedQuestion = question.trim().replaceAll("\n", " ");
-    const pineconeClient = await getHttpPineconeClient();
+    const pineconeClient = await getPineconeClient();
     const vectorStore = await getVectorStore(pineconeClient, userId, id);
 
     // Create encoding to convert token (string) to Uint8Array
