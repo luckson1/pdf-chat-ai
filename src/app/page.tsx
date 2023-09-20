@@ -283,7 +283,7 @@ export default function DocumentPage() {
                   {loading && (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  Transcribe and chat with audi
+                  Transcribe and chat with audio
                 </Button>
               </form>
             </CardContent>
