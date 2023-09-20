@@ -5,7 +5,6 @@ import { Message as VercelChatMessage, StreamingTextResponse } from "ai";
 
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { PromptTemplate } from "langchain/prompts";
-import { SupabaseVectorStore } from "langchain/vectorstores/supabase";
 import { Document } from "langchain/document";
 import {
   RunnableSequence,
