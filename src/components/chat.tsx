@@ -5,7 +5,6 @@ import { InputMessage } from "./input-message";
 import { scrollToBottom, initialMessage } from "@/lib/utils";
 import { ChatLine } from "./chat-line";
 import { ChatGPTMessage } from "@/types";
-import { useSearchParams } from "next/navigation";
 import { api } from "@/app/api/_trpc/client";
 
 export function Chat({id}: {id:string}) {
