@@ -18,6 +18,7 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
 import { Icons } from "@/components/Icons";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
@@ -293,12 +294,15 @@ export default function DocumentPage() {
                 </Card>
               </Link>
             ))}
-            <div className="flex flex-row">
+            <div className="flex flex-row w-full justify-center">
               <Button
+               variant="outline"
+               size="sm"
                 onClick={() => setPage((p) => p - 1)}
                 disabled={page === 1}
               >
                 Previous
+                <ArrowLeft className="w-6 h-6"/>
               </Button>
 
               <span>Page {page}</span>
@@ -310,6 +314,7 @@ export default function DocumentPage() {
                 disabled={docs.length < itemsPerPage}
               >
                 Next
+                <ArrowRight className="w-6 h-6"/>
               </Button>
             </div>
           </div>
