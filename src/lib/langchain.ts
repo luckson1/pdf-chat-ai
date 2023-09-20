@@ -37,17 +37,17 @@ function makeChain(
     streaming: true,
     temperature: 0,
     verbose: true,
-    // callbacks: [
-    //   {
-    //     async handleLLMNewToken(token) {
-    //       await writer.ready;
-    //       await writer.write(encoder.encode(`${token}`));
-    //     },
-    //     async handleLLMEnd() {
-    //       console.log("LLM end called");
-    //     },
-    //   },
-    // ],
+    callbacks: [
+      {
+        async handleLLMNewToken(token) {
+          await writer.ready;
+          await writer.write(encoder.encode(`${token}`));
+        },
+        async handleLLMEnd() {
+          console.log("LLM end called");
+        },
+      },
+    ],
   });
   const nonStreamingModel = new ChatOpenAI({
     modelName: "gpt-3.5-turbo",
