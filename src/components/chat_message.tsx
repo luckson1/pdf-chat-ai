@@ -13,10 +13,10 @@ export interface ChatMessageProps {
 export function ChatMessage({ message, ...props }: ChatMessageProps) {
   return (
     <div
-      className={cn(' mb-4 flex  md:-ml-12 w-full text-sm bg-blue-300')}
+      className={cn('group relative flex  w-full text-sm')}
       {...props}
     >
-      <div className="flex-1 px-1 ml-4 space-y-2 overflow-hidden">
+      <div className="flex-1 px-1  space-y-2 overflow-hidden">
         <MemoizedReactMarkdown
           className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
           remarkPlugins={[remarkGfm, remarkMath]}
