@@ -16,6 +16,9 @@ import {
 } from "@/components/ui/accordion";
 import ReactMarkdown from "react-markdown";
 import { sanitizeAndFormatText } from "@/lib/utils";
+import { ChatMessage } from "./chat_message";
+import { User2Icon } from "lucide-react";
+import { IconOpenAI } from "./ui/icons";
 
 // util helper to convert new lines to <br /> tags
 const convertNewLines = (text: string) =>
@@ -34,7 +37,7 @@ export function ChatLine({
   if (!content) {
     return null;
   }
-  const formattedMessage = convertNewLines(content);
+
 
   return (
     <div>
@@ -47,11 +50,11 @@ export function ChatLine({
                 : "text-blue-500 dark:text-blue-200"
             }
           >
-            {role == "assistant" ? "AI" : "You"}
+            {role === 'user' ? <User2Icon /> : <IconOpenAI />}
           </CardTitle>
         </CardHeader>
         <CardContent className="text-sm">
-          <Balancer>{formattedMessage}</Balancer>
+        <ChatMessage message={content} />
         </CardContent>
         <CardFooter>
           <CardDescription className="w-full">
