@@ -34,17 +34,7 @@ async function initPineconeClient() {
       apiKey: env.PINECONE_API_KEY,
       environment: env.PINECONE_ENVIRONMENT,
     });
-    const indexName = env.PINECONE_INDEX_NAME;
-
-    const existingIndexes = await pineconeClient.listIndexes();
-
-    if (!existingIndexes.includes(indexName)) {
-      console.log("hello")
-      createIndex(pineconeClient, indexName);
-    } else {
-      console.log("Your index already exists. nice !!");
-    }
-
+ 
     return pineconeClient;
   } catch (error) {
     console.error("error", error);
@@ -53,9 +43,9 @@ async function initPineconeClient() {
 }
 
 export async function getPineconeClient() {
-  if (!pineconeClientInstance) {
+
     pineconeClientInstance = await initPineconeClient();
-  }
+
 
   return pineconeClientInstance;
 }
