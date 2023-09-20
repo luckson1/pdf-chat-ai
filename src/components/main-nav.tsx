@@ -44,7 +44,7 @@ export function MainNav() {
       </Link>
       <nav className="flex items-center space-x-6 text-sm font-medium">
      <Link
-          href={"/documents"}
+          href={"/"}
           className={cn("flex items-center px-4", "font-bold ")}
         >
         Documents

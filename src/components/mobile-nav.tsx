@@ -40,36 +40,14 @@ export function MobileNav() {
           <div className="flex flex-col space-y-3">
       
           <MobileLink
-          href={"/documents"}
+          href={"/"}
           className={cn("flex items-center px-4", "font-bold ")}
           onOpenChange={setOpen}
         >
     Documents
         </MobileLink>
-            {session && (
-              <MobileLink
-                href={"/my_designs"}
-                className={cn(
-                  "flex items-center px-4",
-                  "font-bold text-primary"
-                )}
-                onOpenChange={setOpen}
-              >
-                My Photos
-              </MobileLink>
-            )}
-            {session && (
-              <MobileLink
-                href={"/my_designs"}
-                className={cn(
-                  "flex items-center px-4",
-                  "font-bold text-primary"
-                )}
-                onOpenChange={setOpen}
-              >
-               Credits: {session.user.credits}
-              </MobileLink>
-            )}
+            
+            
           </div>
         </ScrollArea>
       </SheetContent>
