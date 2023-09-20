@@ -105,6 +105,7 @@ saveMessage({role: "user", content:question, documentId:id})
         }
 
         const text = new TextDecoder().decode(value);
+        console.log(text)
         if (text === "tokens-ended" && !tokensEnded) {
           tokensEnded = true;
         } else if (tokensEnded) {
