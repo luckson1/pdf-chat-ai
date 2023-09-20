@@ -18,7 +18,7 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
 import { Icons } from "@/components/Icons";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, MoveLeftIcon, MoveRightIcon } from "lucide-react";
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
@@ -301,9 +301,11 @@ export default function DocumentPage() {
                 onClick={() => setPage((p) => p - 1)}
                 disabled={page === 1}
               >
-                Previous
-                <ArrowLeft className="w-6 h-6"/>
+             
+               
               </Button>
+              <ChevronLeft className="w-6 h-6"/>
+              Previous
 
               <span>Page {page}</span>
 
@@ -311,10 +313,10 @@ export default function DocumentPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => setPage((p) => p + 1)}
-                disabled={docs.length < itemsPerPage}
+                disabled={docsData.length < itemsPerPage}
               >
                 Next
-                <ArrowRight className="w-6 h-6"/>
+                < ChevronRight className="w-6 h-6"/>
               </Button>
             </div>
           </div>
