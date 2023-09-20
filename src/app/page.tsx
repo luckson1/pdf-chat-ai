@@ -215,7 +215,7 @@ export default function DocumentPage() {
                   {loading && (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  chat with your document
+                  Chat with your document
                 </Button>
               </form>
             </CardContent>
@@ -283,7 +283,7 @@ export default function DocumentPage() {
                   {loading && (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  Chat with your web page
+                  Transcribe and chat with audi
                 </Button>
               </form>
             </CardContent>
