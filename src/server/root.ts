@@ -1,4 +1,6 @@
 import { documentRouter } from "./routers/documents";
+import { messageRouter } from "./routers/messages";
+import { QAPairsRouter } from "./routers/qa_pairs";
 import { createTRPCRouter } from "./trpc";
 
 
@@ -9,7 +11,9 @@ import { createTRPCRouter } from "./trpc";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
- documents: documentRouter 
+ documents: documentRouter,
+ messages: messageRouter,
+QAPairs:QAPairsRouter
 });
 
 // export type definition of API

@@ -184,6 +184,7 @@ export const documentRouter = createTRPCRouter({
     });
     return docs;
   }),
+
   getOne: protectedProcedure
     .input(z.object({ key: z.string() }))
     .query(async ({ ctx, input }) => {

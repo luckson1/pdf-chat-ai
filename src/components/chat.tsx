@@ -1,15 +1,15 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { InputMessage } from "./input-message";
 import { scrollToBottom, initialMessage } from "@/lib/utils";
 import { ChatLine } from "./chat-line";
 import { ChatGPTMessage } from "@/types";
 import { useSearchParams } from "next/navigation";
+import { api } from "@/app/api/_trpc/client";
 
-export function Chat() {
-  const params=useSearchParams()
-const id=params?.get('id')
+export function Chat({id}: {id:string}) {
+
   const endpoint = "/api/chat";
   const [input, setInput] = useState("");
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -32,9 +32,27 @@ const id=params?.get('id')
 
   const updateStreamingAIContent = (streamingAIContent: string) => {
     setStreamingAIContent(streamingAIContent);
-    setTimeout(() => scrollToBottom(containerRef), 100);
+    setTimeout(() => scrollToBottom(containerRef), 150);
   };
-
+const {data: savedMessages, isSuccess}=api.messages.getDocumentMessages.useQuery({id })
+const {data: savedHistory, isSuccess: isHistorySuccess}=api.QAPairs.getDocChatHistory.useQuery({id })
+const {mutate: saveMessage}=api.messages.create.useMutation()
+const {mutate: addToHistory}=api.QAPairs.create.useMutation()
+useEffect(() => {
+  if (isSuccess && savedMessages) {
+    setMessages((previousMessages) => [...previousMessages, ...savedMessages]);
+  }
+}, [isSuccess]);
+useEffect(() => {
+  if (isHistorySuccess && savedHistory) {
+ savedHistory.map(hist=> {
+  setChatHistory((previousHistory) => [
+    ...previousHistory,
+    [hist.question, hist.answer],
+  ]);
+ })
+  }
+}, [isHistorySuccess]);
   const handleStreamEnd = (
     question: string,
     streamingAIContent: string,
@@ -49,15 +67,19 @@ const id=params?.get('id')
       content: streamingAIContent,
       sources,
     });
+    saveMessage({ role: "assistant",
+    content: streamingAIContent,
+    sources, documentId: id})
     updateStreamingAIContent("");
     updateChatHistory(question, streamingAIContent);
+    addToHistory({question, answer:streamingAIContent, documentId:id})
   };
 
   // send message to API /api/chat endpoint
   const sendQuestion = async (question: string) => {
     setIsLoading(true);
     updateMessages({ role: "user", content: question });
-
+saveMessage({role: "user", content:question, documentId:id})
     try {
       const response = await fetch(endpoint, {
         method: "POST",
