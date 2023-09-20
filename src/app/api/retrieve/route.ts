@@ -20,8 +20,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
 import { getPineconeClient } from "@/lib/pinecone-client";
 import { getVectorStore } from "@/lib/vector-store";
+import { ConversationalRetrievalQAChain } from "langchain/chains";
 
-export const runtime = "edge";
+
 
 type ConversationalRetrievalQAChainInput = {
   question: string;
@@ -111,24 +112,40 @@ export async function POST(req: NextRequest) {
      *
      * https://js.langchain.com/docs/guides/expression_language/cookbook
      */
-    const standaloneQuestionChain = RunnableSequence.from([
-      {
-        question: (input: ConversationalRetrievalQAChainInput) =>
-          input.question,
-        chat_history: (input: ConversationalRetrievalQAChainInput) =>
-          formatVercelMessages(input.chat_history),
+
+    const streamingModel = new ChatOpenAI({
+        modelName: "gpt-3.5-turbo",
+        streaming: true,
+        temperature: 0,
+        verbose: true,
+      });
+      const nonStreamingModel = new ChatOpenAI({
+        modelName: "gpt-3.5-turbo",
+        verbose: true,
+        temperature: 0,
+      });
+    const standaloneQuestionChain =  ConversationalRetrievalQAChain.fromLLM(
+        streamingModel,
+    retriever,
+    {
+      qaTemplate:  CONDENSE_QUESTION_TEMPLATE,
+      questionGeneratorTemplate: CONDENSE_QUESTION_TEMPLATE,
+      returnSourceDocuments: true, //default 4
+      questionGeneratorChainOptions: {
+        llm: nonStreamingModel,
       },
-      condenseQuestionPrompt,
-      model,
-      new StringOutputParser(),
-    ]);
+    }
+    );
 
     const answerChain = RunnableSequence.from([
       {
         context: retriever.pipe(combineDocumentsFn),
         question: new RunnablePassthrough(),
+    
+        
       },
       answerPrompt,
+       
       model,
       new BytesOutputParser(),
     ]);
@@ -139,6 +156,7 @@ export async function POST(req: NextRequest) {
     const stream = await conversationalRetrievalQAChain.stream({
       question: currentMessageContent,
       chat_history: previousMessages,
+    
     });
 
     return new StreamingTextResponse(stream);
