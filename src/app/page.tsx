@@ -187,7 +187,7 @@ export default function DocumentPage() {
   return (
     <div className="w-full h-fit flex flex-col md:flex-row space-x-0 md:space-x-5 space-y-5 md:space-y-0">
       <Tabs defaultValue="docs" className="w-full max-w-sm">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="docs">Study Documents</TabsTrigger>
 
           <TabsTrigger value="audio">Audio Recordings</TabsTrigger>
