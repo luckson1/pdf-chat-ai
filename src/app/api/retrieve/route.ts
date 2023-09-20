@@ -97,9 +97,7 @@ export async function POST(req: NextRequest) {
     const previousMessages = question
     const currentMessageContent =chatHistory
 
-    const model = new ChatOpenAI({
-      modelName: "gpt-4",
-    });
+    
 
     const pineconeClient = await getPineconeClient();
     const vectorStore = await getVectorStore(pineconeClient, userId, id);
@@ -159,7 +157,7 @@ export async function POST(req: NextRequest) {
       },
       answerPrompt,
        
-      model,
+      streamingModel,
       new BytesOutputParser(),
     ]);
 
