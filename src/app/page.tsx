@@ -294,7 +294,7 @@ export default function DocumentPage() {
                 </Card>
               </Link>
             ))}
-            <div className="flex flex-row w-full justify-center space-x-2">
+            <div className="flex flex-row w-full justify-center items-center text-sm space-x-2">
               <Button
                variant="outline"
                size="sm"
