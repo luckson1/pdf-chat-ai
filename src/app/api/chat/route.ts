@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { callChain } from "@/lib/langchain";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
+import { StreamingTextResponse } from "ai";
+import { BytesOutputParser } from "langchain/dist/schema/output_parser";
+
+
+export const runtime = "edge";
+
 
 export async function POST(req: NextRequest) {
   const { question, chatHistory, id } = await req.json();
@@ -24,7 +30,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const transformStream = new TransformStream();
-    const readableStrm = callChain({
+    const readableStrm = await callChain({
       question,
       chatHistory,
       transformStream,
@@ -32,7 +38,7 @@ export async function POST(req: NextRequest) {
      id
     });
 
-    return new Response(await readableStrm);
+    return new StreamingTextResponse(readableStrm);
   } catch (error) {
     console.error("Internal server error ", error);
     return NextResponse.json("Error: Something went wrong. Try again!", {
