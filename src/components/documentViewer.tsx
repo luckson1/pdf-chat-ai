@@ -14,7 +14,7 @@ const type=data?.type
 if(!signedUrl) return null
 if(!type) return null
   return (<div className="w-full h-auto">
-  <DocumentViewer signedUrl={signedUrl}  type={type}/>
+  {/* <DocumentViewer signedUrl={signedUrl}  type={type}/> */}
   </div>)
 }
 
