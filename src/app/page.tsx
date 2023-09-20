@@ -18,7 +18,7 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
 import { Icons } from "@/components/Icons";
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, MoveLeftIcon, MoveRightIcon } from "lucide-react";
+import {  ChevronLeft, ChevronRight, } from "lucide-react";
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
@@ -40,7 +40,7 @@ export default function DocumentPage() {
       await axios.get(`/api/aws/upload_file?type=${type}&name=${name}`);
 
     const { uploadUrl, key } = data;
-    const d = await axios.put(uploadUrl, files[0]);
+     await axios.put(uploadUrl, files[0]);
     return { key, name, type };
   };
   const ctx = api.useContext();
@@ -50,7 +50,7 @@ export default function DocumentPage() {
     },
   });
   const { mutate: addWebDoc } = api.documents.addWebDoc.useMutation({
-    onSuccess: (data) => {
+    onSuccess: () => {
       ctx.documents.getAll.invalidate();
     },
   });
