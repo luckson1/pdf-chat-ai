@@ -2,7 +2,7 @@ import { ChatOpenAI } from "langchain/chat_models/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { ConversationalRetrievalQAChain } from "langchain/chains";
 import { getVectorStore } from "./vector-store";
-import { getHttpPineconeClient, getPineconeClient } from "./pinecone-client";
+import { getHttpPineconeClient } from "./pinecone-client";
 import * as dotenv from "dotenv";
 import { formatChatHistory } from "./utils";
 dotenv.config();
