@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
 import { StreamingTextResponse } from "ai";
 
-
+export const runtime = 'edge'
 
 export async function POST(req: NextRequest) {
   const { question, chatHistory, id } = await req.json();

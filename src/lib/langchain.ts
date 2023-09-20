@@ -2,7 +2,7 @@ import { ChatOpenAI } from "langchain/chat_models/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { ConversationalRetrievalQAChain } from "langchain/chains";
 import { getVectorStore } from "./vector-store";
-import { getPineconeClient } from "./pinecone-client";
+import { getHttpPineconeClient, getPineconeClient } from "./pinecone-client";
 import * as dotenv from "dotenv";
 import { formatChatHistory } from "./utils";
 dotenv.config();
@@ -88,7 +88,7 @@ export async function callChain({
   try {
     // Open AI recommendation
     const sanitizedQuestion = question.trim().replaceAll("\n", " ");
-    const pineconeClient = await getPineconeClient();
+    const pineconeClient = await getHttpPineconeClient();
     const vectorStore = await getVectorStore(pineconeClient, userId, id);
 
     // Create encoding to convert token (string) to Uint8Array

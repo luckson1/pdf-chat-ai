@@ -34,7 +34,17 @@ async function initPineconeClient() {
       apiKey: env.PINECONE_API_KEY,
       environment: env.PINECONE_ENVIRONMENT,
     });
- 
+    const indexName = env.PINECONE_INDEX_NAME;
+
+    const existingIndexes = await pineconeClient.listIndexes();
+
+    if (!existingIndexes.includes(indexName)) {
+      console.log("hello")
+      createIndex(pineconeClient, indexName);
+    } else {
+      console.log("Your index already exists. nice !!");
+    }
+
     return pineconeClient;
   } catch (error) {
     console.error("error", error);
@@ -43,8 +53,54 @@ async function initPineconeClient() {
 }
 
 export async function getPineconeClient() {
-
+  if (!pineconeClientInstance) {
     pineconeClientInstance = await initPineconeClient();
+  }
+
+  return pineconeClientInstance;
+}
+
+const createPineConeInstance = async () => {
+  const API_KEY = env.PINECONE_API_KEY
+  const ENDPOINT_URL = `https://controller.${env.PINECONE_ENVIRONMENT}.pinecone.io/databases`;
+
+  const headers = new Headers({
+    'Content-Type': 'application/json',
+    'Api-Key': API_KEY,
+  });
+
+  const requestBody = {
+    name: 'auth-guide',
+    dimension: 8,
+    metric: 'euclidean',
+  };
+
+  try {
+    const response = await fetch(ENDPOINT_URL, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(requestBody),
+    });
+
+    if (!response.ok) {
+      const responseBody = await response.json();
+      throw new Error(`Request failed with status: ${response.status}, ${JSON.stringify(responseBody)}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
+
+
+export async function getHttpPineconeClient() {
+  pineconeClientInstance = await createPineConeInstance()
+  if (!pineconeClientInstance) {
+throw new Error('No Vector Database Found')
+  }
 
 
   return pineconeClientInstance;
