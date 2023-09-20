@@ -301,11 +301,11 @@ export default function DocumentPage() {
                 onClick={() => setPage((p) => p - 1)}
                 disabled={page === 1}
               >
-             
+               <ChevronLeft className="w-6 h-6"/>
+              Previous
                
               </Button>
-              <ChevronLeft className="w-6 h-6"/>
-              Previous
+            
 
               <span>Page {page}</span>
 
