@@ -188,16 +188,16 @@ export default function DocumentPage() {
     <div className="w-full h-fit flex flex-col md:flex-row space-x-0 md:space-x-5 space-y-5 md:space-y-0">
       <Tabs defaultValue="docs" className="w-full max-w-sm">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="docs">Documents</TabsTrigger>
-          <TabsTrigger value="url"> Online Article</TabsTrigger>
-          <TabsTrigger value="audio">Audio</TabsTrigger>
+          <TabsTrigger value="docs">Study Documents</TabsTrigger>
+
+          <TabsTrigger value="audio">Audio Recordings</TabsTrigger>
         </TabsList>
         <TabsContent value="docs">
           <Card className="w-full max-w-sm h-fit min-h-[500px]">
             <CardHeader>
               <CardTitle>Upload a study material</CardTitle>
               <CardDescription>
-                Upload a pdf, word, text, epub or power point
+                Upload a pdf, word, text, or power point document
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col space-y-5 py-5">
@@ -206,7 +206,7 @@ export default function DocumentPage() {
                 onSubmit={(e) => handleSubmitDocs(e)}
                 id="docs"
               >
-                <Dropzone files={docs} setFiles={setDocs} audio={false} />
+                <Dropzone files={docs} setFiles={setDocs} audio={false} type="a document"/>
                 <Button
                   type="submit"
                   disabled={docs.length <= 0}
@@ -221,7 +221,7 @@ export default function DocumentPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="url">
+        {/* <TabsContent value="url">
           <Card className="w-full max-w-sm h-fit min-h-[500px]">
             <CardHeader>
               <CardTitle>Link to your online study material</CardTitle>
@@ -259,7 +259,7 @@ export default function DocumentPage() {
               </form>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabsContent> */}
         <TabsContent value="audio">
           <Card className="w-full max-w-sm h-fit min-h-[500px]">
             <CardHeader>
@@ -274,7 +274,7 @@ export default function DocumentPage() {
                 onSubmit={(e) => handleSubmitAudio(e)}
                 id="audio"
               >
-                <Dropzone files={audio} setFiles={setAudio} audio={true} />
+                <Dropzone files={audio} setFiles={setAudio} audio={true} type="an audio recording"/>
                 <Button
                   type="submit"
                   disabled={audio.length <= 0}

@@ -4,10 +4,11 @@ import { useDropzone } from "react-dropzone";
 import { Button } from "./ui/button";
 
 
-const Dropzone=({files, setFiles, audio }: {
+const Dropzone=({files, setFiles, audio, type }: {
   files: File[],
   setFiles: React.Dispatch<React.SetStateAction<File[]>>,
   audio: boolean
+  type: string
 }) => {
  const docFiles={
   "text/csv": [],
@@ -64,9 +65,9 @@ const audioFiles = {
                     >
                       {" "}
                       <UploadCloud className="text-sm" />{" "}
-                      <p>Select a file </p>
+                      <p>Select {type} </p>
                     </Button>
-                    <p>or drag and drop a file</p>
+                    <p>or drag and drop {type}</p>
                   </div>
                 )}
               </>
