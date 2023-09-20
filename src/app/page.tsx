@@ -24,6 +24,8 @@ export default function DocumentPage() {
   const [audio, setAudio] = useState<File[]>([]);
   const [url, setUrl] = useState<string>();
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 10;
   const uploadToS3 = async (files: File[]) => {
     if (!files || files.length <= 0) {
       return null;
@@ -57,9 +59,9 @@ export default function DocumentPage() {
   const { mutate: addTranscription, data: id } =
     api.documents.transcribe.useMutation({
       onSuccess(id) {
-       if(id) {
-        getTranscription({ id: id, name: audio[0]?.name ?? id });
-       }
+        if (id) {
+          getTranscription({ id: id, name: audio[0]?.name ?? id });
+        }
       },
     });
   const urlSchema = z.string().url();
@@ -97,42 +99,39 @@ export default function DocumentPage() {
     let timeoutId: NodeJS.Timeout;
     const fetchTranscription = async () => {
       try {
-        if (id && (status==="processing" || status==="queued" )) {
-        
+        if (id && (status === "processing" || status === "queued")) {
           console.log("status", status);
-          setTimeout(()=>  getTranscription({ id, name:audio[0]?.name ?? id}), 5000);
-          
+          setTimeout(
+            () => getTranscription({ id, name: audio[0]?.name ?? id }),
+            5000
+          );
         }
-        if(status==="completed" ) {
-         setAudio([]);  
-          ctx.documents.getAll.invalidate()
-        } 
-        if(status==="error" ) {
-          setAudio([]);  
-          console.log("an error occurred")
-         } 
-
-       
+        if (status === "completed") {
+          setAudio([]);
+          ctx.documents.getAll.invalidate();
+        }
+        if (status === "error") {
+          setAudio([]);
+          console.log("an error occurred");
+        }
       } catch (error) {
         console.error(error);
-      } 
+      }
     };
 
     fetchTranscription();
 
     // Cleanup function to clear the timeout when the component is unmounted or if dependencies change
     return () => clearTimeout(timeoutId);
-  }, [ id, status, text]);
-  useEffect(()=> {
-    if ((status==="processing" || status==="queued" )) {
-   setLoading(true)
-      
+  }, [id, status, text]);
+  useEffect(() => {
+    if (status === "processing" || status === "queued") {
+      setLoading(true);
     }
-    if (status==="error" || status==="completed" ) {
-      setLoading(false)
-         
-       }
-  }, [status])
+    if (status === "error" || status === "completed") {
+      setLoading(false);
+    }
+  }, [status]);
   const handleSubmitAudio = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -145,7 +144,7 @@ export default function DocumentPage() {
       transcribe(data.key);
     } catch (error) {
       console.log(error);
-    } 
+    }
   };
   const handleSubmitWebPage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -161,7 +160,10 @@ export default function DocumentPage() {
       setUrl("");
     }
   };
-  const { data: docsData, isLoading } = api.documents.getAll.useQuery();
+  const { data: docsData, isLoading } = api.documents.getAll.useQuery({
+    skip: (page - 1) * itemsPerPage,
+    take: itemsPerPage,
+  });
   return (
     <div className="w-full h-fit flex flex-col md:flex-row space-x-0 md:space-x-5 space-y-5 md:space-y-0">
       <Tabs defaultValue="docs" className="w-full max-w-sm">
@@ -280,16 +282,37 @@ export default function DocumentPage() {
             <CardHeader>No Documents</CardHeader>
           </Card>
         ) : docsData && !isLoading ? (
-          docsData.map((doc) => (
-            <Link
-              key={doc.id}
-              href={{ pathname: "/documents/[id]", query: { id: doc.id } }}
-            >
-              <Card className="w-full">
-                <CardHeader>{doc.name}</CardHeader>
-              </Card>
-            </Link>
-          ))
+          <div className="flex flex-col space-y-5">
+            {docsData.map((doc) => (
+              <Link
+                key={doc.id}
+                href={{ pathname: "/documents/[id]", query: { id: doc.id } }}
+              >
+                <Card className="w-full">
+                  <CardHeader>{doc.name}</CardHeader>
+                </Card>
+              </Link>
+            ))}
+            <div className="flex flex-row">
+              <Button
+                onClick={() => setPage((p) => p - 1)}
+                disabled={page === 1}
+              >
+                Previous
+              </Button>
+
+              <span>Page {page}</span>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPage((p) => p + 1)}
+                disabled={docs.length < itemsPerPage}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
         ) : null}
       </div>
     </div>

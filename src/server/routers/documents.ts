@@ -175,12 +175,18 @@ export const documentRouter = createTRPCRouter({
       return document;
     }),
 
-  getAll: protectedProcedure.query(async ({ ctx }) => {
+  getAll: protectedProcedure.input(z.object({
+    skip: z.number(),
+    take: z.number(),
+  }),).query(async ({ ctx , input}) => {
     const userId = ctx.session.user.id;
+    const {skip, take}=input
     const docs = await ctx.prisma.document.findMany({
       where: {
         userId,
       },
+      skip,
+      take
     });
     return docs;
   }),
