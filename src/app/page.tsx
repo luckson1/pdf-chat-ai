@@ -25,7 +25,7 @@ export default function DocumentPage() {
   const [url, setUrl] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
   const uploadToS3 = async (files: File[]) => {
     if (!files || files.length <= 0) {
       return null;
