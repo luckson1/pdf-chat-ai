@@ -3,10 +3,7 @@ import { callChain } from "@/lib/langchain";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
 import { StreamingTextResponse } from "ai";
-import { BytesOutputParser } from "langchain/dist/schema/output_parser";
 
-
-export const runtime = "edge";
 
 
 export async function POST(req: NextRequest) {
