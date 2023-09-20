@@ -15,7 +15,7 @@ import {
   BytesOutputParser,
   StringOutputParser,
 } from "langchain/schema/output_parser";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
 import { getPineconeClient } from "@/lib/pinecone-client";
@@ -112,12 +112,25 @@ export async function POST(req: NextRequest) {
      *
      * https://js.langchain.com/docs/guides/expression_language/cookbook
      */
-
+    const transformStream = new TransformStream();
+    const encoder = new TextEncoder();
+    const writer = transformStream.writable.getWriter();
     const streamingModel = new ChatOpenAI({
         modelName: "gpt-3.5-turbo",
         streaming: true,
         temperature: 0,
         verbose: true,
+        callbacks: [
+            {
+              async handleLLMNewToken(token) {
+                await writer.ready;
+                await writer.write(encoder.encode(`${token}`));
+              },
+              async handleLLMEnd() {
+                console.log("LLM end called");
+              },
+            },
+          ],
       });
       const nonStreamingModel = new ChatOpenAI({
         modelName: "gpt-3.5-turbo",
