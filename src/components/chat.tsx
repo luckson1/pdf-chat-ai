@@ -9,7 +9,7 @@ import { api } from "@/app/api/_trpc/client";
 
 export function Chat({id}: {id:string}) {
 
-  const endpoint = "/api/retrieve";
+  const endpoint = "/api/chat";
   const [input, setInput] = useState("");
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [messages, setMessages] = useState<ChatGPTMessage[]>(initialMessage);
