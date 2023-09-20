@@ -106,8 +106,8 @@ export async function callChain({
       })
       .then(async (res) => {
         const sourceDocuments = res?.sourceDocuments;
-        const firstThreeDocuments = sourceDocuments.slice(0, 3);
-        const pageContents = firstThreeDocuments.map(
+        const firstTwoDocuments = sourceDocuments.slice(0, 2);
+        const pageContents = firstTwoDocuments.map(
           ({ pageContent }: { pageContent: string }) => pageContent
         );
         const stringifiedPageContents = JSON.stringify(pageContents);
