@@ -42,9 +42,9 @@ export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:st
       <CardHeader>
         <CardTitle className="h-[90%] overflow-hidden flex flex-row justify-between">
           {name}
-          <Button size={'sm'} variant={'outline'} onClick={()=>{ctx.documents.getUrlInfo.refetch(); setLoading(true)}}>
+          <Button size={'sm'} variant={'outline'} onClick={async()=>{ setLoading(true), await ctx.documents.getUrlInfo.refetch() }}>
             
-            <IconRefresh className={`w-8 h-6 ${loading? "animate-spin" : ""}`} />
+            <IconRefresh className={`w-8 h-6 ${isLoading? "animate-spin" : ""}`} />
             Refresh
           </Button>
         </CardTitle>
