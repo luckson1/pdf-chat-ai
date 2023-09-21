@@ -11,7 +11,7 @@ const MSDocRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
       className="w-full h-[70vh]"
         id="msdoc-iframe"
         title="msdoc-iframe"
-        src={`src="https://docs.google.com/gview?url=${currentDocument.uri}&embedded=true"`}
+        src={`src="https://docs.google.com/viewer?url=${currentDocument.uri}&embedded=true"`}
       />
     </div>
   );
