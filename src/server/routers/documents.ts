@@ -216,6 +216,7 @@ export const documentRouter = createTRPCRouter({
       });
       let signedUrl = "";
       const type = getFileExtension(document.name);
+      const name=document.name
       if (document.type === "html") {
         signedUrl = document.name;
         return { signedUrl, type };
@@ -234,6 +235,6 @@ export const documentRouter = createTRPCRouter({
       }
 
       signedUrl = generateSignedUrl();
-      return { signedUrl, type };
+      return { signedUrl, type , name};
     }),
 });

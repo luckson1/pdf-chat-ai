@@ -1,5 +1,6 @@
 'use client'
 import { memo, useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 // import DocViewer, { DocViewerRenderers } from "./docviewer";
 //  function Viewer({signedUrl, type }: { signedUrl: string, type:string }) {
 //   const docs = [
@@ -11,24 +12,26 @@ import { memo, useEffect, useState } from "react";
 //   return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} className=" h-[85vh] w-full rounded-lg"/>;
   
 // }
-const Viewer=({  signedUrl, type}: {  signedUrl:string, type:string} ) => {
-  const [encodedUrl, setEncodedUrl]=useState<string>()
-const url=signedUrl
-useEffect(()=> {
-if(url) {
-  setEncodedUrl(encodeURIComponent(url))
-}
-}, [url])
+const Viewer=({  encodedUrl, name}: {  encodedUrl:string, name:string} ) => {
+
   const iFrameUrl = 'https://docs.google.com/viewer?url=' + encodedUrl + '&embedded=true';
   return (
-    <div className="w-full h-full " id="msdoc-renderer">
+    <Card className="w-full h-[85vh] " id="msdoc-renderer">
+      <CardHeader>
+        <CardTitle>
+          {name}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
       <iframe
-      className="w-full h-[70vh]"
+      className="w-full h-full"
         id="msdoc-iframe"
         title="msdoc-iframe"
         src={ iFrameUrl }
       />
-    </div>
+      </CardContent>
+      
+    </Card>
   );
 };
 

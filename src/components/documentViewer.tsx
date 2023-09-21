@@ -6,16 +6,27 @@ import { useSearchParams } from "next/navigation";
 // import { DocumentViewer } from "./s3Loader";
 import { api } from "@/app/api/_trpc/client";
 import { DocumentViewer } from "./s3Loader";
+import { useEffect, useState } from "react";
 
 export function ViewLoader({ id }: { id:  string}) {
   const {data}=api.documents.getUrlInfo.useQuery({id})
 const signedUrl=data?.signedUrl
-console.log(signedUrl)
-const type=data?.type
-if(!signedUrl) return null
-if(!type) return null
+const docName=data?.name
+const [encodedUrl, setEncodedUrl]=useState<string>('')
+const [name, setName]=useState<string>('')
+
+useEffect(()=> {
+if(signedUrl) {
+  setEncodedUrl(encodeURIComponent(signedUrl))
+}
+}, [signedUrl])
+useEffect(()=> {
+  if(docName) {
+    setName(docName)
+  }
+  }, [docName])
   return (<div className="w-full h-auto">
-  <DocumentViewer signedUrl={signedUrl}  type={type}/>
+  <DocumentViewer encodedUrl={encodedUrl}  name={name}/>
   </div>)
 }
 
