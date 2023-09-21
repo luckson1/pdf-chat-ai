@@ -215,7 +215,7 @@ export const documentRouter = createTRPCRouter({
         },
       });
       let signedUrl = "";
-      const type = getFileExtension(document.name);
+      const type =document.type
       const name=document.name
       if (document.type === "html") {
         signedUrl = document.name;

@@ -5,25 +5,36 @@ import { api } from "@/app/api/_trpc/client";
 import { Button } from "./ui/button";
 import { IconRefresh, IconSpinner } from "./ui/icons";
 
-export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:string, docName?:string, isLoading: boolean} ) => {
-  const [iFrameUrl , setIFrameUrl ]=useState<string>()
+export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedUrl?:string, docName?:string, isLoading: boolean, type?:string} ) => {
+  const [msUrl , setMsUrl ]=useState<string>()
+  const [gUrl , setGUrl ]=useState<string>()
   const [name, setName]=useState<string>()
+  const [isMsDoc, setIsMsDoc]=useState(false)
+  const [isPdf, setIsPdf]=useState(false)
   const reloadIFrame = () => {
     const iframeElement = document.querySelector("iframe");
     iframeElement?.contentWindow?.location.reload();
   };
+  
+
   useEffect(()=> {
   if(signedUrl) {
-    setIFrameUrl('https://docs.google.com/viewer?url=' + encodeURIComponent(signedUrl) + '&embedded=true')
+    setGUrl('https://docs.google.com/viewer?url=' + encodeURIComponent(signedUrl) + '&embedded=true')
+  setMsUrl(  `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
+    signedUrl
+   )}`)
   }
   }, [signedUrl])
   useEffect(()=> {
-    if(docName) {
+    const msDocs= [ "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document",  "application/vnd.ms-excel","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",   "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation"]
+    if(docName && type) {
       setName(docName)
+      setIsMsDoc(msDocs.includes(type))
+     setIsPdf(type===" application/pdf")
     }
-    }, [docName])
+    }, [docName, type])
     const ctx=api.useContext()
-  if (!iFrameUrl) return null
+  if (!msUrl) return null
   if (!name) return null
   if(isLoading) {
     return (
@@ -41,7 +52,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:st
 
   return (
 <>
-{!isLoading &&
+{!isPdf &&
       <Card className="w-full h-[85vh] ">
       <CardHeader>
         <CardTitle className="h-[90%] overflow-hidden flex flex-row justify-between">
@@ -56,7 +67,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:st
       <CardContent className="w-full h-[90%]">
       <iframe
       className="w-full h-full rounded-lg"
-        src={ iFrameUrl }
+        src={ isMsDoc? msUrl : gUrl}
   
       />
       </CardContent>

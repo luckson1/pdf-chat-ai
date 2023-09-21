@@ -11,9 +11,9 @@ export function ViewLoader({ id }: { id:  string}) {
   const {data, isLoading}=api.documents.getUrlInfo.useQuery({id})
 const signedUrl=data?.signedUrl
 const docName=data?.name
-
+const type=data?.type
   return (<div className="w-full h-auto">
-  <DocumentViewer signedUrl={signedUrl}  docName={docName} isLoading={isLoading}/>
+  <DocumentViewer signedUrl={signedUrl}  docName={docName} isLoading={isLoading} type={type}/>
   </div>)
 }
 
