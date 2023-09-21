@@ -131,7 +131,7 @@ saveMessage({role: "user", content:question, documentId:id})
   }
 
   return (
-    <div className="rounded-2xl border h-[75vh] flex flex-col justify-between">
+    <div className="rounded-2xl border h-[85vh] flex flex-col justify-between">
       <div className="p-6 overflow-auto" ref={containerRef}>
         {messages.map(({ content, role, sources }, index) => (
           <ChatLine
