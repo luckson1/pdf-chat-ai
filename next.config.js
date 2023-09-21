@@ -6,7 +6,7 @@ const nextConfig = {
     domains: ['res.cloudinary.com']
   },
   swcMinify: true,
-  webpack(config) {
+  webpack(config, {webpack}) {
     config.experiments = { ...config.experiments, topLevelAwait: true, };
     config.externals.push({
       sharp: "commonjs sharp",
