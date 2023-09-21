@@ -27,7 +27,8 @@ export const DocumentViewer=({  signedUrl, docName}: {  signedUrl?:string, docNa
     }
     }, [docName])
 
-  if (!iFrameUrl  || !name) return null
+  if (!iFrameUrl) return null
+  if (!name) return null
   return (
     <Card className="w-full h-[85vh] " id="msdoc-renderer">
       <CardHeader>
