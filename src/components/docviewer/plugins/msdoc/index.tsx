@@ -6,7 +6,7 @@ const MSDocRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
   if (!currentDocument) return null;
 
   return (
-    <div className="w-full" id="msdoc-renderer">
+    <div className="w-full h-full" id="msdoc-renderer">
       <iframe
       className="w-full h-full"
         id="msdoc-iframe"
