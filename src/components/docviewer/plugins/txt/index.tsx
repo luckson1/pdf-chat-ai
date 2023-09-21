@@ -3,7 +3,7 @@ import { DocRenderer } from "../../types";
 import { textFileLoader } from "../../utils/fileLoaders";
 
 const TXTRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
-  return <div className="flex flex-col p-7" id="txt-renderer">{currentDocument?.fileData}</div>;
+  return <div className="flex flex-col p-7" id="txt-renderer">{currentDocument?.fileData?.toString()}</div>;
 };
 
 export default TXTRenderer;
