@@ -1,3 +1,4 @@
+"use client"
 import React, { CSSProperties, FC, ReactNode } from "react";
 
 import { HeaderBar } from "./components/HeaderBar";
@@ -8,7 +9,7 @@ import MSDocRenderer from "./plugins/msdoc";
 import PDFRenderer from "./plugins/pdf";
 import TXTRenderer from "./plugins/txt";
 import { DocRenderer, IConfig, IDocument, ITheme } from "./types";
-
+import { AppProvider } from "./state";
 export interface DocViewerProps {
   documents: IDocument[];
   className?: string;
@@ -29,7 +30,7 @@ const DocViewer: FC<DocViewerProps> = (props) => {
   }
 
   return (
-  
+    <AppProvider {...props}>
         <div
           id="react-doc-viewer"
          className="flex flex-col overflow-hidden w-full h-auto"
@@ -38,6 +39,7 @@ const DocViewer: FC<DocViewerProps> = (props) => {
           <HeaderBar />
           <ProxyRenderer />
         </div>
+        </AppProvider>
   
   );
 };
