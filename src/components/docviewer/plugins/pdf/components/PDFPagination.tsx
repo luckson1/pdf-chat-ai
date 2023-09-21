@@ -1,5 +1,4 @@
 import React, { FC, useContext } from "react";
-import { IStyledProps } from "../../../types";
 import { PDFContext } from "../state";
 import { setCurrentPage } from "../state/actions";
 import { NextPDFNavIcon, PrevPDFNavIcon } from "./icons";
