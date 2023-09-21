@@ -26,7 +26,7 @@ const PDFPages: FC<{}> = () => {
   return (
     <Document 
     
-      file={currentDocument.fileData}
+      file={currentDocument.uri}
       onLoadSuccess={({ numPages }) => dispatch(setNumPages(numPages))}
       loading={<span>Loading...</span>}
     >
