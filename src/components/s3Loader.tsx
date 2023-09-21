@@ -13,12 +13,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
   
 // }
 export const DocumentViewer=({  signedUrl, docName}: {  signedUrl?:string, docName?:string} ) => {
-  const [encodedUrl, setEncodedUrl]=useState<string>()
+  const [iFrameUrl , setIFrameUrl ]=useState<string>()
   const [name, setName]=useState<string>()
   
   useEffect(()=> {
   if(signedUrl) {
-    setEncodedUrl(encodeURIComponent(signedUrl))
+    setIFrameUrl('https://docs.google.com/viewer?url=' + encodeURIComponent(signedUrl) + '&embedded=true')
   }
   }, [signedUrl])
   useEffect(()=> {
@@ -26,8 +26,8 @@ export const DocumentViewer=({  signedUrl, docName}: {  signedUrl?:string, docNa
       setName(docName)
     }
     }, [docName])
-  const iFrameUrl = 'https://docs.google.com/viewer?url=' + encodedUrl + '&embedded=true';
-  if (!encodedUrl || !name) return null
+
+  if (!iFrameUrl  || !name) return null
   return (
     <Card className="w-full h-[85vh] " id="msdoc-renderer">
       <CardHeader>
@@ -38,7 +38,6 @@ export const DocumentViewer=({  signedUrl, docName}: {  signedUrl?:string, docNa
       <CardContent className="w-full h-[90%]">
       <iframe
       className="w-full h-full rounded-lg"
-        id="msdoc-iframe"
         title="msdoc-iframe"
         src={ iFrameUrl }
       />
