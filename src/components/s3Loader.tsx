@@ -37,7 +37,7 @@ const Viewer=({  signedUrl, docName}: {  signedUrl?:string, docName?:string} ) =
       </CardHeader>
       <CardContent className="w-full h-11/12">
       <iframe
-      className="w-full h-full"
+      className="w-full h-full rounded-lg"
         id="msdoc-iframe"
         title="msdoc-iframe"
         src={ iFrameUrl }
