@@ -32,7 +32,7 @@ const DocViewer: FC<DocViewerProps> = (props) => {
   
         <div
           id="react-doc-viewer"
-         className="flex flex-col overflow-hidden"
+         className="flex flex-col overflow-hidden w-full h-auto"
           {...props}
         >
           <HeaderBar />

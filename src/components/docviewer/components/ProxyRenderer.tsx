@@ -19,7 +19,7 @@ export const ProxyRenderer: FC<{}> = () => {
         <div
           className="flex
         flex-1
-        h-[75px]
+    h-auto
         items-center
         justify-center"
         >
