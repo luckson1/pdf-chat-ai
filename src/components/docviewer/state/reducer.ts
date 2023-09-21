@@ -47,7 +47,7 @@ export const mainStateReducer: MainStateReducer = (
   switch (action.type) {
     case SET_ALL_DOCUMENTS: {
       const { documents } = action as SetAllDocuments;
-      return { ...state, documents, currentDocument: documents[0] || null };
+      return { ...state, documents, currentDocument: documents[0] };
     }
 
     case SET_DOCUMENT_LOADING: {
