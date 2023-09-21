@@ -8,6 +8,7 @@ import { IconRefresh, IconSpinner } from "./ui/icons";
 export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:string, docName?:string, isLoading: boolean} ) => {
   const [iFrameUrl , setIFrameUrl ]=useState<string>()
   const [name, setName]=useState<string>()
+  const [loading, setLoading]=useState(false)
   
   useEffect(()=> {
   if(signedUrl) {
@@ -24,7 +25,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:st
   if (!name) return null
   if(isLoading) {
     return (
-      <Card className="w-full h-[85vh] " id="msdoc-renderer">
+      <Card className="w-full h-[85vh] " >
       <CardHeader>
         .
       </CardHeader>
@@ -37,13 +38,13 @@ export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:st
   }
 
   return (
-    <Card className="w-full h-[85vh] " id="msdoc-renderer">
+    <Card className="w-full h-[85vh] ">
       <CardHeader>
         <CardTitle className="h-[90%] overflow-hidden flex flex-row justify-between">
           {name}
-          <Button size={'sm'} variant={'outline'} onClick={()=>ctx.documents.getUrlInfo.invalidate()}>
+          <Button size={'sm'} variant={'outline'} onClick={()=>{ctx.documents.getUrlInfo.invalidate(); setLoading(true)}}>
             
-            <IconRefresh className="w-8 h-6" />
+            <IconRefresh className={`w-8 h-6 ${loading? "animate-spin" : ""}`} />
             Refresh
           </Button>
         </CardTitle>
