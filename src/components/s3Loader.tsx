@@ -1,17 +1,7 @@
 'use client'
 import {  useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-// import DocViewer, { DocViewerRenderers } from "./docviewer";
-//  function Viewer({signedUrl, type }: { signedUrl: string, type:string }) {
-//   const docs = [
-//     { uri: signedUrl, fileType:type }, 
 
-
-//   ];
-
-//   return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} className=" h-[85vh] w-full rounded-lg"/>;
-  
-// }
 export const DocumentViewer=({  signedUrl, docName}: {  signedUrl?:string, docName?:string} ) => {
   const [iFrameUrl , setIFrameUrl ]=useState<string>()
   const [name, setName]=useState<string>()
