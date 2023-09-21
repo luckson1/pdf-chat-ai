@@ -6,9 +6,9 @@ const MSDocRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
   if (!currentDocument) return null;
 
   return (
-    <div className="w-full h-full bg-blue-400" id="msdoc-renderer">
+    <div className="w-full h-full " id="msdoc-renderer">
       <iframe
-      className="w-full h-full bg-yellow-400"
+      className="w-full h-[70vh]"
         id="msdoc-iframe"
         title="msdoc-iframe"
         src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
