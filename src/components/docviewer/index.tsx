@@ -37,10 +37,9 @@ const DocViewer: FC<DocViewerProps> = (props) => {
         {...props}
       >
         <Card className="w-full h-full">
-          <CardHeader>
-            <HeaderBar />
-          </CardHeader>
+     
           <CardContent>
+          <HeaderBar />
             <ProxyRenderer />
           </CardContent>
         </Card>
