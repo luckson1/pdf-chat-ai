@@ -42,7 +42,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:st
       <CardHeader>
         <CardTitle className="h-[90%] overflow-hidden flex flex-row justify-between">
           {name}
-          <Button size={'sm'} variant={'outline'} onClick={()=>{ctx.documents.getUrlInfo.invalidate(); setLoading(true)}}>
+          <Button size={'sm'} variant={'outline'} onClick={()=>{ctx.documents.getUrlInfo.refetch(); setLoading(true)}}>
             
             <IconRefresh className={`w-8 h-6 ${loading? "animate-spin" : ""}`} />
             Refresh
