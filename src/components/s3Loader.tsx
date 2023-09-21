@@ -4,6 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { api } from "@/app/api/_trpc/client";
 import { Button } from "./ui/button";
 import { IconRefresh, IconSpinner } from "./ui/icons";
+import { Document, Page } from "react-pdf";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+// import * as pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
+
+// pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedUrl?:string, docName?:string, isLoading: boolean, type?:string} ) => {
   const [msUrl , setMsUrl ]=useState<string>()
@@ -11,6 +16,12 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
   const [name, setName]=useState<string>()
   const [isMsDoc, setIsMsDoc]=useState(false)
   const [isPdf, setIsPdf]=useState(false)
+  const [numPages, setNumPages] = useState<number>();
+  const [pageNumber, setPageNumber] = useState(1);
+
+  function onDocumentLoadSuccess(num:number) {
+    setNumPages(num);
+  }
   const reloadIFrame = () => {
     const iframeElement = document.querySelector("iframe");
     iframeElement?.contentWindow?.location.reload();
@@ -34,16 +45,31 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
     }
     }, [docName, type])
     const ctx=api.useContext()
-  if (!msUrl) return null
+  if (!type) return null
   if (!name) return null
-  if(isLoading) {
+  if (!signedUrl) return null
+  if(isPdf) {
     return (
       <Card className="w-full h-[85vh] " >
-      <CardHeader>
-        .
+      <CardHeader className="flex flex-row justify-end space-x-3">
+      <p>
+        Page {pageNumber} of {numPages}
+      </p>
+      <Button  variant={'outline'} onClick={() => setPageNumber((prev) => prev - 1)} disabled={pageNumber <= 1}>
+        <ChevronLeft  className="w-8 h-8"/>
+      </Button>
+      <Button  variant={'outline'} onClick={() => setPageNumber((prev) => prev + 1)} disabled={!numPages || (numPages !==undefined && pageNumber >= numPages) }>
+      <ChevronRight  className="w-8 h-8"/>
+      </Button>
+
       </CardHeader>
       <CardContent className="w-full h-[90%] flex justify-center items-center">
-    <IconSpinner className="w-32 h-32" />
+      <Document
+        file={signedUrl}
+        onLoadSuccess={e=> onDocumentLoadSuccess(e.numPages) }
+      >
+        <Page pageNumber={pageNumber} />
+      </Document>
       </CardContent>
       
     </Card>
