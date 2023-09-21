@@ -4,11 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { api } from "@/app/api/_trpc/client";
 import { Button } from "./ui/button";
 import { IconRefresh, IconSpinner } from "./ui/icons";
-import { Document, Page } from "react-pdf";
+import { Document, Page, pdfjs } from "react-pdf";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-// import * as pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
+//@ts-expect-error
+import * as pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 
-// pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedUrl?:string, docName?:string, isLoading: boolean, type?:string} ) => {
   const [msUrl , setMsUrl ]=useState<string>()
