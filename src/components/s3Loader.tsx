@@ -14,8 +14,8 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
   const [msUrl , setMsUrl ]=useState<string>()
   const [gUrl , setGUrl ]=useState<string>()
   const [name, setName]=useState<string>()
-  const [isMsDoc, setIsMsDoc]=useState(false)
-  const [isPdf, setIsPdf]=useState(false)
+  const [isMsDoc, setIsMsDoc]=useState<boolean>()
+  const [isPdf, setIsPdf]=useState<boolean>()
   const [numPages, setNumPages] = useState<number>();
   const [pageNumber, setPageNumber] = useState(1);
 
@@ -44,11 +44,12 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
      setIsPdf(type===" application/pdf")
     }
     }, [docName, type])
-    const ctx=api.useContext()
+
   if (!type) return null
   if (!name) return null
   if (!signedUrl) return null
   if(isPdf) {
+    console.log('pdf')
     return (
       <Card className="w-full h-[85vh] " >
       <CardHeader className="flex flex-row justify-end space-x-3">
