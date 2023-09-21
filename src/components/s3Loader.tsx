@@ -18,7 +18,9 @@ export const DocumentViewer=({  signedUrl, docName}: {  signedUrl?:string, docNa
   
   useEffect(()=> {
   if(signedUrl) {
-    setIFrameUrl('https://docs.google.com/viewer?url=' + encodeURIComponent(signedUrl) + '&embedded=true')
+    setIFrameUrl(`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
+     signedUrl
+    )}`)
   }
   }, [signedUrl])
   useEffect(()=> {
@@ -39,8 +41,8 @@ export const DocumentViewer=({  signedUrl, docName}: {  signedUrl?:string, docNa
       <CardContent className="w-full h-[90%]">
       <iframe
       className="w-full h-full rounded-lg"
-        title="msdoc-iframe"
         src={ iFrameUrl }
+    
       />
       </CardContent>
       
