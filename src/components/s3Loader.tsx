@@ -48,8 +48,9 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
   if (!type) return null
   if (!name) return null
   if (!signedUrl) return null
+  console.log(isPdf)
   if(isPdf) {
-    console.log('pdf')
+
     return (
       <Card className="w-full h-[85vh] " >
       <CardHeader className="flex flex-row justify-end space-x-3">
