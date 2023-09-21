@@ -21,7 +21,7 @@ const PDFPages: FC<{}> = () => {
   }, []);
 
   if (!currentDocument || currentDocument.fileData === undefined) return null;
-  console.log(currentDocument)
+  console.log(currentDocument.uri)
 
   return (
     <Document 
