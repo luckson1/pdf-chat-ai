@@ -59,7 +59,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:st
       <iframe
       className="w-full h-full rounded-lg"
         src={ iFrameUrl }
-    
+    key={iframeKey}
       />
       </CardContent>
       
