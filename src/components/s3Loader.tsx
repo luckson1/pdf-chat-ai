@@ -19,7 +19,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:st
       setName(docName)
     }
     }, [docName])
-
+    const ctx=api.useContext()
   if (!iFrameUrl) return null
   if (!name) return null
   if(isLoading) {
@@ -35,7 +35,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:st
     </Card>
     )
   }
-  const ctx=api.useContext()
+
   return (
     <Card className="w-full h-[85vh] " id="msdoc-renderer">
       <CardHeader>
