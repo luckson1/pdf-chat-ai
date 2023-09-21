@@ -49,7 +49,7 @@ export const ProxyRenderer: FC<{}> = () => {
   };
 
   return (
-    <div className="  flex
+    <div className="  flex w-full h-full
     flex-1">
       <Contents />
     </div>
