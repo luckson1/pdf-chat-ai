@@ -8,6 +8,11 @@ import { IconRefresh, IconSpinner } from "./ui/icons";
 export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:string, docName?:string, isLoading: boolean} ) => {
   const [iFrameUrl , setIFrameUrl ]=useState<string>()
   const [name, setName]=useState<string>()
+  const [iframeKey, setIframeKey] = useState(0);
+
+  const reloadIFrame = () => {
+    setIframeKey(prevKey => prevKey + 1);
+  };
   
   useEffect(()=> {
   if(signedUrl) {
@@ -45,7 +50,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:st
           {name}
           <Button size={'sm'} variant={'outline'} >
             
-            <IconRefresh className={`w-8 h-6 }`} onClick={async()=> await ctx.documents.getUrlInfo.refetch()}/>
+            <IconRefresh className={`w-8 h-6 }`} onClick={reloadIFrame}/>
             Refresh
           </Button>
         </CardTitle>
