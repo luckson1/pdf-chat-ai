@@ -6,30 +6,23 @@ const nextConfig = {
     domains: ['res.cloudinary.com']
   },
   swcMinify: true,
-  webpack(config, { isServer }) {
-//  if (!isServer) {
-//   config.resolve.fallback = {
-//     fs: 'empty',
-//     path: false,
-//     http: false,
-//     https: false,
-//     tls: false,
-//     net: false,
-//     stream: false,
-//     os: 'empty',
-
-//     crypto: false,
-//     constants: false,
-//     dns: false,
-//     module: false,
-//     zlib : false,
-
-
-
-
-// }
-//  }
+  webpack(config) {
     config.experiments = { ...config.experiments, topLevelAwait: true, };
+    config.resolve.fallback = {
+      process: require.resolve('process/browser'),
+      zlib: require.resolve('browserify-zlib'),
+      stream: require.resolve('stream-browserify'),
+      util: require.resolve('util'),
+      buffer: require.resolve('buffer'),
+      asset: require.resolve('assert'),
+    }
+    config.externals.push({ sharp: 'commonjs sharp', canvas: 'commonjs canvas' })
+    config.plugins.push(
+      new webpack.ProvidePlugin({
+        Buffer: ['buffer', 'Buffer'],
+        process: 'process/browser',
+      })
+    )
     return config;
   },
 };
