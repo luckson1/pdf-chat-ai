@@ -1,5 +1,6 @@
-import React, { FC, useContext, useEffect } from "react";
+
 'use client'
+import React, { FC, useContext, useEffect } from "react";
 import { Document } from "react-pdf";
 import { PDFContext } from "../../state";
 import { setNumPages } from "../../state/actions";
