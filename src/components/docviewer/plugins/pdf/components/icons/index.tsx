@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 type IIconProps= {
   color:string, size: string, reverse?: boolean 

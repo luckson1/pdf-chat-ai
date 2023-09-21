@@ -1,3 +1,4 @@
+'use client'
 import React, { FC, useContext } from "react";
 import { DocumentNav } from "./DocumentNav";
 import { FileName } from "./FileName";

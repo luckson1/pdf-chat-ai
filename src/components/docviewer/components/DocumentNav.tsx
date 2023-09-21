@@ -1,3 +1,4 @@
+'use client'
 import React, { FC, useContext } from "react";
 import { DocViewerContext } from "../state";
 import { nextDocument, previousDocument } from "../state/actions";

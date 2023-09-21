@@ -1,3 +1,4 @@
+'use client'
 import React, { FC, useContext } from "react";
 import { PDFContext } from "../state";
 import { setCurrentPage } from "../state/actions";

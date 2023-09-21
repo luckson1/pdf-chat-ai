@@ -1,3 +1,4 @@
+'use client'
 import React, { FC, useContext } from "react";
 import { Page } from "react-pdf";
 import { PDFContext } from "../../state";

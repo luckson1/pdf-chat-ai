@@ -1,3 +1,4 @@
+'use client'
 import { FC, ReactElement } from "react";
 import { IMainState } from "../state/reducer";
 import { FileLoaderFunction } from "../utils/fileLoaders";

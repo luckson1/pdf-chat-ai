@@ -1,3 +1,4 @@
+'use client'
 import React, { FC } from "react";
 import { useDocumentLoader } from "../utils/useDocumentLoader";
 import { Icons } from "@/components/Icons";

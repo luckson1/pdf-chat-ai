@@ -1,3 +1,4 @@
+'use client'
 import React, { createContext, Dispatch, FC, ReactNode, useReducer } from "react";
 import { PDFActions } from "./actions";
 import {
