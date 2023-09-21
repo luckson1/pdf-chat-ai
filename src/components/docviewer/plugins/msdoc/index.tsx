@@ -4,14 +4,15 @@ import { DocRenderer } from "../../types";
 
 const MSDocRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
   if (!currentDocument) return null;
-
+  const encodedUrl = encodeURIComponent(currentDocument.uri);
+  const iFrameUrl = 'https://docs.google.com/viewer?url=' + encodedUrl + '&embedded=true';
   return (
     <div className="w-full h-full " id="msdoc-renderer">
       <iframe
       className="w-full h-[70vh]"
         id="msdoc-iframe"
         title="msdoc-iframe"
-        src={`src="https://docs.google.com/viewer?url=${currentDocument.uri}&embedded=true"`}
+        src={ iFrameUrl }
       />
     </div>
   );
