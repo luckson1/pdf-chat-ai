@@ -126,16 +126,20 @@ export const createTxtAws=inngest.createFunction(
     const {text, Key}=event.data
   
    
-  const pdfStream= await streamValue(text)
+    const blob = new Blob([text], { type: 'text/plain' });
     const params = {
       Bucket: env.BUCKET_NAME,
       Key,
-      Body: pdfStream, 
-      ContentType: 'application/pdf'
+      Body: blob,
+      ContentType: 'text/plain'
     };
 
     await s3.upload(params).promise();
-  })}
+  
+  })
+  return upload
+}
+  
 )
 
 export const createPdfDocs=inngest.createFunction(
