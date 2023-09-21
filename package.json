@@ -59,7 +59,7 @@
     "nodemailer": "^6.9.5",
     "papaparse": "^5.4.1",
     "pdf-parse": "^1.1.1",
-    "pdfjs-dist": "2.7.570",
+    "pdfjs-dist": "2.5.207",
     "postcss": "8.4.27",
     "prism": "link:react-syntax-highlighter/dist/cjs/styles/prism",
     "puppeteer": "^21.2.1",
