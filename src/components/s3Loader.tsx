@@ -8,7 +8,7 @@ import DocViewer, { DocViewerRenderers } from "./docviewer";
 
   ];
 
-  return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} className="h-auto min-h-[85vh] w-full rounded-lg bg-blue-400"/>;
+  return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} className="h-auto min-h-[85vh] w-full rounded-lg"/>;
   
 }
 
