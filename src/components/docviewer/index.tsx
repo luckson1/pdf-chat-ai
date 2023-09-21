@@ -1,15 +1,15 @@
-"use client"
+"use client";
 import React, { CSSProperties, FC, ReactNode } from "react";
 
 import { HeaderBar } from "./components/HeaderBar";
 import { ProxyRenderer } from "./components/ProxyRenderer";
-
 
 import MSDocRenderer from "./plugins/msdoc";
 import PDFRenderer from "./plugins/pdf";
 import TXTRenderer from "./plugins/txt";
 import { DocRenderer, IConfig, IDocument, ITheme } from "./types";
 import { AppProvider } from "./state";
+import { Card, CardContent, CardHeader } from "../ui/card";
 export interface DocViewerProps {
   documents: IDocument[];
   className?: string;
@@ -17,11 +17,11 @@ export interface DocViewerProps {
   config?: IConfig;
   theme?: ITheme;
   pluginRenderers?: DocRenderer[];
-  children?:ReactNode
+  children?: ReactNode;
 }
 
 const DocViewer: FC<DocViewerProps> = (props) => {
-  const { documents} = props;
+  const { documents } = props;
 
   if (!documents || documents === undefined) {
     throw new Error(
@@ -31,29 +31,27 @@ const DocViewer: FC<DocViewerProps> = (props) => {
 
   return (
     <AppProvider {...props}>
-        <div
-          id="react-doc-viewer"
-         className="flex flex-col overflow-hidden w-full h-full"
-          {...props}
-        >
-          <HeaderBar />
-          <ProxyRenderer />
-        </div>
-        </AppProvider>
-  
+      <div
+        id="react-doc-viewer"
+        className="flex flex-col overflow-hidden w-full h-full"
+        {...props}
+      >
+        <Card className="w-full h-full">
+          <CardHeader>
+            <HeaderBar />
+          </CardHeader>
+          <CardContent>
+            <ProxyRenderer />
+          </CardContent>
+        </Card>
+      </div>
+    </AppProvider>
   );
 };
 
 export default DocViewer;
 
-
-
 export { DocViewerRenderers } from "./plugins";
 export * from "./types";
 export * from "./utils/fileLoaders";
-export {
- 
-  MSDocRenderer,
-  PDFRenderer,
-  TXTRenderer,
-};
+export { MSDocRenderer, PDFRenderer, TXTRenderer };
