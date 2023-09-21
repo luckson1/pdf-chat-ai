@@ -41,13 +41,14 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
     if(docName && type) {
       setName(docName)
       setIsMsDoc(msDocs.includes(type))
-     setIsPdf(type===" application/pdf")
+     setIsPdf(type==="application/pdf")
     }
     }, [docName, type])
 
   if (!type) return null
   if (!name) return null
   if (!signedUrl) return null
+
   console.log(isPdf)
   if(isPdf) {
 
