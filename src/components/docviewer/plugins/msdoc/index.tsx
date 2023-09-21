@@ -1,10 +1,15 @@
 'use client'
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DocRenderer } from "../../types";
 
 const MSDocRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
-  if (!currentDocument) return null;
-  const encodedUrl = encodeURIComponent(currentDocument.uri);
+  const [encodedUrl, setEncodedUrl]=useState<string>()
+const url=currentDocument?.uri
+useEffect(()=> {
+if(url) {
+  setEncodedUrl(encodeURIComponent(currentDocument.uri))
+}
+}, [url])
   const iFrameUrl = 'https://docs.google.com/viewer?url=' + encodedUrl + '&embedded=true';
   return (
     <div className="w-full h-full " id="msdoc-renderer">
