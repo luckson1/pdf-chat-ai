@@ -3,9 +3,9 @@ import {   useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { api } from "@/app/api/_trpc/client";
 import { Button } from "./ui/button";
-import { IconRefresh } from "./ui/icons";
+import { IconRefresh, IconSpinner } from "./ui/icons";
 
-export const DocumentViewer=({  signedUrl, docName}: {  signedUrl?:string, docName?:string} ) => {
+export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:string, docName?:string, isLoading: boolean} ) => {
   const [iFrameUrl , setIFrameUrl ]=useState<string>()
   const [name, setName]=useState<string>()
   
@@ -22,6 +22,19 @@ export const DocumentViewer=({  signedUrl, docName}: {  signedUrl?:string, docNa
 
   if (!iFrameUrl) return null
   if (!name) return null
+  if(isLoading) {
+    return (
+      <Card className="w-full h-[85vh] " id="msdoc-renderer">
+      <CardHeader>
+        .
+      </CardHeader>
+      <CardContent className="w-full h-[90%] flex justify-center items-center">
+    <IconSpinner className="w-32 h-32" />
+      </CardContent>
+      
+    </Card>
+    )
+  }
   const ctx=api.useContext()
   return (
     <Card className="w-full h-[85vh] " id="msdoc-renderer">

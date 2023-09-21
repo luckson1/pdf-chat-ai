@@ -8,12 +8,12 @@ import { api } from "@/app/api/_trpc/client";
 import { DocumentViewer } from "./s3Loader";
 
 export function ViewLoader({ id }: { id:  string}) {
-  const {data}=api.documents.getUrlInfo.useQuery({id})
+  const {data, isLoading}=api.documents.getUrlInfo.useQuery({id})
 const signedUrl=data?.signedUrl
 const docName=data?.name
 
   return (<div className="w-full h-auto">
-  <DocumentViewer signedUrl={signedUrl}  docName={docName}/>
+  <DocumentViewer signedUrl={signedUrl}  docName={docName} isLoading={isLoading}/>
   </div>)
 }
 
