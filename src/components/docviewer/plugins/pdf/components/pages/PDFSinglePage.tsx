@@ -21,19 +21,14 @@ const PDFSinglePage: FC<Props> = (props) => {
   return (
 
     //@ts-ignore
-    <div id="pdf-page-wrapper"  last={_pageNum >= numPages}>
-      {!paginated && (
-        <div id="pdf-page-info" text-left>
-          Page {_pageNum}/{numPages}
-        </div>
-      )}
+   
       <Page
         pageNumber={_pageNum || currentPage}
         scale={zoomLevel}
         height={(rendererRect?.height || 100) - 100}
         width={(rendererRect?.width || 100) - 100}
       />
-    </div>
+
   );
 };
 
