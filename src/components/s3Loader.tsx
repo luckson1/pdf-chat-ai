@@ -8,8 +8,7 @@ export const DocumentViewer=({  signedUrl, docName}: {  signedUrl?:string, docNa
   
   useEffect(()=> {
   if(signedUrl) {
-    // setIFrameUrl('https://docs.google.com/viewer?url=' + encodeURIComponent(signedUrl) + '&embedded=true')
-    setIFrameUrl(signedUrl)
+    setIFrameUrl('https://docs.google.com/viewer?url=' + encodeURIComponent(signedUrl) + '&embedded=true')
   }
   }, [signedUrl])
   useEffect(()=> {
@@ -29,7 +28,6 @@ export const DocumentViewer=({  signedUrl, docName}: {  signedUrl?:string, docNa
       </CardHeader>
       <CardContent className="w-full h-[90%]">
       <iframe
-      nonce=""
       className="w-full h-full rounded-lg"
         src={ iFrameUrl }
     
