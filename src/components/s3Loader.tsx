@@ -18,9 +18,7 @@ export const DocumentViewer=({  signedUrl, docName}: {  signedUrl?:string, docNa
   
   useEffect(()=> {
   if(signedUrl) {
-    setIFrameUrl(`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
-     signedUrl
-    )}`)
+    setIFrameUrl('https://docs.google.com/viewer?url=' + encodeURIComponent(signedUrl) + '&embedded=true')
   }
   }, [signedUrl])
   useEffect(()=> {
