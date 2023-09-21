@@ -1,6 +1,6 @@
 'use client'
 import { memo } from "react";
-import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
+import DocViewer, { DocViewerRenderers } from "./docviewer";
  function Viewer({signedUrl, type }: { signedUrl: string, type:string }) {
   const docs = [
     { uri: signedUrl, fileType:type }, 
