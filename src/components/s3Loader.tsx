@@ -8,12 +8,10 @@ import { IconRefresh, IconSpinner } from "./ui/icons";
 export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:string, docName?:string, isLoading: boolean} ) => {
   const [iFrameUrl , setIFrameUrl ]=useState<string>()
   const [name, setName]=useState<string>()
-  const [iframeKey, setIframeKey] = useState(0);
-
   const reloadIFrame = () => {
-    setIframeKey(prevKey => prevKey + 1);
+    const iframeElement = document.querySelector("iframe");
+    iframeElement?.contentWindow?.location.reload();
   };
-  
   useEffect(()=> {
   if(signedUrl) {
     setIFrameUrl('https://docs.google.com/viewer?url=' + encodeURIComponent(signedUrl) + '&embedded=true')
@@ -59,7 +57,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:st
       <iframe
       className="w-full h-full rounded-lg"
         src={ iFrameUrl }
-    key={iframeKey}
+  
       />
       </CardContent>
       
