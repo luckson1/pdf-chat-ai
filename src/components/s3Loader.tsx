@@ -1,5 +1,5 @@
 'use client'
-import { memo, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 // import DocViewer, { DocViewerRenderers } from "./docviewer";
 //  function Viewer({signedUrl, type }: { signedUrl: string, type:string }) {
@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 //   return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} className=" h-[85vh] w-full rounded-lg"/>;
   
 // }
-const Viewer=({  signedUrl, docName}: {  signedUrl?:string, docName?:string} ) => {
+export const DocumentViewer=({  signedUrl, docName}: {  signedUrl?:string, docName?:string} ) => {
   const [encodedUrl, setEncodedUrl]=useState<string>()
   const [name, setName]=useState<string>()
   
@@ -48,4 +48,3 @@ const Viewer=({  signedUrl, docName}: {  signedUrl?:string, docName?:string} ) =
   );
 };
 
-export const  DocumentViewer = memo(Viewer)

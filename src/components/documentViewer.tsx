@@ -6,7 +6,6 @@ import { useSearchParams } from "next/navigation";
 // import { DocumentViewer } from "./s3Loader";
 import { api } from "@/app/api/_trpc/client";
 import { DocumentViewer } from "./s3Loader";
-import { useEffect, useState } from "react";
 
 export function ViewLoader({ id }: { id:  string}) {
   const {data}=api.documents.getUrlInfo.useQuery({id})
