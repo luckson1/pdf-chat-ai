@@ -31,11 +31,11 @@ const Viewer=({  signedUrl, docName}: {  signedUrl?:string, docName?:string} ) =
   return (
     <Card className="w-full h-[85vh] " id="msdoc-renderer">
       <CardHeader>
-        <CardTitle>
+        <CardTitle className="h-1/12 overflow-hidden">
           {name}
         </CardTitle>
       </CardHeader>
-      <CardContent className="w-full h-full">
+      <CardContent className="w-full h-11/12">
       <iframe
       className="w-full h-full"
         id="msdoc-iframe"
