@@ -21,25 +21,25 @@ const PDFControls: FC<{}> = () => {
   const currentDocument = mainState?.currentDocument || null;
 
   return (
-    <div  className="flex sticky top-0 left-0 z-[1] justify-end p-2 shadow">
+    <div  className="flex sticky top-0 left-0 z-[1] justify-end p-2 w-full flex-col space-x-3">
       {paginated && numPages > 1 && <PDFPagination />}
 
 
-      <Button size={'sm'}
+      <Button size={'sm'} variant={'outline'}
         id="pdf-zoom-out"
         onMouseDown={() => dispatch(setZoomLevel(zoomLevel - 0.1))}
       >
         <ZoomOutPDFIcon color="#000" size="80%" />
       </Button>
 
-      <Button size={'sm'}
+      <Button size={'sm'} variant={'outline'}
         id="pdf-zoom-in"
         onMouseDown={() => dispatch(setZoomLevel(zoomLevel + 0.1))}
       >
         <ZoomInPDFIcon color="#000" size="80%" />
       </Button>
 
-      <Button size={'sm'}
+      <Button size={'sm'} variant={'outline'}
         id="pdf-zoom-reset"
         onMouseDown={() => dispatch(setZoomLevel(initialPDFState.zoomLevel))}
         disabled={zoomLevel === initialPDFState.zoomLevel}
