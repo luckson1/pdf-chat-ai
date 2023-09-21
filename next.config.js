@@ -14,8 +14,8 @@ const nextConfig = {
       })
       config.plugins.push(
       new webpack.ProvidePlugin({
-      Buffer: ["buffer", "Buffer"],
-      process: "process/browser",
+      // Buffer: ["buffer", "Buffer"],
+      // process: "process/browser",
       })
       )
       
