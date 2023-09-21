@@ -25,8 +25,10 @@ const Pages: FC<{}> = () => {
 
   return (
     <Document 
-    
-      file={currentDocument.uri}
+    file={{
+      url: currentDocument.uri
+    }}
+
       onLoadSuccess={({ numPages }) => dispatch(setNumPages(numPages))}
       loading={<span>Loading...</span>}
     >
