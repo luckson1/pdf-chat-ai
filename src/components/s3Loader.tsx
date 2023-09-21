@@ -23,7 +23,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading}: {  signedUrl?:st
     const ctx=api.useContext()
   if (!iFrameUrl) return null
   if (!name) return null
-  if(isLoading) {
+  if(isLoading || loading) {
     return (
       <Card className="w-full h-[85vh] " >
       <CardHeader>
