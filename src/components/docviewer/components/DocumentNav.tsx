@@ -1,7 +1,6 @@
 import React, { FC, useContext } from "react";
 import { DocViewerContext } from "../state";
 import { nextDocument, previousDocument } from "../state/actions";
-import { IStyledProps } from "../types";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
