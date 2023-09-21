@@ -12,9 +12,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 //   return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} className=" h-[85vh] w-full rounded-lg"/>;
   
 // }
-const Viewer=({  encodedUrl, name}: {  encodedUrl:string, name:string} ) => {
-
+const Viewer=({  signedUrl, docName}: {  signedUrl?:string, docName?:string} ) => {
+  const [encodedUrl, setEncodedUrl]=useState<string>()
+  const [name, setName]=useState<string>()
+  
+  useEffect(()=> {
+  if(signedUrl) {
+    setEncodedUrl(encodeURIComponent(signedUrl))
+  }
+  }, [signedUrl])
+  useEffect(()=> {
+    if(docName) {
+      setName(docName)
+    }
+    }, [docName])
   const iFrameUrl = 'https://docs.google.com/viewer?url=' + encodedUrl + '&embedded=true';
+  if (!encodedUrl || !name) return null
   return (
     <Card className="w-full h-[85vh] " id="msdoc-renderer">
       <CardHeader>

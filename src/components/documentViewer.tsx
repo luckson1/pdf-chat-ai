@@ -12,21 +12,9 @@ export function ViewLoader({ id }: { id:  string}) {
   const {data}=api.documents.getUrlInfo.useQuery({id})
 const signedUrl=data?.signedUrl
 const docName=data?.name
-const [encodedUrl, setEncodedUrl]=useState<string>('')
-const [name, setName]=useState<string>('')
 
-useEffect(()=> {
-if(signedUrl) {
-  setEncodedUrl(encodeURIComponent(signedUrl))
-}
-}, [signedUrl])
-useEffect(()=> {
-  if(docName) {
-    setName(docName)
-  }
-  }, [docName])
   return (<div className="w-full h-auto">
-  <DocumentViewer encodedUrl={encodedUrl}  name={name}/>
+  <DocumentViewer signedUrl={signedUrl}  docName={docName}/>
   </div>)
 }
 
