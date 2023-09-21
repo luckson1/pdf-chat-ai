@@ -14,7 +14,7 @@ export const ProxyRenderer: FC<{}> = () => {
 
   const Contents = () => {
     if (!documents.length) {
-      return <div id="no-documents">{/* No Documents */}</div>;
+      return <div id="no-documents">No Document Found</div>;
     } else if (documentLoading) {
       return (
         <div
@@ -24,7 +24,7 @@ export const ProxyRenderer: FC<{}> = () => {
         items-center
         justify-center"
         >
-            <Icons.spinner className=" h-4 w-4 animate-spin" />
+            <Icons.spinner className=" h-32 w-32 animate-spin" />
         </div>
       );
     } else {
