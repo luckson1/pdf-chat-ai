@@ -316,24 +316,26 @@ export default function DocumentPage() {
             <div className="flex flex-row w-full justify-center items-center text-sm space-x-2">
               <Button
                 variant="outline"
+              
                 size="sm"
                 onClick={() => setPage((p) => p - 1)}
                 disabled={page === 1}
               >
-                <ChevronLeft className="w-6 h-6" />
-                Previous
+                <ChevronLeft className="w-8 h-8" />
+           
               </Button>
 
               <span>Page {page}</span>
 
               <Button
                 variant="outline"
+                
                 size="sm"
                 onClick={() => setPage((p) => p + 1)}
                 disabled={hasMore}
               >
-                Next
-                <ChevronRight className="w-6 h-6" />
+            
+                <ChevronRight className="w-8 h-8" />
               </Button>
             </div>
           </div>
