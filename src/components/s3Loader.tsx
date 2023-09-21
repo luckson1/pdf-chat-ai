@@ -31,11 +31,11 @@ export const DocumentViewer=({  signedUrl, docName}: {  signedUrl?:string, docNa
   return (
     <Card className="w-full h-[85vh] " id="msdoc-renderer">
       <CardHeader>
-        <CardTitle className="h-1/12 overflow-hidden">
+        <CardTitle className="h-[90%] overflow-hidden">
           {name}
         </CardTitle>
       </CardHeader>
-      <CardContent className="w-full h-11/12">
+      <CardContent className="w-full h-[90%]">
       <iframe
       className="w-full h-full rounded-lg"
         id="msdoc-iframe"
