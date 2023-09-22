@@ -55,13 +55,14 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
 
     return (
       <Card className="w-full h-[85vh] " >
-      <CardHeader className="flex flex-row justify-end space-x-3">
-      <p>
-        Page {pageNumber} of {numPages}
-      </p>
+      <CardHeader className="flex flex-row justify-end space-x-3 items-center">
+    
       <Button  variant={'outline'} onClick={() => setPageNumber((prev) => prev - 1)} disabled={pageNumber <= 1}>
         <ChevronLeft  className="w-8 h-8"/>
       </Button>
+      <p>
+        Page {pageNumber} of {numPages}
+      </p>
       <Button  variant={'outline'} onClick={() => setPageNumber((prev) => prev + 1)} disabled={!numPages || (numPages !==undefined && pageNumber >= numPages) }>
       <ChevronRight  className="w-8 h-8"/>
       </Button>
