@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import { IconRefresh } from "./ui/icons";
 import { Document, Page, pdfjs } from "react-pdf";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import DocViewer from "./docviewer";
+import DocViewer, { DocViewerRenderers } from "./docviewer";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -88,7 +88,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
         <Page pageNumber={pageNumber}  />
         
       </Document> */}
-   <DocViewer documents={[{uri: signedUrl, fileType: "pdf"}]} />
+   <DocViewer documents={[{uri: signedUrl, fileType: "pdf"}]}  pluginRenderers={DocViewerRenderers} />
       </CardContent>
       
     </Card>
