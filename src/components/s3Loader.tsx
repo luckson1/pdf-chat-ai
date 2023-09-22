@@ -88,7 +88,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
         <Page pageNumber={pageNumber}  />
         
       </Document> */}
-   <DocViewer documents={[{uri: signedUrl, fileType: 'pdf'}]} />
+   <DocViewer documents={[{uri: signedUrl, fileType: "application/pdf"}]} />
       </CardContent>
       
     </Card>
