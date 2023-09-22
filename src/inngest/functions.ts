@@ -180,18 +180,19 @@ export const createAudioEmbeddings = inngest.createFunction(
           doc.metadata = { ...doc.metadata, userId, id:document.id };
         }
         const pineconeClient = await getPineconeClient();
-        const blob = new Blob([textSaved], { type: 'text/plain' });
-        const body = blob.stream();
+        await pineconeEmbedAndStore(pineconeClient, chunkedDocs);
+        // const blob = new Blob([textSaved], { type: 'text/plain' });
+        // const body = blob.stream();
         const params = {
           Bucket: env.BUCKET_NAME,
           Key,
-          Body: body,
+          Body: textSaved,
           ContentType: 'text/plain'
         };
     
         await s3.upload(params).promise();
 
-        await pineconeEmbedAndStore(pineconeClient, chunkedDocs);
+     
         
         
       }
