@@ -136,7 +136,7 @@ export const documentRouter = createTRPCRouter({
         const data = response.data;
         const status = response.data.status;
     
-        const Key = nanoid();
+        const Key = input.name
 
         inngest.send({
           name: "docs/audio.create",
