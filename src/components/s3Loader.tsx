@@ -1,11 +1,10 @@
 'use client'
 import {   useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { api } from "@/app/api/_trpc/client";
 import { Button } from "./ui/button";
 import { IconRefresh } from "./ui/icons";
-import { Document, Page, pdfjs } from "react-pdf";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { pdfjs } from "react-pdf";
+
 import DocViewer, { DocViewerRenderers } from "./docviewer";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -18,26 +17,8 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
   const [name, setName]=useState<string>()
   const [isMsDoc, setIsMsDoc]=useState<boolean>()
   const [isPdf, setIsPdf]=useState<boolean>()
-  const [numPages, setNumPages] = useState<number>(1);
-  const [pageNumber, setPageNumber] = useState(1);
-
-  function onDocumentLoadSuccess(num:number) {
-    setNumPages(num);
-  }
-  const reloadIFrame = () => {
-    const iframeElement = document.querySelector("iframe");
-    iframeElement?.contentWindow?.location.reload();
-  };
-  const PDFAllPages =()=> {
-
   
-    const PagesArray = [];
-    for (let i = 0; i < numPages; i++) {
-      PagesArray.push(<Page key={i + 1} pageNumber={i + 1} />);
-    }
-  
-    return <>{PagesArray}</>;
-  };
+
 
   useEffect(()=> {
   if(signedUrl) {
@@ -72,7 +53,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
           {name}
           <Button size={'sm'} variant={'outline'} >
             
-            <IconRefresh className={`w-8 h-6 }`} onClick={reloadIFrame}/>
+            <IconRefresh className={`w-8 h-6 }`} />
             Refresh
           </Button>
         </CardTitle>
