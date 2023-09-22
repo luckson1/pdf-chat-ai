@@ -13,7 +13,7 @@ import * as AWS from "aws-sdk";
 import axios, { AxiosResponse } from "axios";
 import { TranscriptionData } from "@/server/routers/documents";
 import { prisma } from "@/server/db";
-import { nanoid } from "nanoid";
+import { BufferValue } from "@/components/pdf";
 AWS.config.update({
   accessKeyId: env.ACCESS_KEY,
   secretAccessKey: env.SECRET_KEY,
@@ -161,7 +161,7 @@ export const createAudioEmbeddings = inngest.createFunction(
             key: Key,
             name: name,
             userId,
-            type: "text/plain",
+            type: "application/pdf",
           },
         });
        }
@@ -180,18 +180,18 @@ export const createAudioEmbeddings = inngest.createFunction(
           doc.metadata = { ...doc.metadata, userId, id:document.id };
         }
         const pineconeClient = await getPineconeClient();
-        await pineconeEmbedAndStore(pineconeClient, chunkedDocs);
+       
         // const blob = new Blob([textSaved], { type: 'text/plain' });
         // const body = blob.stream();
         const params = {
           Bucket: env.BUCKET_NAME,
           Key,
-          Body: textSaved,
-          ContentType: 'text/plain'
+          Body: BufferValue(utterances),
+          ContentType: 'application/pdf'
         };
     
         await s3.upload(params).promise();
-
+        await pineconeEmbedAndStore(pineconeClient, chunkedDocs);
      
         
         
