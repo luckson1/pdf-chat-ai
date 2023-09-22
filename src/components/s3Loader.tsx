@@ -72,8 +72,9 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
       <Document
         file={signedUrl}
         onLoadSuccess={e=> onDocumentLoadSuccess(e.numPages) }
+        className="pdf-document"
       >
-        <Page pageNumber={pageNumber} />
+        <Page pageNumber={pageNumber}  />
       </Document>
       </CardContent>
       

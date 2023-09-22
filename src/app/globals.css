@@ -50,6 +50,10 @@
   }
 }
 
+.pdf-document {
+  display: flex;
+  flex-wrap: wrap;
+}
 
 @layer base {
   * {
