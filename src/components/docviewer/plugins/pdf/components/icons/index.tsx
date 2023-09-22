@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
 type IIconProps= {
-  color:string, size: string, reverse?: boolean 
+  color?:string, size: string, reverse?: boolean 
 }
 export const PrevPDFNavIcon = (props: IIconProps) => {
   return <PDFNavArrow {...props} reverse />;

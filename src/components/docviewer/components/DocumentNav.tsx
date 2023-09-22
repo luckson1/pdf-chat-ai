@@ -29,22 +29,24 @@ export const DocumentNav: FC<{}> = () => {
       </p>
 
       <Button
-          size={'icon'}
+          size={'sm'}
+          variant={'outline'}
         id="doc-nav-prev"
     
         onClick={() => dispatch(previousDocument())}
         disabled={currentFileNo === 0}
       >
-        <ChevronLeft color="#fff" size="60%" />
+        <ChevronLeft  size="60%" />
       </Button>
 
       <Button
-          size={'icon'}
+          size={'sm'}
+          variant={'outline'}
         id="doc-nav-next"
         onClick={() => dispatch(nextDocument())}
         disabled={currentFileNo >= documents.length - 1}
       >
-        <ChevronRight color="#fff" size="60%" />
+        <ChevronRight  size="60%" />
       </Button>
     </div>
   );
