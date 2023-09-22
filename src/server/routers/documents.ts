@@ -7,7 +7,22 @@ import { nanoid } from "nanoid";
 import axios, { AxiosResponse } from "axios";
 import path from "path";
 
-type TranscriptionData = {
+type Uttarance= {
+  confidence:number,
+end:number,
+speaker:string,
+start:number,
+text:string
+words: Array<Word>
+}
+type Word= {
+  text:string,
+start:number,
+end:number,
+confidence:number,
+speaker:string,
+}
+export type TranscriptionData = {
   id: string;
   language_model: string;
   acoustic_model: string;
@@ -15,8 +30,8 @@ type TranscriptionData = {
   status: string;
   audio_url: string;
   text: string;
-  words: Array<string>;
-  utterances: Array<string>;
+  words: Array<Word>;
+  utterances: Array<Uttarance>;
   confidence: number;
   audio_duration: number;
   punctuate: boolean;
@@ -91,7 +106,8 @@ export const documentRouter = createTRPCRouter({
           "/transcript",
           {
             audio_url: signedUrl,
-            dual_channel: true,
+
+            speaker_labels: true
           }
         );
         const id = response.data.id;
@@ -105,6 +121,7 @@ export const documentRouter = createTRPCRouter({
     .input(z.object({ id: z.string(), name: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
+        const userId = ctx.session.user.id;
         const assembly = axios.create({
           baseURL: "https://api.assemblyai.com/v2",
           headers: {
@@ -118,36 +135,39 @@ export const documentRouter = createTRPCRouter({
         );
         const data = response.data;
         const status = response.data.status;
-        const text = response.data.text;
-        const userId = ctx.session.user.id;
+    
+        const Key = nanoid();
+
+        inngest.send({
+          name: "docs/audio.create",
+          data: {
+            userId,
+            id: input.id,
+            name: input.name,
+            Key
+          },
+        });
         if (status === "completed") {
-          const Key = nanoid();
+         console.log('success')
 
-          const document = await ctx.prisma.document.create({
-            data: {
-              key: Key,
-              name: `${input.name}.pdf`,
-              userId,
-              type: "text/plain",
-            },
-          });
+          // const document = await ctx.prisma.document.create({
+          //   data: {
+          //     key: Key,
+          //     name: `${input.name}`,
+          //     userId,
+          //     type: "text/plain",
+          //   },
+          // });
 
-          inngest.send({
-            name: "docs/audio.create",
-            data: {
-              text,
-              userId,
-              id: document.id,
-            },
-          });
+          
 
-          inngest.send({
-            name: "aws/txt.create",
-            data: {
-              text,
-              Key,
-            },
-          });
+          // inngest.send({
+          //   name: "aws/txt.create",
+          //   data: {
+          //     text,
+          //     Key,
+          //   },
+          // });
         }
         return data;
       } catch (error) {
