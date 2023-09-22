@@ -17,7 +17,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
   const [name, setName]=useState<string>()
   const [isMsDoc, setIsMsDoc]=useState<boolean>()
   const [isPdf, setIsPdf]=useState<boolean>()
-  const [numPages, setNumPages] = useState<number>();
+  const [numPages, setNumPages] = useState<number>(1);
   const [pageNumber, setPageNumber] = useState(1);
 
   function onDocumentLoadSuccess(num:number) {
@@ -27,7 +27,16 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
     const iframeElement = document.querySelector("iframe");
     iframeElement?.contentWindow?.location.reload();
   };
+  const PDFAllPages =()=> {
+
   
+    const PagesArray = [];
+    for (let i = 0; i < numPages; i++) {
+      PagesArray.push(<Page key={i + 1} pageNumber={i + 1} />);
+    }
+  
+    return <>{PagesArray}</>;
+  };
 
   useEffect(()=> {
   if(signedUrl) {
@@ -73,6 +82,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
         file={signedUrl}
         onLoadSuccess={e=> onDocumentLoadSuccess(e.numPages) }
         className="pdf-document"
+        loading={<span>Loading...</span>}
       >
         <Page pageNumber={pageNumber}  />
       </Document>
