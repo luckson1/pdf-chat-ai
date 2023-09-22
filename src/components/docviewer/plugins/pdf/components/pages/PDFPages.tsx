@@ -1,6 +1,5 @@
-
 'use client'
-import React, { FC, memo, useContext, useEffect } from "react";
+import React, { FC, useContext, useEffect } from "react";
 import { Document } from "react-pdf";
 import { PDFContext } from "../../state";
 import { setNumPages } from "../../state/actions";
@@ -8,7 +7,7 @@ import { initialPDFState } from "../../state/reducer";
 import { PDFAllPages } from "./PDFAllPages";
 import PDFSinglePage from "./PDFSinglePage";
 
-const Pages: FC<{}> = () => {
+const PDFPages: FC<{}> = () => {
   const {
     state: { mainState, paginated },
     dispatch,
@@ -18,17 +17,14 @@ const Pages: FC<{}> = () => {
 
   useEffect(() => {
     dispatch(setNumPages(initialPDFState.numPages));
-  }, []);
+  }, [currentDocument]);
 
   if (!currentDocument || currentDocument.fileData === undefined) return null;
-  console.log(currentDocument.uri)
 
   return (
     <Document 
-    file={{
-      url: currentDocument.uri
-    }}
-
+    
+      file={currentDocument.fileData}
       onLoadSuccess={({ numPages }) => dispatch(setNumPages(numPages))}
       loading={<span>Loading...</span>}
     >
@@ -37,6 +33,6 @@ const Pages: FC<{}> = () => {
   );
 };
 
-const PDFPages=memo(Pages)
+
 
 export default PDFPages;
