@@ -61,39 +61,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
   if (!signedUrl) return null
 
   console.log(isPdf)
-  if(isPdf) {
-
-    return (
-      <Card className="w-full h-[85vh] " >
-      {/* <CardHeader className="flex flex-row justify-end space-x-3 items-center">
-    
-      <Button  variant={'outline'} onClick={() => setPageNumber((prev) => prev - 1)} disabled={pageNumber <= 1}>
-        <ChevronLeft  className="w-8 h-8"/>
-      </Button>
-      <p>
-        Page {pageNumber} of {numPages}
-      </p>
-      <Button  variant={'outline'} onClick={() => setPageNumber((prev) => prev + 1)} disabled={!numPages || (numPages !==undefined && pageNumber >= numPages) }>
-      <ChevronRight  className="w-8 h-8"/>
-      </Button>
-
-      </CardHeader> */}
-      <CardContent className="w-full h-[90%] flex justify-center items-center">
-      {/* <Document
-        file={signedUrl}
-        onLoadSuccess={e=> onDocumentLoadSuccess(e.numPages) }
-        className="pdf-document"
-        loading={<span>Loading...</span>}
-      >
-        <Page pageNumber={pageNumber}  />
-        
-      </Document> */}
-   <DocViewer documents={[{uri: signedUrl, fileType: "pdf"}]}  pluginRenderers={DocViewerRenderers} />
-      </CardContent>
-      
-    </Card>
-    )
-  }
+  if(isPdf) {return  <DocViewer documents={[{uri: signedUrl, fileType: "pdf"}]}  pluginRenderers={DocViewerRenderers} />}
 
   return (
 <>
