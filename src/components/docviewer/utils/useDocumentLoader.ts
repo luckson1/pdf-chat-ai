@@ -88,7 +88,7 @@ export const useDocumentLoader = (): {
     return () => {
       controller.abort();
     };
-  }, [CurrentRenderer]);
+  }, [CurrentRenderer, currentDocument, dispatch, documentURI]);
 
   return { state, dispatch, CurrentRenderer };
 };
