@@ -24,7 +24,6 @@ speaker:string,
 }
 const styles = StyleSheet.create({
   section: {
-    color: "#f1f5f9",
     textAlign: "left",
     margin: 30,
     width: "100%",
@@ -41,18 +40,18 @@ const styles = StyleSheet.create({
 
 const MyDocument = ({ uttarances }: { uttarances: Uttarance[] }) => (
   <Document>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.section}>
+    <Page  style={styles.page}>
+   
         <Text style={{ width: "100%" }}>
           This is the transcription of your video
         </Text>
         {uttarances.map((u) => (
-          <Text style={{ width: "100%" }} key={u.text}>
+          <Text style={{ width: "100%" , marginVertical: "20px" }} key={u.text}>
             {" "}
             Speaker {u.speaker} : {u.text}
           </Text>
         ))}
-      </View>
+
     </Page>
   </Document>
 );
