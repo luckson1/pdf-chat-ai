@@ -70,7 +70,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
       </CardHeader>
       <CardContent className="w-full h-[90%] flex justify-center items-center">
       <Document
-        file={'https://prod-assignments.s3.ap-south-1.amazonaws.com/student/mgmt11learn156/23558/1633438144000.pdf'}
+        file={signedUrl}
         onLoadSuccess={e=> onDocumentLoadSuccess(e.numPages) }
       >
         <Page pageNumber={pageNumber} />
