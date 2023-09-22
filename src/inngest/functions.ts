@@ -137,7 +137,7 @@ export const createAudioEmbeddings = inngest.createFunction(
           } else if (transcriptionResult.status === 'error') {
             throw new Error(`Transcription failed`)
           } else {
-            await new Promise((resolve) => setTimeout(resolve, 3000))
+            await new Promise((resolve) => setTimeout(resolve, 5000))
           }
         }
   
@@ -183,10 +183,11 @@ export const createAudioEmbeddings = inngest.createFunction(
        
         // const blob = new Blob([textSaved], { type: 'text/plain' });
         // const body = blob.stream();
+        const Body= await BufferValue(utterances)
         const params = {
           Bucket: env.BUCKET_NAME,
           Key,
-          Body: BufferValue(utterances),
+          Body,
           ContentType: 'application/pdf'
         };
     
