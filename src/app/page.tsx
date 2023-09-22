@@ -309,7 +309,7 @@ export default function DocumentPage() {
                 href={{ pathname: "/documents/[id]", query: { id: doc.id } }}
               >
                 <Card className="w-full">
-                  <CardHeader>{doc.name}</CardHeader>
+                  <CardHeader className="underline">{doc.name}</CardHeader>
                 </Card>
               </Link>
             ))}
