@@ -144,7 +144,6 @@ export const createAudioEmbeddings = inngest.createFunction(
         const text = transcriptionData.text;
         const utterances=transcriptionData.utterances
         const textSaved=utterances.map(utterance=> `${utterance.speaker}: ${utterance.text}`).join('\n\n')
-        console.log(textSaved)
     
 
        let document
@@ -182,10 +181,11 @@ export const createAudioEmbeddings = inngest.createFunction(
         }
         const pineconeClient = await getPineconeClient();
         const blob = new Blob([textSaved], { type: 'text/plain' });
+        const body = blob.stream();
         const params = {
           Bucket: env.BUCKET_NAME,
           Key,
-          Body: blob,
+          Body: body,
           ContentType: 'text/plain'
         };
     
