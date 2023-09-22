@@ -26,7 +26,7 @@ const PDFPages: FC<{}> = () => {
     className={'pdf-document'}
       file={currentDocument.fileData}
       onLoadSuccess={({ numPages }) => dispatch(setNumPages(numPages))}
-      loading={<span>Loading...</span>}
+      loading={<span>Loading docs... </span>}
     >
       {paginated ? <PDFSinglePage /> : <PDFAllPages />}
     </Document>

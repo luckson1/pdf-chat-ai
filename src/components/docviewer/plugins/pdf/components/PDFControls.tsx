@@ -49,6 +49,7 @@ const PDFControls: FC<{}> = () => {
 
       {numPages > 1 && (
         <Button size={'sm'}
+        variant={'outline'}
           id="pdf-toggle-pagination"
           onMouseDown={() => dispatch(setPDFPaginated(!paginated))}
         >

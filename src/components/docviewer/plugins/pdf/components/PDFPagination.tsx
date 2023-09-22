@@ -12,8 +12,9 @@ const PDFPagination: FC<{}> = () => {
   } = useContext(PDFContext);
 
   return (
-    <div className='flex items-center' id="pdf-pagination">
+    <div className='flex items-center space-x-3' id="pdf-pagination">
       <Button size={'icon'}
+      variant={'outline'}
         id="pdf-pagination-prev"
         onClick={() => dispatch(setCurrentPage(currentPage - 1))}
         disabled={currentPage === 1}
@@ -26,6 +27,7 @@ const PDFPagination: FC<{}> = () => {
       </div>
 
       <Button size={'icon'}
+       variant={'outline'}
         id="pdf-pagination-next"
         onClick={() => dispatch(setCurrentPage(currentPage + 1))}
         disabled={currentPage >= numPages}
