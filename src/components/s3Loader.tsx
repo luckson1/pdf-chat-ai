@@ -3,9 +3,10 @@ import {   useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { api } from "@/app/api/_trpc/client";
 import { Button } from "./ui/button";
-import { IconRefresh, IconSpinner } from "./ui/icons";
+import { IconRefresh } from "./ui/icons";
 import { Document, Page, pdfjs } from "react-pdf";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import DocViewer from "./docviewer";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -64,7 +65,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
 
     return (
       <Card className="w-full h-[85vh] " >
-      <CardHeader className="flex flex-row justify-end space-x-3 items-center">
+      {/* <CardHeader className="flex flex-row justify-end space-x-3 items-center">
     
       <Button  variant={'outline'} onClick={() => setPageNumber((prev) => prev - 1)} disabled={pageNumber <= 1}>
         <ChevronLeft  className="w-8 h-8"/>
@@ -76,16 +77,18 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
       <ChevronRight  className="w-8 h-8"/>
       </Button>
 
-      </CardHeader>
+      </CardHeader> */}
       <CardContent className="w-full h-[90%] flex justify-center items-center">
-      <Document
+      {/* <Document
         file={signedUrl}
         onLoadSuccess={e=> onDocumentLoadSuccess(e.numPages) }
         className="pdf-document"
         loading={<span>Loading...</span>}
       >
         <Page pageNumber={pageNumber}  />
-      </Document>
+        
+      </Document> */}
+   <DocViewer documents={[{uri: signedUrl, fileType: 'pdf'}]} />
       </CardContent>
       
     </Card>
