@@ -105,9 +105,10 @@ saveMessage({role: "user", content:question, documentId:id})
         }
 
         const text = new TextDecoder().decode(value);
-        console.log(text)
-        if (text === "tokens-ended" && !tokensEnded) {
+        if (text === "tokens-ended") {
+         
           tokensEnded = true;
+          console.log(text)
         } else if (tokensEnded) {
           sourceDocuments = text;
         } else {
@@ -121,6 +122,7 @@ saveMessage({role: "user", content:question, documentId:id})
       console.log("Error occured ", error);
     } finally {
       setIsLoading(false);
+
     }
   };
 
