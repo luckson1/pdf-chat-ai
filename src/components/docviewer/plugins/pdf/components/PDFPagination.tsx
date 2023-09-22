@@ -21,7 +21,7 @@ const PDFPagination: FC<{}> = () => {
       dispatch(setCurrentPage( newPage))
     }
    
-  }, 400);
+  }, 200);
   
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     debouncedSearch(e.target.value);
