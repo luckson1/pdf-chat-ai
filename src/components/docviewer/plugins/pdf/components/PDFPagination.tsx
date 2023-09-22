@@ -15,13 +15,13 @@ const PDFPagination: FC<{}> = () => {
     const newPage= Number(e)
     if (newPage>numPages)  {
       dispatch(setCurrentPage(currentPage))
-    } else if (newPage<=0) {
+    } else if (newPage<0) {
       dispatch(setCurrentPage(currentPage))
     } else{
       dispatch(setCurrentPage( newPage))
     }
    
-  }, 1000);
+  }, 600);
   
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     debouncedSearch(e.target.value);
