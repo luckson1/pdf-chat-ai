@@ -36,7 +36,7 @@ const DocViewer: FC<DocViewerProps> = (props) => {
         className="flex flex-col overflow-hidden w-full h-full"
         {...props}
       >
-        <Card className="w-full h-full">
+        <Card className="w-full h-[85vh]">
      
           <CardContent>
           <HeaderBar />
