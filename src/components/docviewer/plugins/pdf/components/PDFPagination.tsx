@@ -15,11 +15,13 @@ const PDFPagination: FC<{}> = () => {
     const newPage= Number(e)
     if (newPage>numPages)  {
       dispatch(setCurrentPage(currentPage))
-    } else {
+    } else if (newPage<=0) {
+      dispatch(setCurrentPage(currentPage))
+    } else{
       dispatch(setCurrentPage( newPage))
     }
    
-  }, 300);
+  }, 1000);
   
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     debouncedSearch(e.target.value);
@@ -32,11 +34,11 @@ const PDFPagination: FC<{}> = () => {
         onClick={() => dispatch(setCurrentPage(currentPage - 1))}
         disabled={currentPage === 1}
       >
-       <ChevronRight className="w-6 h-6"/>
+       <ChevronLeft className="w-6 h-6"/>
       </Button>
 
-      <div  className='text-left' id="pdf-pagination-info">
-        Page <Input className="w-8" value={currentPage} onChange={handleChange}/>  /{numPages}
+      <div  className='flex flex-row space-x-1 justify-center items-center' id="pdf-pagination-info">
+        Page <Input className="w-12" value={currentPage} onChange={handleChange}/>  /{numPages}
       </div>
 
       <Button size={'icon'}
@@ -45,7 +47,7 @@ const PDFPagination: FC<{}> = () => {
         onClick={() => dispatch(setCurrentPage(currentPage + 1))}
         disabled={currentPage >= numPages}
       >
-        <ChevronLeft className="w-6 h-6"/>
+        <ChevronRight className="w-6 h-6"/>
       </Button>
     </div>
   );
