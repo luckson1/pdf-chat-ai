@@ -6,10 +6,10 @@ import { Button } from "./ui/button";
 import { IconRefresh, IconSpinner } from "./ui/icons";
 import { Document, Page, pdfjs } from "react-pdf";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-//@ts-expect-error
-import * as pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 
-pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+
+// pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedUrl?:string, docName?:string, isLoading: boolean, type?:string} ) => {
   const [msUrl , setMsUrl ]=useState<string>()
