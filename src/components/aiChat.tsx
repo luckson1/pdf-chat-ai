@@ -14,19 +14,25 @@ export function Chat({ id }: { id: string }) {
     sources?: string[];
   }
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [extendedMessages, setExtendedMessages]=useState<ExtendedMsg[]>([])
+  const [extendedMessages, setExtendedMessages] = useState<ExtendedMsg[]>([]);
   const { data: savedMessages, isSuccess } =
     api.messages.getDocumentMessages.useQuery({ id });
-    const { mutate: saveMessage } = api.messages.create.useMutation();
+  const { mutate: saveMessage } = api.messages.create.useMutation();
   const { messages, input, handleInputChange, handleSubmit, isLoading, data } =
     useChat({
       initialMessages: savedMessages,
       body: { id },
-      onFinish:  (message) => {
-        const newSources=(data[data?.length-1]?.sources) as string[] | undefined
-     
-    const newMessage={...message, sources: newSources}
- saveMessage({role: newMessage.role, content: newMessage.content, documentId: id})
+      onFinish: (message) => {
+        const newSources = data[data?.length - 1]?.sources as
+          | string[]
+          | undefined;
+
+        const newMessage = { ...message, sources: newSources };
+        saveMessage({
+          role: newMessage.role,
+          content: newMessage.content,
+          documentId: id,
+        });
       },
     });
 
@@ -34,8 +40,7 @@ export function Chat({ id }: { id: string }) {
     setTimeout(() => scrollToBottom(containerRef), 100);
   }, [messages]);
 
-
-const initialMessagesLengthPlusOne=(savedMessages?.length ?? 0)+1
+  const initialMessagesLengthPlusOne = (savedMessages?.length ?? 0) + 1;
   const extendedHandleSubmit = (
     e: React.FormEvent<HTMLFormElement>,
     input: string
@@ -46,19 +51,24 @@ const initialMessagesLengthPlusOne=(savedMessages?.length ?? 0)+1
   return (
     <div className="rounded-2xl border h-[85vh] flex flex-col justify-between">
       <div className="p-6 overflow-auto" ref={containerRef}>
-        {messages.map(({ id, role, content}: Message, index) => (
+        {messages.map(({ id, role, content }: Message, index) => (
           <ChatLine
             key={id}
             role={role}
             content={content}
             // Start from the third message of the assistant
-            sources={getSources(data, role, index, initialMessagesLengthPlusOne)}
+            sources={getSources(
+              data,
+              role,
+              index,
+              initialMessagesLengthPlusOne
+            )}
           />
         ))}
       </div>
 
       <form
-        onSubmit={(e)=>  extendedHandleSubmit(e, input)}
+        onSubmit={(e) => extendedHandleSubmit(e, input)}
         className="p-4 flex clear-both"
       >
         <Input
