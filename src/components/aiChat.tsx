@@ -23,9 +23,7 @@ export function Chat({ id }: { id: string }) {
       initialMessages: savedMessages,
       body: { id },
       onFinish: (message) => {
-        const newSources = data[data?.length - 1]?.sources as
-          | string[]
-          | undefined;
+        const newSources = data[data?.length - 1]?.sources as string[];
 
         const newMessage = { ...message, sources: newSources };
         saveMessage({
