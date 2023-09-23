@@ -19,10 +19,10 @@ export function Chat({ id }: { id: string }) {
   const { mutate: saveMessage } = api.messages.create.useMutation();
   const { messages, input, handleInputChange, handleSubmit, isLoading, data } =
     useChat({
-      initialMessages: savedMessages,
+      initialMessages: savedMessages ?? [],
       body: { id },
       onFinish: (message) => {
-        const newSources = data?.at(data?.length - 1)?.sources as string[];
+        const newSources = data?.at(data?.length - 1)?.sources as string[] | undefined;
 
         const newMessage = { ...message, sources: newSources };
         saveMessage({
