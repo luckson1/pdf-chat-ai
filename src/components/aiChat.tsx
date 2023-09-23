@@ -7,7 +7,6 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Spinner } from "./ui/spinner";
 import { useEffect, useRef, useState } from "react";
-import { ChatGPTAgent } from "@/types";
 import { api } from "@/app/api/_trpc/client";
 
 export function Chat({ id }: { id: string }) {
@@ -18,11 +17,12 @@ export function Chat({ id }: { id: string }) {
   const [extendedMessages, setExtendedMessages]=useState<ExtendedMsg[]>([])
   const { data: savedMessages, isSuccess } =
     api.messages.getDocumentMessages.useQuery({ id });
+    const { mutate: saveMessage } = api.messages.create.useMutation();
   const { messages, input, handleInputChange, handleSubmit, isLoading, data } =
     useChat({
       initialMessages: savedMessages,
       body: { id },
-      onFinish: (message) => {
+      onFinish:  (message) => {
         const newSources=(data[data?.length-1]?.sources) as string[] | undefined
      
     const newMessage={...message, sources: newSources}
@@ -34,8 +34,8 @@ export function Chat({ id }: { id: string }) {
     setTimeout(() => scrollToBottom(containerRef), 100);
   }, [messages]);
 
-  const { mutate: saveMessage } = api.messages.create.useMutation();
 
+const initialMessagesLengthPlusOne=(savedMessages?.length ?? 0)+1
   const extendedHnadleSubmit = (
     e: React.FormEvent<HTMLFormElement>,
     input: string
@@ -52,7 +52,7 @@ export function Chat({ id }: { id: string }) {
             role={role}
             content={content}
             // Start from the third message of the assistant
-            sources={getSources(data, role, index, savedMessages?.length ?? 0)}
+            sources={getSources(data, role, index, initialMessagesLengthPlusOne)}
           />
         ))}
       </div>
