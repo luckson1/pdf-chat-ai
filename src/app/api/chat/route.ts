@@ -59,7 +59,6 @@ export async function POST(req: NextRequest) {
   const messages: Message[] = body.messages ?? [];
   console.log("Messages ", messages);
   const id= body.id;
-  console.log("Doc ID ", id)
   const formattedPreviousMessages = messages.slice(0, -1).map(formatMessage);
   const question = messages[messages.length - 1]?.content;
 

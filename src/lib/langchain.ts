@@ -214,7 +214,7 @@ export async function callChain({ question, chatHistory, userId, id }: callChain
         const pageContents = firstTwoDocuments.map(
           ({ pageContent }: { pageContent: string }) => pageContent
         );
-        console.log("already appended ", data);
+        console.log("already appended ");
         data.append({
           sources: pageContents,
         });
