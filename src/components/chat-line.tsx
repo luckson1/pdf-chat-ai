@@ -149,7 +149,7 @@ const convertNewLines = (text: string) =>
   ));
 
 interface ChatLineProps extends Partial<Message> {
-  sources: string[];
+  sources?: string[];
 }
 
 export function ChatLine({

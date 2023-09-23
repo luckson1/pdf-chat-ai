@@ -52,7 +52,7 @@ export function Chat({ id }: { id: string }) {
             role={role}
             content={content}
             // Start from the third message of the assistant
-            sources={sources(role, index) ?? []}
+            sources={data?.length ? getSources(data, role, index) : []}
           />
         ))}
       </div>
