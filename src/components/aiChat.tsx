@@ -6,12 +6,16 @@ import { useChat, Message } from "ai/react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Spinner } from "./ui/spinner";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChatGPTAgent } from "@/types";
 import { api } from "@/app/api/_trpc/client";
 
 export function Chat({ id }: { id: string }) {
+  interface ExtendedMsg extends Message {
+    sources?: string[];
+  }
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [extendedMessages, setExtendedMessages]=useState<ExtendedMsg[]>([])
   const { data: savedMessages, isSuccess } =
     api.messages.getDocumentMessages.useQuery({ id });
   const { messages, input, handleInputChange, handleSubmit, isLoading, data } =
@@ -19,15 +23,13 @@ export function Chat({ id }: { id: string }) {
       initialMessages: savedMessages,
       body: { id },
       onFinish: (message) => {
-        // saveMessage({
-        //   role: message.role,
-        //   content: message.content,
-        //   documentId: id,
-        //   sources: getSources(data, message.role, messages.length),
-        // });
+        const newSources=(data[data?.length-1]?.sources) as string[]
+    const newMessage={...message, sources: newSources}
+      setExtendedMessages(prev=> [...prev, newMessage])
       },
     });
-    console.log('data', data)
+    console.log( data)
+    console.log(messages)
   const sources = (role: ChatGPTAgent, index: number) =>
     getSources(data, role, index);
   useEffect(() => {
@@ -46,13 +48,13 @@ export function Chat({ id }: { id: string }) {
   return (
     <div className="rounded-2xl border h-[75vh] flex flex-col justify-between">
       <div className="p-6 overflow-auto" ref={containerRef}>
-        {messages.map(({ id, role, content }: Message, index) => (
+        {extendedMessages.map(({ id, role, content, sources }: ExtendedMsg) => (
           <ChatLine
             key={id}
             role={role}
             content={content}
             // Start from the third message of the assistant
-            sources={data?.length ? getSources(data, role, index) : []}
+            sources={sources}
           />
         ))}
       </div>
