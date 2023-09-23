@@ -19,12 +19,12 @@ export function Chat({ id }: { id: string }) {
       initialMessages: savedMessages,
       body: { id },
       onFinish: (message) => {
-        saveMessage({
-          role: message.role,
-          content: message.content,
-          documentId: id,
-          sources: getSources(data, message.role, messages.length),
-        });
+        // saveMessage({
+        //   role: message.role,
+        //   content: message.content,
+        //   documentId: id,
+        //   sources: getSources(data, message.role, messages.length),
+        // });
       },
     });
   const sources = (role: ChatGPTAgent, index: number) =>
@@ -57,7 +57,7 @@ export function Chat({ id }: { id: string }) {
       </div>
 
       <form
-        onSubmit={(e) => extendedHnadleSubmit(e, input)}
+        onSubmit={handleSubmit}
         className="p-4 flex clear-both"
       >
         <Input
