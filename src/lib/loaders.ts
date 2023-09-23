@@ -7,11 +7,9 @@ import { env } from "./env.mjs";
 
 export async function getChunkedDocsFromPDF(blob: Blob, userId:string, id:string) {
   try {
-    console.log('got the message')
     const loader = new PDFLoader(blob);
     const docs = await loader.load();
 
-console.log(docs)
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkSize: 1000,
       chunkOverlap: 200,
