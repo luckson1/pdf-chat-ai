@@ -26,7 +26,7 @@ export default function DocumentPage() {
   const [url, setUrl] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
   const uploadToS3 = async (files: File[]) => {
     if (!files || files.length <= 0) {
       return null;
@@ -292,7 +292,7 @@ export default function DocumentPage() {
       </Tabs>
       <div className="w-full max-w-4xl flex flex-col space-y-5">
         {isLoading &&
-          Array.from({ length: 10 })
+          Array.from({ length: 5 })
             .fill(0)
             .map((_, index) => (
               <Skeleton className="w-full h-16" key={index} />
