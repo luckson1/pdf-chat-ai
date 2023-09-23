@@ -57,9 +57,10 @@ export function Chat({ id }: { id: string }) {
             content={content}
             // Start from the third message of the assistant
             sources={getSources(
-              data,
+           
               role,
               index,
+              data,
               initialMessagesLength
             )}
           />
