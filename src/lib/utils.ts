@@ -56,8 +56,9 @@ interface Data {
 }
 
 // Maps the sources with the right ai-message
-export const getSources = (data: Data[], role: string, index: number, initialMessagesLengthPlusOne: number) => {
-  if (role === "assistant" && index && data.length>0) {
+export const getSources = (data: Data[], role: string, index: number, initialMessagesLength?: number) => {
+  if (role === "assistant" && index && data.length>0 &&  initialMessagesLength) {
+    const initialMessagesLengthPlusOne=initialMessagesLength+1
     const sourcesIndex = index===1? 0: (index - initialMessagesLengthPlusOne)/2;
     if (data[sourcesIndex] && data[sourcesIndex]?.sources) {
       return data[sourcesIndex]?.sources;

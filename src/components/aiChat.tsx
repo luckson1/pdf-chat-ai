@@ -37,7 +37,9 @@ export function Chat({ id }: { id: string }) {
     setTimeout(() => scrollToBottom(containerRef), 100);
   }, [messages]);
 
-  const initialMessagesLengthPlusOne = (savedMessages?.length ?? 0) + 1;
+  const initialMessagesLength = savedMessages?.length;
+
+ 
   const extendedHandleSubmit = (
     e: React.FormEvent<HTMLFormElement>,
     input: string
@@ -58,7 +60,7 @@ export function Chat({ id }: { id: string }) {
               data,
               role,
               index,
-              initialMessagesLengthPlusOne
+              initialMessagesLength
             )}
           />
         ))}
