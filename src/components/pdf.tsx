@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
       width: 400,
     },
   },
-  page: { backgroundColor: "#f1f5f9" },
+  page: {paddingVertical: '20px'},
 });
 
 const MyDocument = ({ uttarances }: { uttarances: Uttarance[] }) => (
@@ -46,7 +46,7 @@ const MyDocument = ({ uttarances }: { uttarances: Uttarance[] }) => (
           This is the transcription of your video
         </Text>
         {uttarances.map((u) => (
-          <Text style={{ width: "100%" , marginVertical: "20px" }} key={u.text}>
+          <Text style={{ width: "100%" , marginVertical: "20px" , fontSize: '14px' , fontWeight: 'thin'}} key={u.text}>
             {" "}
             Speaker {u.speaker} : {u.text}
           </Text>
