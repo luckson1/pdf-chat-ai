@@ -56,14 +56,15 @@ console.log(newSources)
             key={id}
             role={role}
             content={content}
+           
             // Start from the third message of the assistant
-            sources={getSources(
+            sources={data?.length ? getSources(
            
               role,
               index,
               data,
               initialMessagesLength
-            )}
+            ) : []}
           />
         ))}
       </div>
