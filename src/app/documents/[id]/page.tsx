@@ -1,5 +1,5 @@
 'use client'
-import { Chat } from "@/components/chat";
+import { Chat } from "@/components/aiChat";
 import MainDocumentViewer from "@/components/documentViewer";
 import { useSearchParams } from "next/navigation";
 

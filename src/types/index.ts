@@ -1,4 +1,4 @@
-export type ChatGPTAgent = "user" | "assistant";
+export type ChatGPTAgent = "user" | "assistant" | "system" | "function";
 
 export interface ChatGPTMessage {
   role: ChatGPTAgent;

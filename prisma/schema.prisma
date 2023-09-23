@@ -70,6 +70,8 @@ model Document {
 enum ChatRole {
   user
   assistant
+   system
+   function
 }
 
 model Message {
