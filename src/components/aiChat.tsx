@@ -27,7 +27,7 @@ export function Chat({ id }: { id: string }) {
         // });
       },
     });
-    console.log(data)
+    console.log('data', data)
   const sources = (role: ChatGPTAgent, index: number) =>
     getSources(data, role, index);
   useEffect(() => {

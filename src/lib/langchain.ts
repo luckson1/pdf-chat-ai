@@ -214,7 +214,7 @@ export async function callChain({ question, chatHistory, userId, id }: callChain
         const pageContents = firstTwoDocuments.map(
           ({ pageContent }: { pageContent: string }) => pageContent
         );
-        console.log("already appended ", pageContents );
+        console.log("already appended ", data);
         data.append({
           sources: pageContents,
         });
@@ -223,6 +223,7 @@ export async function callChain({ question, chatHistory, userId, id }: callChain
 
     // Return the readable stream
     return new StreamingTextResponse(stream, {}, data);
+
   } catch (e) {
     console.error(e);
     throw new Error("Call chain method failed to execute successfully!!");
