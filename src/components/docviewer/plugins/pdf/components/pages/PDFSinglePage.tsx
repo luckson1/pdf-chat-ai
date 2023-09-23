@@ -23,8 +23,8 @@ const PDFSinglePage: FC<Props> = (props) => {
       
         pageNumber={_pageNum}
         scale={zoomLevel}
-        height={(rendererRect?.height || 100) - 100}
-        width={(rendererRect?.width || 100) - 100}
+        // height={(rendererRect?.height || 100) - 100}
+        // width={(rendererRect?.width || 100) - 100}
       />
       
   
