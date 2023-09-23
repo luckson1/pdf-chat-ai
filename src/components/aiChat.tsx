@@ -1,6 +1,6 @@
 "use client";
 
-import { scrollToBottom, getSources } from "@/lib/utils";
+import { scrollToBottom, getSources, initialMessages } from "@/lib/utils";
 import { ChatLine } from "./chat-line";
 import { useChat, Message } from "ai/react";
 import { Input } from "./ui/input";
@@ -20,7 +20,7 @@ export function Chat({ id }: { id: string }) {
     api.messages.getDocumentMessages.useQuery({ id });
   const { messages, input, handleInputChange, handleSubmit, isLoading, data } =
     useChat({
-      initialMessages: savedMessages,
+      initialMessages: initialMessages,
       body: { id },
       onFinish: (message) => {
         const newSources=(data[data?.length-1]?.sources) as string[] | undefined
