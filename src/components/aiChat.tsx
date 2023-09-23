@@ -23,7 +23,7 @@ export function Chat({ id }: { id: string }) {
       initialMessages: savedMessages,
       body: { id },
       onFinish: (message) => {
-        const newSources=(data[data?.length-1]?.sources) as string[]
+        const newSources=(data[data?.length-1]?.sources) as string[] | undefined
     const newMessage={...message, sources: newSources}
       setExtendedMessages(prev=> [...prev, newMessage])
       },
