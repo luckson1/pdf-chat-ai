@@ -24,6 +24,7 @@ export function Chat({ id }: { id: string }) {
       body: { id },
       onFinish: (message) => {
         const newSources=(data[data?.length-1]?.sources) as string[] | undefined
+        console.log(newSources)
     const newMessage={...message, sources: newSources}
       setExtendedMessages(prev=> [...prev, newMessage])
       },
@@ -48,13 +49,13 @@ export function Chat({ id }: { id: string }) {
   return (
     <div className="rounded-2xl border h-[75vh] flex flex-col justify-between">
       <div className="p-6 overflow-auto" ref={containerRef}>
-        {extendedMessages.map(({ id, role, content, sources }: ExtendedMsg) => (
+        {messages.map(({ id, role, content}: Message, index) => (
           <ChatLine
             key={id}
             role={role}
             content={content}
             // Start from the third message of the assistant
-            sources={sources}
+            sources={getSources(data, role, index)}
           />
         ))}
       </div>
