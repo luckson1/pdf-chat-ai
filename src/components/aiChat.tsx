@@ -14,7 +14,6 @@ export function Chat({ id }: { id: string }) {
     sources?: string[];
   }
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [extendedMessages, setExtendedMessages] = useState<ExtendedMsg[]>([]);
   const { data: savedMessages, isSuccess } =
     api.messages.getDocumentMessages.useQuery({ id });
   const { mutate: saveMessage } = api.messages.create.useMutation();
@@ -23,7 +22,7 @@ export function Chat({ id }: { id: string }) {
       initialMessages: savedMessages,
       body: { id },
       onFinish: (message) => {
-        const newSources = data[data?.length - 1]?.sources as string[];
+        const newSources = data?.at(data?.length - 1)?.sources as string[];
 
         const newMessage = { ...message, sources: newSources };
         saveMessage({
