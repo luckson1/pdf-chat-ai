@@ -80,6 +80,7 @@
 //   );
 // }
 
+'use client'
 import {
   Card,
   CardContent,
@@ -100,7 +101,7 @@ import { formattedText } from "@/lib/utils";
 import { User2Icon } from "lucide-react";
 import { IconOpenAI } from "./ui/icons";
 import { ChatMessage } from "./chat_message";
-'use client'
+
 
 
 import { Button } from '@/components/ui/button'
