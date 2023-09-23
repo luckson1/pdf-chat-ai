@@ -36,7 +36,7 @@ export function Chat({ id }: { id: string }) {
 
 
 const initialMessagesLengthPlusOne=(savedMessages?.length ?? 0)+1
-  const extendedHnadleSubmit = (
+  const extendedHandleSubmit = (
     e: React.FormEvent<HTMLFormElement>,
     input: string
   ) => {
@@ -58,7 +58,7 @@ const initialMessagesLengthPlusOne=(savedMessages?.length ?? 0)+1
       </div>
 
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e)=>  extendedHandleSubmit(e, input)}
         className="p-4 flex clear-both"
       >
         <Input
