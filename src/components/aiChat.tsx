@@ -33,7 +33,7 @@ export function Chat({ id }: { id: string }) {
                     sources:newMessage.sources
                   });
        
-        }, 100);
+        }, 2000);
 
       },
     });
