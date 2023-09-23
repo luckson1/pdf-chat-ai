@@ -161,7 +161,6 @@ export function ChatLine({
     return null;
   }
   const formattedMessage = convertNewLines(content);
-console.log(sources)
   return (
     <div>
       <Card className="mb-2">
