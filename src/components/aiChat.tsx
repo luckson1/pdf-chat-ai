@@ -45,7 +45,7 @@ export function Chat({ id }: { id: string }) {
     saveMessage({ role: "user", content: input, documentId: id });
   };
   return (
-    <div className="rounded-2xl border h-[75vh] flex flex-col justify-between">
+    <div className="rounded-2xl border h-[85vh] flex flex-col justify-between">
       <div className="p-6 overflow-auto" ref={containerRef}>
         {messages.map(({ id, role, content}: Message, index) => (
           <ChatLine
