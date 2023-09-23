@@ -29,8 +29,6 @@ export function Chat({ id }: { id: string }) {
       setExtendedMessages(prev=> [...prev, newMessage])
       },
     });
-    console.log( data)
-    console.log(messages)
   const sources = (role: ChatGPTAgent, index: number) =>
     getSources(data, role, index);
   useEffect(() => {
