@@ -22,15 +22,19 @@ export function Chat({ id }: { id: string }) {
       initialMessages: savedMessages ?? [],
       body: { id },
       onFinish: (message) => {
-        const newSources = data?.at(data?.length - 1)?.sources as string[] | undefined;
-console.log(newSources)
-        const newMessage = { ...message, sources: newSources };
-        saveMessage({
-          role: newMessage.role,
-          content: newMessage.content,
-          documentId: id,
-          sources:newMessage.sources
-        });
+        setTimeout(() => {
+          const newSources = data?.at(data?.length - 1)?.sources as string[] | undefined;
+          console.log(newSources)
+                  const newMessage = { ...message, sources: newSources };
+                  saveMessage({
+                    role: newMessage.role,
+                    content: newMessage.content,
+                    documentId: id,
+                    sources:newMessage.sources
+                  });
+       
+        }, 100);
+
       },
     });
 
