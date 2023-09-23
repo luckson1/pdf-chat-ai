@@ -242,7 +242,6 @@ export const createPdfDocs = inngest.createFunction(
         return s3.getSignedUrl("getObject", params);
       }
       const signedUrl = generateSignedUrl();
-      console.log("url", signedUrl);
       async function fetchBlobFromSignedUrl(signedUrl: string) {
         try {
           const response = await fetch(signedUrl);

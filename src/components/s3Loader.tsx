@@ -41,7 +41,6 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
   if (!name) return null
   if (!signedUrl) return null
 
-  console.log(isPdf)
   if(isPdf) {return  <DocViewer documents={[{uri: signedUrl, fileType: "pdf"}]}  pluginRenderers={DocViewerRenderers} />}
 
   return (

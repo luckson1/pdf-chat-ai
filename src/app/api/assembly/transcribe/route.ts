@@ -23,7 +23,6 @@ export async function POST(req: Request) {
   try {
     const keySchema = z.string()
     const { key } = await req.json();
-    console.log(key)
     const isValidKey = keySchema.safeParse(key);
     if (!isValidKey.success) {
       throw new TRPCError({
@@ -55,7 +54,6 @@ export async function POST(req: Request) {
       audio_url: signedUrl,
     });
     const data=response.data
-console.log(data)
    return NextResponse.json({data})
   } catch (error) {
     console.log(error);

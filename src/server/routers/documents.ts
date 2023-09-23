@@ -62,7 +62,6 @@ export const documentRouter = createTRPCRouter({
         const extention=path.extname(input.name).slice(1)
         const isPdf=extention==='pdf'
         if (isPdf) {
-          console.log('this is a pdf')
           inngest.send({
             name: 'docs/pdf.create',
             data: { Key: input.key, userId: document.userId, id: document.id },
