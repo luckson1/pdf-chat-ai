@@ -1,6 +1,6 @@
 "use client";
 
-import { scrollToBottom, initialMessages, getSources } from "@/lib/utils";
+import { scrollToBottom,  getSources } from "@/lib/utils";
 import { ChatLine } from "./chat-line";
 import { useChat, Message } from "ai/react";
 import { Input } from "./ui/input";
@@ -8,18 +8,30 @@ import { Button } from "./ui/button";
 import { Spinner } from "./ui/spinner";
 import { useEffect, useRef } from "react";
 import { ChatGPTAgent } from "@/types";
+import { api } from "@/app/api/_trpc/client";
 
 export function Chat({id}: {id: string}) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const { messages, input, handleInputChange, handleSubmit, isLoading, data } =
+  const {data: savedMessages, isSuccess}=api.messages.getDocumentMessages.useQuery({id })
+  const { messages, input, handleInputChange, handleSubmit, isLoading, data , } =
     useChat({
-      initialMessages,
-      body: {id}
+      initialMessages: savedMessages,
+      body: {id},
+      onFinish: (message)=> {
+        saveMessage({role: message.role, content: message.content, documentId: id, sources: getSources(data, message.role, messages.length )})
+        // addToHistory({documentId: id, question: message.})
+      }
+    
     });
 const sources= (role: ChatGPTAgent, index: number)=> getSources(data, role, index) 
   useEffect(() => {
     setTimeout(() => scrollToBottom(containerRef), 100);
   }, [messages]);
+
+
+
+const {mutate: saveMessage}=api.messages.create.useMutation()
+
 
   return (
     <div className="rounded-2xl border h-[75vh] flex flex-col justify-between">
