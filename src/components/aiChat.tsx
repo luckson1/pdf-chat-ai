@@ -20,17 +20,16 @@ export function Chat({ id }: { id: string }) {
     api.messages.getDocumentMessages.useQuery({ id });
   const { messages, input, handleInputChange, handleSubmit, isLoading, data } =
     useChat({
-      initialMessages: initialMessages,
+      initialMessages: savedMessages,
       body: { id },
       onFinish: (message) => {
         const newSources=(data[data?.length-1]?.sources) as string[] | undefined
-        console.log(newSources)
+     
     const newMessage={...message, sources: newSources}
-      setExtendedMessages(prev=> [...prev, newMessage])
+ saveMessage({role: newMessage.role, content: newMessage.content, documentId: id})
       },
     });
-  const sources = (role: ChatGPTAgent, index: number) =>
-    getSources(data, role, index);
+
   useEffect(() => {
     setTimeout(() => scrollToBottom(containerRef), 100);
   }, [messages]);
@@ -53,7 +52,7 @@ export function Chat({ id }: { id: string }) {
             role={role}
             content={content}
             // Start from the third message of the assistant
-            sources={getSources(data, role, index)}
+            sources={getSources(data, role, index, savedMessages?.length ?? 0)}
           />
         ))}
       </div>
