@@ -29,6 +29,7 @@ console.log(newSources)
           role: newMessage.role,
           content: newMessage.content,
           documentId: id,
+          sources:newMessage.sources
         });
       },
     });
