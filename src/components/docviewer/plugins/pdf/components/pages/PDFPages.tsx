@@ -29,7 +29,7 @@ const PDFPages: FC<{}> = () => {
       loading={<span>Loading docs... </span>}
     >
       
-      {<PDFSinglePage /> }
+      {paginated ? <PDFSinglePage /> : <PDFAllPages />}
     </Document>
   );
 };
