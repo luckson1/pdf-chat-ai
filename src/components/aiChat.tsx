@@ -69,7 +69,7 @@ export function Chat({ id }: { id: string }) {
     ) 
   }
   return []
-  }, [dataLength, savedMessages?.length])
+  }, [data, dataLength, savedMessages?.length])
   return (
     <div className="rounded-2xl border h-[85vh] flex flex-col justify-between">
       <div className="p-6 overflow-auto" ref={containerRef}>
