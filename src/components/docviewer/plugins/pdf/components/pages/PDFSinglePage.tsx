@@ -10,12 +10,7 @@ interface PageWrapperProps {
   last?: boolean;
   children: ReactNode
 }
-const PageWrapper = ({last, children}:PageWrapperProps)=> {
-  return (<div>
-{children}
-  </div>)
-  
-}
+
 const PDFSinglePage: FC<Props> = (props) => {
   const { pageNum } = props;
 
@@ -29,7 +24,7 @@ const PDFSinglePage: FC<Props> = (props) => {
 
 
   return (
-    <PageWrapper last={_pageNum >= numPages}>
+
       <Page
       
         pageNumber={_pageNum}
@@ -38,7 +33,7 @@ const PDFSinglePage: FC<Props> = (props) => {
         width={(rendererRect?.width || 100) - 100}
       />
       
-      </PageWrapper>
+
   );
 };
 
