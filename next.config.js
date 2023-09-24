@@ -18,10 +18,10 @@ const nextConfig = {
       process: "process/browser",
       })
       )
-    config.module.rules.push({
-          test: /\.node/,
-         use: 'raw-loader',
-        });
+    // config.module.rules.push({
+    //       test: /\.node/,
+    //      use: 'raw-loader',
+    //     });
       return config;
   },
 };
