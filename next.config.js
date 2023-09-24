@@ -10,7 +10,7 @@ const nextConfig = {
     config.experiments = { ...config.experiments, topLevelAwait: true, };
     config.externals.push({
       sharp: "commonjs sharp",
-      canvas: "commonjs canvas",
+      // canvas: "commonjs canvas",
       })
       config.plugins.push(
       new webpack.ProvidePlugin({
