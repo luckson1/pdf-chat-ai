@@ -49,7 +49,7 @@ export function Chat({ id }: { id: string }) {
                
                  
     
-  }, [newMessage, id, dataLength]);
+  }, [newMessage, id]);
 
  
 
