@@ -13,83 +13,85 @@ export function Chat({ id }: { id: string }) {
   interface ExtendedMsg extends Message {
     sources?: string[];
   }
-  const [newMessage, setNewMessage]=useState<string>()
+  const [newAnswer, setNewAnswer] = useState<string>();
+  const [newQuestion, setNewQuestion] = useState<string>();
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const { data: savedMessages, isSuccess } =
-    api.messages.getDocumentMessages.useQuery({ id });
+  const { data: savedMessages } = api.messages.getDocumentMessages.useQuery({
+    id,
+  });
   const { mutate: saveMessage } = api.messages.create.useMutation();
   const { messages, input, handleInputChange, handleSubmit, isLoading, data } =
     useChat({
       initialMessages: savedMessages ?? [],
       body: { id },
       onFinish: (message) => {
-      setNewMessage(message.content)
-
+        setNewAnswer(message.content);
       },
     });
+  const saveQuestionAndAnswer = (
+    newQuestion: string,
+    newAnswer: string,
+    newSources?: string[]
+  ) => {
+    saveMessage({ role: "user", content: newQuestion, documentId: id });
+    saveMessage({
+      role: "assistant",
+      content: newAnswer,
+      documentId: id,
+      sources: newSources,
+    });
+    setNewQuestion(undefined);
+    setNewAnswer(undefined);
+  };
 
   useEffect(() => {
     setTimeout(() => scrollToBottom(containerRef), 100);
   }, [messages]);
-  const dataLength=data?.length as number | undefined
+  const dataLength = data?.length as number | undefined;
 
   useEffect(() => {
-    const newSources = data?.at((dataLength ?? 0) - 1)?.sources as string[] | undefined
-  if(newMessage) {
-    console.log('got the message')
-    setTimeout(() =>     saveMessage({
-      role: 'assistant',
-      content: newMessage,
-      documentId: id,
-      sources:newSources
-    }), 100);
+    const newSources = data?.at((dataLength ?? 0) - 1)?.sources as
+      | string[]
+      | undefined;
+    if (newAnswer && newSources && newQuestion) {
+      setTimeout(
+        () => saveQuestionAndAnswer(newQuestion, newAnswer, newSources),
+        100
+      );
+    }
+  }, [newAnswer, id, dataLength, newQuestion]);
 
-  }
-       
-               
-                 
-    
-  }, [newMessage, id]);
-
- 
-
- 
   const extendedHandleSubmit = (
     e: React.FormEvent<HTMLFormElement>,
     input: string
   ) => {
     handleSubmit(e);
-    saveMessage({ role: "user", content: input, documentId: id });
+    setNewQuestion(input);
   };
-  const handleGetSources= useCallback((role: string, index: number)=> {
-    const initialMessagesLength = savedMessages?.length;
- 
-  
-   
-  if (dataLength) {
-   return getSources(
-           
-      role,
-      index,
-      data,
-      initialMessagesLength ?? 0
-    ) 
-  }
-  return []
-  }, [dataLength, savedMessages?.length])
+  const handleGetSources = useCallback(
+    (role: string, index: number) => {
+      const initialMessagesLength = savedMessages?.length;
+
+      if (dataLength) {
+        return getSources(role, index, data, initialMessagesLength ?? 0);
+      }
+      return [];
+    },
+    [dataLength, savedMessages?.length]
+  );
   return (
     <div className="rounded-2xl border h-[85vh] flex flex-col justify-between">
       <div className="p-6 overflow-auto" ref={containerRef}>
-        {messages.length>0 && messages.map(({ id, role, content }: Message, index) => (
-          <ChatLine
-            key={id}
-            role={role}
-            content={content}
-           
-            // Start from the third message of the assistant
-            sources={handleGetSources(role, index)}
-          />
-        ))}
+        {messages.length > 0 &&
+          messages.map(({ id, role, content, sources }: ExtendedMsg, index) => (
+            <ChatLine
+              key={id}
+              role={role}
+              content={content}
+              // Start from the third message of the assistant
+              sources={sources ?? handleGetSources(role, index)}
+            />
+          ))}
       </div>
 
       <form
