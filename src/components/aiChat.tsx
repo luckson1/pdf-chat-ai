@@ -59,7 +59,6 @@ export function Chat({ id }: { id: string }) {
   
    
   if (dataLength) {
-    console.log(dataLength)
    return getSources(
            
       role,
@@ -69,7 +68,7 @@ export function Chat({ id }: { id: string }) {
     ) 
   }
   return []
-  }, [data, dataLength, savedMessages?.length])
+  }, [dataLength, savedMessages?.length])
   return (
     <div className="rounded-2xl border h-[85vh] flex flex-col justify-between">
       <div className="p-6 overflow-auto" ref={containerRef}>
