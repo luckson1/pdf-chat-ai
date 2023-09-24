@@ -42,7 +42,7 @@ export function Chat({ id }: { id: string }) {
     setTimeout(() => scrollToBottom(containerRef), 100);
   }, [messages]);
 
-  const initialMessagesLength = savedMessages?.length;
+ 
 
  
   const extendedHandleSubmit = (
@@ -52,8 +52,10 @@ export function Chat({ id }: { id: string }) {
     handleSubmit(e);
     saveMessage({ role: "user", content: input, documentId: id });
   };
-  const dataLength=data?.length as number | undefined
+
   const handleGetSources= useCallback((role: string, index: number)=> {
+    const initialMessagesLength = savedMessages?.length;
+    const dataLength=data?.length as number | undefined
   if ((initialMessagesLength)&& (dataLength && dataLength>0)) {
    return getSources(
            
@@ -64,7 +66,7 @@ export function Chat({ id }: { id: string }) {
     ) 
   }
   return []
-  }, [dataLength, initialMessagesLength])
+  }, [data, savedMessages?.length])
   return (
     <div className="rounded-2xl border h-[85vh] flex flex-col justify-between">
       <div className="p-6 overflow-auto" ref={containerRef}>
