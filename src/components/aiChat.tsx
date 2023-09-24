@@ -13,6 +13,7 @@ export function Chat({ id }: { id: string }) {
   interface ExtendedMsg extends Message {
     sources?: string[];
   }
+  const [newMessage, setNewMessage]=useState<string>()
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { data: savedMessages, isSuccess } =
     api.messages.getDocumentMessages.useQuery({ id });
@@ -22,18 +23,7 @@ export function Chat({ id }: { id: string }) {
       initialMessages: savedMessages ?? [],
       body: { id },
       onFinish: (message) => {
-        // setTimeout(() => {
-        //   const newSources = data?.at(data?.length - 1)?.sources as string[] | undefined;
-       
-        //           const newMessage = { ...message, sources: newSources };
-        //           saveMessage({
-        //             role: newMessage.role,
-        //             content: newMessage.content,
-        //             documentId: id,
-        //             sources:newMessage.sources
-        //           });
-       
-        // }, 2000);
+      setNewMessage(message.content)
 
       },
     });
@@ -41,6 +31,26 @@ export function Chat({ id }: { id: string }) {
   useEffect(() => {
     setTimeout(() => scrollToBottom(containerRef), 100);
   }, [messages]);
+  const messagesLength=messages?.length
+  const dataLength=data?.length as number | undefined
+
+  useEffect(() => {
+    const newSources = data?.at((dataLength ?? 0) - 1)?.sources as string[] | undefined
+  if(newMessage) {
+    console.log('got the message')
+    setTimeout(() =>     saveMessage({
+      role: 'assistant',
+      content: newMessage,
+      documentId: id,
+      sources:newSources
+    }), 100);
+
+  }
+       
+               
+                 
+    
+  }, [saveMessage, newMessage, id, dataLength]);
 
  
 
@@ -52,7 +62,6 @@ export function Chat({ id }: { id: string }) {
     handleSubmit(e);
     saveMessage({ role: "user", content: input, documentId: id });
   };
-  const dataLength=data?.length as number | undefined
   const handleGetSources= useCallback((role: string, index: number)=> {
     const initialMessagesLength = savedMessages?.length;
  
@@ -85,8 +94,8 @@ export function Chat({ id }: { id: string }) {
       </div>
 
       <form
-        // onSubmit={(e) => extendedHandleSubmit(e, input)}
-        onSubmit={handleSubmit}
+        onSubmit={(e) => extendedHandleSubmit(e, input)}
+        // onSubmit={handleSubmit}
         className="p-4 flex clear-both"
       >
         <Input
