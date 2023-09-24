@@ -14,14 +14,14 @@ const nextConfig = {
       })
       config.plugins.push(
       new webpack.ProvidePlugin({
-      // Buffer: ["buffer", "Buffer"],
-      // process: "process/browser",
+      Buffer: ["buffer", "Buffer"],
+      process: "process/browser",
       })
       )
-    // config.module.rules.push({
-    //       test: /\.node/,
-    //      use: 'raw-loader',
-    //     });
+    config.module.rules.push({
+          test: /\.node/,
+         use: 'raw-loader',
+        });
       return config;
   },
 };
