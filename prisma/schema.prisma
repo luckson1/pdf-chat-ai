@@ -62,6 +62,8 @@ model Document {
   key     String    @unique
   type    String
   user    User      @relation(fields: [userId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt  @default(now())
   userId  String
   Message Message[]
   QAPairs QAPairs[]
@@ -84,6 +86,7 @@ model Message {
 
   userId     String
   documentId String
+  createdAt DateTime @default(now())
 }
 
 model QAPairs {

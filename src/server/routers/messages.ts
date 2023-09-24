@@ -23,6 +23,9 @@ export const messageRouter = createTRPCRouter({
          const messages= await ctx.prisma.message.findMany({
             where: {
                 documentId: input.id
+            },
+            orderBy: {
+               createdAt: 'desc' 
             }
         })
      return messages
