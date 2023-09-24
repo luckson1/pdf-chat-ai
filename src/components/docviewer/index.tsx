@@ -32,7 +32,7 @@ const DocViewer: FC<DocViewerProps> = (props) => {
   return (
     
     
-        <Card className="w-full h-[85vh]  flex justify-center items-center  bg-[#eee] z-30 overflow-hidden">
+        <Card className="w-full h-[85vh]  flex justify-center items-center  bg-[#eee] z-30">
      
     
           <AppProvider {...props}>
@@ -56,4 +56,4 @@ export default DocViewer;
 export { DocViewerRenderers } from "./plugins";
 export * from "./types";
 export * from "./utils/fileLoaders";
-export { MSDocRenderer, PDFRenderer, TXTRenderer };
+export { PDFRenderer};
