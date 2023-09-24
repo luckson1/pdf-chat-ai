@@ -31,7 +31,6 @@ export function Chat({ id }: { id: string }) {
   useEffect(() => {
     setTimeout(() => scrollToBottom(containerRef), 100);
   }, [messages]);
-  const messagesLength=messages?.length
   const dataLength=data?.length as number | undefined
 
   useEffect(() => {
@@ -50,7 +49,7 @@ export function Chat({ id }: { id: string }) {
                
                  
     
-  }, [saveMessage, newMessage, id, dataLength]);
+  }, [newMessage, id, dataLength]);
 
  
 
