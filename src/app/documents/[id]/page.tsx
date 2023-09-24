@@ -9,7 +9,7 @@ export default function Home() {
   if(!id) return null
   return (
   
-        <main className="w-full flex flex-col-reverse lg:flex-row space-y-5 md:space-y-0 md:space-x-5">
+        <main className="w-full flex flex-col-reverse lg:flex-row space-y-5 lg:space-y-0 lg:space-x-5">
           <div className="w-full max-w-4xl h-auto">
 <MainDocumentViewer />
           </div>
