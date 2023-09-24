@@ -58,14 +58,14 @@ export function Chat({ id }: { id: string }) {
  
   
    
-  if ((initialMessagesLength && initialMessagesLength>=0) && (dataLength && dataLength>=1)) {
+  if (dataLength) {
     console.log(dataLength)
    return getSources(
            
       role,
       index,
       data,
-      initialMessagesLength
+      initialMessagesLength ?? 0
     ) 
   }
   return []
