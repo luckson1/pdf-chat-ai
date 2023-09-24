@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { Input } from "postcss";
 
 export const messageRouter = createTRPCRouter({
 
@@ -25,7 +24,7 @@ export const messageRouter = createTRPCRouter({
                 documentId: input.id
             },
             orderBy: {
-               createdAt: 'desc' 
+               createdAt: 'asc' 
             }
         })
      return messages
