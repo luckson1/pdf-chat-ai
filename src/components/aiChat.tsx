@@ -53,7 +53,7 @@ export function Chat({ id }: { id: string }) {
     saveMessage({ role: "user", content: input, documentId: id });
   };
   const dataLength=data?.length as number | undefined
-  const handleGetSources= useCallback((role: string, index: number, initialMessagesLength?: number , dataLength?: number)=> {
+  const handleGetSources= useCallback((role: string, index: number)=> {
   if ((initialMessagesLength)&& (dataLength && dataLength>0)) {
    return getSources(
            
@@ -64,7 +64,7 @@ export function Chat({ id }: { id: string }) {
     ) 
   }
   return []
-  }, [dataLength])
+  }, [dataLength, initialMessagesLength])
   return (
     <div className="rounded-2xl border h-[85vh] flex flex-col justify-between">
       <div className="p-6 overflow-auto" ref={containerRef}>
@@ -75,7 +75,7 @@ export function Chat({ id }: { id: string }) {
             content={content}
            
             // Start from the third message of the assistant
-            sources={handleGetSources(role, index, initialMessagesLength, dataLength)}
+            sources={handleGetSources(role, index)}
           />
         ))}
       </div>
