@@ -57,6 +57,7 @@ export function Chat({ id }: { id: string }) {
     const initialMessagesLength = savedMessages?.length;
     const dataLength=data?.length as number | undefined
   if ((initialMessagesLength)&& (dataLength && dataLength>0)) {
+    console.log(dataLength)
    return getSources(
            
       role,
