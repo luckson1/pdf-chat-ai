@@ -31,18 +31,20 @@ const DocViewer: FC<DocViewerProps> = (props) => {
 
   return (
     <AppProvider {...props}>
-      <div
-        className="flex flex-col overflow-hidden w-full h-full"
-        {...props}
-      >
+    
         <Card className="w-full h-[85vh]">
      
           <CardContent className="w-full h-full overflow-hidden">
+          <div
+        className="flex flex-col overflow-hidden bg-[#eee]"
+        {...props}
+      >
           <HeaderBar />
             <ProxyRenderer />
+            </div>
           </CardContent>
         </Card>
-      </div>
+   
     </AppProvider>
   );
 };
