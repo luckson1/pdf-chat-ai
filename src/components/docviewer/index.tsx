@@ -36,13 +36,13 @@ const DocViewer: FC<DocViewerProps> = (props) => {
      
     
           <AppProvider {...props}>
-          <div
+          <CardContent
         className="flex flex-col  overflow-hidden bg-[#eee]"
         {...props}
       >
           <HeaderBar />
             <ProxyRenderer />
-            </div>
+            </CardContent>
             </AppProvider>
     
         </Card>
