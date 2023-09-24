@@ -32,7 +32,7 @@ const DocViewer: FC<DocViewerProps> = (props) => {
   return (
     
     
-        <Card className="w-full h-[85vh] py-10">
+        <Card className="w-full h-[85vh] py-10 flex justify-center items-center">
      
     
           <AppProvider {...props}>
