@@ -16,7 +16,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const PDFRenderer: DocRenderer = ({ mainState }) => {
   return (
     <PDFProvider mainState={mainState}>
-      <div className="flex flex-col h-full w-fit overflow-hidden">
+      <div className="flex flex-col h-full w-fit overflow-y-auto">
         <PDFControls />
         <PDFPages />
       </div>

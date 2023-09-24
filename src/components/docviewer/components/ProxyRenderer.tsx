@@ -50,7 +50,7 @@ export const ProxyRenderer: FC<{}> = () => {
 
   return (
     <div className="  flex w-full h-full
-    flex-1 overflow-hidden">
+    flex-1 overflow-y-auto">
       <Contents />
     </div>
   );
