@@ -56,7 +56,7 @@ export function Chat({ id }: { id: string }) {
   const handleGetSources= useCallback((role: string, index: number)=> {
     const initialMessagesLength = savedMessages?.length;
     const dataLength=data?.length as number | undefined
-  if ((initialMessagesLength)&& (dataLength && dataLength>0)) {
+  if (initialMessagesLength && data) {
     console.log(dataLength)
    return getSources(
            
