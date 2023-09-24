@@ -14,7 +14,7 @@ export const ProxyRenderer: FC<{}> = () => {
 
   const Contents = () => {
     if (!documents.length) {
-      return <div id="no-documents">No Document Found</div>;
+      return <div >No Document Found</div>;
     } else if (documentLoading) {
       return (
         <div
@@ -34,10 +34,10 @@ export const ProxyRenderer: FC<{}> = () => {
         return null;
       } else {
         return (
-          <div id="no-renderer" data-testid="no-renderer">
+          <div>
             No Renderer for file type {currentDocument?.fileType}
             <Button
-              id="no-renderer-download"
+           
               // download={currentDocument?.uri}
             >
               Download File

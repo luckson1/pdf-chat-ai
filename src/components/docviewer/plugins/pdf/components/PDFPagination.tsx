@@ -27,23 +27,23 @@ const PDFPagination: FC<{}> = () => {
     debouncedSearch(e.target.value);
   }
   return (
-    <div className='flex items-center space-x-3' id="pdf-pagination">
+    <div className='flex items-center space-x-3' >
       <Button size={'icon'}
       variant={'outline'}
-        id="pdf-pagination-prev"
+ 
         onClick={() => dispatch(setCurrentPage(currentPage - 1))}
         disabled={currentPage === 1}
       >
        <ChevronLeft className="w-6 h-6"/>
       </Button>
 
-      <div  className='flex flex-row space-x-2 justify-center items-center' id="pdf-pagination-info">
+      <div  className='flex flex-row space-x-2 justify-center items-center' >
        <p>Page</p> <Input className="w-12" value={currentPage} onChange={(e)=>handleChange(e)}/>  / <p>{numPages}</p>
       </div>
 
       <Button size={'icon'}
        variant={'outline'}
-        id="pdf-pagination-next"
+     
         onClick={() => dispatch(setCurrentPage(currentPage + 1))}
         disabled={currentPage >= numPages}
       >

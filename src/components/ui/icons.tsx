@@ -21,7 +21,7 @@ function IconNextChat({
     >
       <defs>
         <linearGradient
-          id={`gradient-${id}-1`}
+  
           x1="10.6889"
           y1="10.3556"
           x2="13.8445"
@@ -36,7 +36,7 @@ function IconNextChat({
           />
         </linearGradient>
         <linearGradient
-          id={`gradient-${id}-2`}
+     
           x1="11.7555"
           y1="4.8"
           x2="11.7376"
@@ -60,7 +60,7 @@ function IconNextChat({
         strokeLinejoin="round"
       />
       <mask
-        id="mask0_91_2047"
+  
         style={{ maskType: 'alpha' }}
         maskUnits="userSpaceOnUse"
         x={1}

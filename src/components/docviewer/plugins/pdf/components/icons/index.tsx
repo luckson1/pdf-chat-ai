@@ -22,21 +22,21 @@ const PDFNavArrow = (props: IIconProps) => {
       version="1.1"
     >
       <g
-        id="Icons"
+   
         stroke="none"
         strokeWidth="1"
         fill="none"
         fillRule="evenodd"
       >
-        <g id="Rounded" transform="translate(-548.000000, -1000.000000)">
-          <g id="AV" transform="translate(100.000000, 852.000000)">
+        <g  transform="translate(-548.000000, -1000.000000)">
+          <g  transform="translate(100.000000, 852.000000)">
             <g
-              id="-Round-/-AV-/-skip_next"
+          
               transform="translate(442.000000, 142.000000)"
             >
               <g>
                 <rect
-                  id="Rectangle-Copy-52"
+            
                   x="0"
                   y="0"
                   width="24"
@@ -44,7 +44,7 @@ const PDFNavArrow = (props: IIconProps) => {
                 ></rect>
                 <path
                   d="M7.58,16.89 L13.35,12.82 C13.91,12.42 13.91,11.58 13.35,11.19 L7.58,7.11 C6.91,6.65 6,7.12 6,7.93 L6,16.07 C6,16.88 6.91,17.35 7.58,16.89 Z M16,7 L16,17 C16,17.55 16.45,18 17,18 C17.55,18 18,17.55 18,17 L18,7 C18,6.45 17.55,6 17,6 C16.45,6 16,6.45 16,7 Z"
-                  id="icon_color"
+               
                   fill={color || "#aaa"}
                 ></path>
               </g>
@@ -63,7 +63,7 @@ export const DownloadPDFIcon = (props: IIconProps) => {
       width={size || "100%"}
       height={size || "100%"}
       style={{ transform: `${reverse ? "rotate(180deg)" : ""}` }}
-      id="Layer_1"
+   
       viewBox="0 0 24 24"
     >
       <path
@@ -96,15 +96,15 @@ const ZoomPDFIcon = (props: IIconProps) => {
       version="1.1"
     >
       <g
-        id="Page-1"
+
         stroke="none"
         strokeWidth="1"
         fill="none"
         fillRule="evenodd"
       >
-        <g id="search-plus-icon" fill={color || "#aaa"}>
+        <g  fill={color || "#aaa"}>
           <path
-            id="search-plus"
+      
             d={
               reverse
                 ? "M 13 13 L 16 13 L 19 13 L 19 16 L 16 16 L 13 16 L 10 16 L 10 13 Z M 19.4271 21.4271 C 18.0372 22.4175 16.3367 23 14.5 23 C 9.8056 23 6 19.1944 6 14.5 C 6 9.8056 9.8056 6 14.5 6 C 19.1944 6 23 9.8056 23 14.5 C 23 16.3367 22.4175 18.0372 21.4271 19.4271 L 27.0119 25.0119 C 27.5621 25.5621 27.5575 26.4425 27.0117 26.9883 L 26.9883 27.0117 C 26.4439 27.5561 25.5576 27.5576 25.0119 27.0119 L 19.4271 21.4271 L 19.4271 21.4271 L 19.4271 21.4271 Z M 14.5 21 C 18.0899 21 21 18.0899 21 14.5 C 21 10.9101 18.0899 8 14.5 8 C 10.9101 8 8 10.9101 8 14.5 C 8 18.0899 10.9101 21 14.5 21 L 14.5 21 Z"
@@ -137,7 +137,7 @@ export const TogglePaginationPDFIcon = (props: IIconProps) => {
       height={size || "100%"}
       style={{ transform: `${reverse ? "rotate(90deg)" : ""}` }}
       version="1.1"
-      id="Scroll_1"
+  
       viewBox="0 0 297 297"
       xmlSpace="preserve"
     >

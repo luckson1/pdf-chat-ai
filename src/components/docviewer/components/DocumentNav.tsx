@@ -22,16 +22,16 @@ export const DocumentNav: FC<{}> = () => {
   }
 
   return (
-    <div id="doc-nav" className="min-w-[150px] flex flex-row items-center justify-end py-3 ">
+    <div className="min-w-[150px] flex flex-row items-center justify-end py-3 ">
     
-      <p id="doc-nav-info">
+      <p >
         Doc {currentFileNo + 1} of {documents.length}
       </p>
 
       <Button
           size={'sm'}
           variant={'outline'}
-        id="doc-nav-prev"
+ 
     
         onClick={() => dispatch(previousDocument())}
         disabled={currentFileNo === 0}
@@ -42,7 +42,7 @@ export const DocumentNav: FC<{}> = () => {
       <Button
           size={'sm'}
           variant={'outline'}
-        id="doc-nav-next"
+     
         onClick={() => dispatch(nextDocument())}
         disabled={currentFileNo >= documents.length - 1}
       >

@@ -9,7 +9,7 @@ import PDFRenderer from "./plugins/pdf";
 import TXTRenderer from "./plugins/txt";
 import { DocRenderer, IConfig, IDocument, ITheme } from "./types";
 import { AppProvider } from "./state";
-import { Card, CardContent, CardHeader } from "../ui/card";
+import { Card, CardContent } from "../ui/card";
 export interface DocViewerProps {
   documents: IDocument[];
   className?: string;
@@ -32,7 +32,6 @@ const DocViewer: FC<DocViewerProps> = (props) => {
   return (
     <AppProvider {...props}>
       <div
-        id="react-doc-viewer"
         className="flex flex-col overflow-hidden w-full h-full"
         {...props}
       >

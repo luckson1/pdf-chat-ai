@@ -26,21 +26,21 @@ const PDFControls: FC<{}> = () => {
 
 
       <Button size={'sm'} variant={'outline'}
-        id="pdf-zoom-out"
+        
         onMouseDown={() => dispatch(setZoomLevel(zoomLevel - 0.1))}
       >
         <ZoomOutPDFIcon  size="80%" />
       </Button>
 
       <Button size={'sm'} variant={'outline'}
-        id="pdf-zoom-in"
+  
         onMouseDown={() => dispatch(setZoomLevel(zoomLevel + 0.1))}
       >
         <ZoomInPDFIcon  size="80%" />
       </Button>
 
       <Button size={'sm'} variant={'outline'}
-        id="pdf-zoom-reset"
+   
         onMouseDown={() => dispatch(setZoomLevel(initialPDFState.zoomLevel))}
         disabled={zoomLevel === initialPDFState.zoomLevel}
       >
@@ -50,7 +50,7 @@ const PDFControls: FC<{}> = () => {
       {numPages > 1 && (
         <Button size={'sm'}
         variant={'outline'}
-          id="pdf-toggle-pagination"
+     
           onMouseDown={() => dispatch(setPDFPaginated(!paginated))}
         >
           <TogglePaginationPDFIcon

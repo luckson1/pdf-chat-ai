@@ -12,10 +12,10 @@ if(url) {
 }, [url])
   const iFrameUrl = 'https://docs.google.com/viewer?url=' + encodedUrl + '&embedded=true';
   return (
-    <div className="w-full h-full " id="msdoc-renderer">
+    <div className="w-full h-full " >
       <iframe
       className="w-full h-[70vh]"
-        id="msdoc-iframe"
+      
         title="msdoc-iframe"
         src={ iFrameUrl }
       />
