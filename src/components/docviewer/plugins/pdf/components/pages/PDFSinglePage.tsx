@@ -1,47 +1,55 @@
-import React, { FC, ReactNode, useContext } from "react";
+'use client'
+import React, { FC, useContext } from "react";
 import { Page } from "react-pdf";
+import styled from "styled-components";
 import { PDFContext } from "../../state";
-import { Page as PgWrap} from '@react-pdf/renderer'
 
 interface Props {
   pageNum?: number;
 }
-interface PageWrapperProps {
-  last?: boolean;
-  children: ReactNode
-}
-const PageWrapper = ({last, children}:PageWrapperProps)=> {
-  return (<PgWrap wrap>
-{children}
-  </PgWrap>)
-  
-}
+
 const PDFSinglePage: FC<Props> = (props) => {
   const { pageNum } = props;
 
   const {
-    state: { mainState,  zoomLevel, currentPage,  numPages },
+    state: { mainState, paginated, zoomLevel, numPages, currentPage },
   } = useContext(PDFContext);
 
   const rendererRect = mainState?.rendererRect || null;
 
   const _pageNum = pageNum || currentPage;
 
-
   return (
-    <PageWrapper last={_pageNum >= numPages}>
+    <PageWrapper id="pdf-page-wrapper" last={_pageNum >= numPages}>
+      {!paginated && (
+        <PageTag id="pdf-page-info">
+          Page {_pageNum}/{numPages}
+        </PageTag>
+      )} 
       <Page
-      
-        pageNumber={_pageNum}
+        pageNumber={_pageNum || currentPage}
         scale={zoomLevel}
         height={(rendererRect?.height || 100) - 100}
         width={(rendererRect?.width || 100) - 100}
       />
-      
-      </PageWrapper>
+    </PageWrapper>
   );
 };
 
 export default PDFSinglePage;
 
+interface PageWrapperProps {
+  last?: boolean;
+}
+const PageWrapper = styled.div<PageWrapperProps>`
+  margin: 20px 0;
+`;
+const PageTag = styled.div`
+  padding: 0 0 10px 10px;
+  font-size: 14px;
+  text-align: left;
 
+  @media (max-width: 768px) {
+    font-size: 10px;
+  }
+`;
