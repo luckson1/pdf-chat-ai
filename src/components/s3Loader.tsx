@@ -3,9 +3,8 @@ import {   useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { IconRefresh } from "./ui/icons";
-import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 
-// import DocViewer, { DocViewerRenderers } from "./docviewer";
+import DocViewer, { DocViewerRenderers } from "./docviewer";
 
 
 
