@@ -6,7 +6,7 @@ import { useChat, Message } from "ai/react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Spinner } from "./ui/spinner";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "@/app/api/_trpc/client";
 
 export function Chat({ id }: { id: string }) {
@@ -22,18 +22,18 @@ export function Chat({ id }: { id: string }) {
       initialMessages: savedMessages ?? [],
       body: { id },
       onFinish: (message) => {
-        setTimeout(() => {
-          const newSources = data?.at(data?.length - 1)?.sources as string[] | undefined;
-          console.log(newSources)
-                  const newMessage = { ...message, sources: newSources };
-                  saveMessage({
-                    role: newMessage.role,
-                    content: newMessage.content,
-                    documentId: id,
-                    sources:newMessage.sources
-                  });
+        // setTimeout(() => {
+        //   const newSources = data?.at(data?.length - 1)?.sources as string[] | undefined;
        
-        }, 2000);
+        //           const newMessage = { ...message, sources: newSources };
+        //           saveMessage({
+        //             role: newMessage.role,
+        //             content: newMessage.content,
+        //             documentId: id,
+        //             sources:newMessage.sources
+        //           });
+       
+        // }, 2000);
 
       },
     });
@@ -52,6 +52,19 @@ export function Chat({ id }: { id: string }) {
     handleSubmit(e);
     saveMessage({ role: "user", content: input, documentId: id });
   };
+  const dataLength=data?.length as number | undefined
+  const handleGetSources= useCallback((role: string, index: number, initialMessagesLength?: number , dataLength?: number)=> {
+  if ((initialMessagesLength)&& (dataLength && dataLength>0)) {
+   return getSources(
+           
+      role,
+      index,
+      data,
+      initialMessagesLength
+    ) 
+  }
+  return []
+  }, [dataLength])
   return (
     <div className="rounded-2xl border h-[85vh] flex flex-col justify-between">
       <div className="p-6 overflow-auto" ref={containerRef}>
@@ -62,19 +75,14 @@ export function Chat({ id }: { id: string }) {
             content={content}
            
             // Start from the third message of the assistant
-            sources={data?.length ? getSources(
-           
-              role,
-              index,
-              data,
-              initialMessagesLength
-            ) : []}
+            sources={handleGetSources(role, index, initialMessagesLength, dataLength)}
           />
         ))}
       </div>
 
       <form
-        onSubmit={(e) => extendedHandleSubmit(e, input)}
+        // onSubmit={(e) => extendedHandleSubmit(e, input)}
+        onSubmit={handleSubmit}
         className="p-4 flex clear-both"
       >
         <Input
