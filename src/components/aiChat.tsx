@@ -52,13 +52,13 @@ export function Chat({ id }: { id: string }) {
     handleSubmit(e);
     saveMessage({ role: "user", content: input, documentId: id });
   };
-
+  const dataLength=data?.length as number | undefined
   const handleGetSources= useCallback((role: string, index: number)=> {
     const initialMessagesLength = savedMessages?.length;
  
-    const dataLength=data?.length as number | undefined
-    console.log(dataLength)
-  if (initialMessagesLength && data) {
+  
+   
+  if ((initialMessagesLength && initialMessagesLength>=0) && (dataLength && dataLength>=1)) {
     console.log(dataLength)
    return getSources(
            
@@ -69,7 +69,7 @@ export function Chat({ id }: { id: string }) {
     ) 
   }
   return []
-  }, [data, savedMessages?.length])
+  }, [dataLength, savedMessages?.length])
   return (
     <div className="rounded-2xl border h-[85vh] flex flex-col justify-between">
       <div className="p-6 overflow-auto" ref={containerRef}>
