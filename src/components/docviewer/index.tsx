@@ -37,7 +37,7 @@ const DocViewer: FC<DocViewerProps> = (props) => {
     
           <AppProvider {...props}>
           <div
-        className="flex flex-col flex-1 overflow-hidden bg-[#eee] mx-auto"
+        className="flex flex-col overflow-hidden bg-[#eee] relative"
         {...props}
       >
           <HeaderBar />
