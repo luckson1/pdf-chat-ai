@@ -7,7 +7,7 @@ import { nanoid } from "nanoid";
 
 const summaryMessage = {
   heading: "Summarize the source document",
-  message: `Summarize all the context and extract any key points with reasoning. The summary should highlight the core argument, conclusions and evidence`,
+  message: `Summarize all the context and extract any key points with reasoning. Highlight the core argument, and evidence`,
 };
 function QuestionsButtonGroup(props: { content: string ,   setInput: Dispatch<SetStateAction<string>>;}) {
     // Check if the content has question marks
