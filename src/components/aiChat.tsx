@@ -8,6 +8,7 @@ import { Button } from "./ui/button";
 import { Spinner } from "./ui/spinner";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "@/app/api/_trpc/client";
+import { EmptyScreen } from "./empty_screen";
 
 export function Chat({ id }: { id: string }) {
   interface ExtendedMsg extends Message {
@@ -20,7 +21,7 @@ export function Chat({ id }: { id: string }) {
     id,
   });
   const { mutate: saveMessage } = api.messages.create.useMutation();
-  const { messages, input, handleInputChange, handleSubmit, isLoading, data } =
+  const { messages, input,setInput, handleInputChange, handleSubmit, isLoading, data } =
     useChat({
       initialMessages: savedMessages ?? [],
       body: { id },
@@ -82,6 +83,7 @@ export function Chat({ id }: { id: string }) {
   return (
     <div className="rounded-2xl border h-[85vh] flex flex-col justify-between">
       <div className="p-6 overflow-auto" ref={containerRef}>
+        {messages.length<=0 && <EmptyScreen setInput={setInput} />}
         {messages.length > 0 &&
           messages.map(({ id, role, content, sources }: ExtendedMsg, index) => (
             <ChatLine
