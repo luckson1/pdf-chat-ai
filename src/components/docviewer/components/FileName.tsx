@@ -22,7 +22,7 @@ export const FileName: FC<{}> = () => {
   }
 
   return (
-    <div className="flex-1, text-left font-semibold my-2 overflow-hidden text-primary-foreground">
+    <div className="flex-1, text-left font-semibold my-2 overflow-hidden text-foreground">
       {fileName}
     </div>
   );

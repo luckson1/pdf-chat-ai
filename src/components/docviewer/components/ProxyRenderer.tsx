@@ -25,7 +25,7 @@ export const ProxyRenderer: FC<{}> = () => {
         items-center
         justify-center"
         >
-            <Icons.spinner className=" h-32 w-32 animate-spin text-primary-foreground" />
+            <Icons.spinner className=" h-32 w-32 animate-spin text-foregroundeg" />
         </div>
       );
     } else {

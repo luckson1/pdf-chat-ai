@@ -27,7 +27,7 @@ const PDFPagination: FC<{}> = () => {
     debouncedSearch(e.target.value);
   }
   return (
-    <div className='flex items-center space-x-3 text-primary-foreground' >
+    <div className='flex items-center space-x-3 text-foreground' >
       <Button size={'icon'}
       variant={'outline'}
  
