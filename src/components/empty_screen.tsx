@@ -9,33 +9,31 @@ const summaryMessage = {
   heading: "Summarize the source document",
   message: `Summarize all the context and extract any key points with reasoning. The summary should highlight the core argument, conclusions and evidence`,
 };
-function QuestionsButtonGroup(props: {
-  content: string;
-  setInput: Dispatch<SetStateAction<string>>;
-}) {
-  // Check if the content has question marks
-  if (!props.content.includes("?")) {
-    return null; // Return null (or any other appropriate JSX) if no questions are detected
+function QuestionsButtonGroup(props: { content: string ,   setInput: Dispatch<SetStateAction<string>>;}) {
+    // Check if the content has question marks
+    if (!props.content.includes('?')) {
+      return null; // Return null (or any other appropriate JSX) if no questions are detected
+    }
+  
+    // Splitting the content based on question marks
+    const questions = props.content.split('?')
+      .map(question => 
+        // Remove common bullet point characters, numbers followed by dots, and trim spaces
+        question.replace(/^(•|−|-|\d+\.)\s*/, '').trim() + '?'
+      ) 
+      // Filter out any non-questions or empty strings
+      .filter(question => question.endsWith('?') && question.length > 1); 
+  
+    return (
+      <div>
+        {questions.map((question, index) => (
+          <button key={index} onClick={() => console.log(question)}>
+            {question}
+          </button>
+        ))}
+      </div>
+    );
   }
-  // Splitting the content based on question marks
-  const questions = props.content.split("?").filter((q) => q.trim() !== "");
-
-  return (
-    <div>
-      {questions.map((question, index) => (
-        <Button
-          key={index}
-          onClick={() => props.setInput(question)}
-          variant="link"
-          className="h-auto p-0 text-base"
-        >
-          <IconArrowRight className="mr-2 text-muted-foreground" />
-          {question.trim() + "?"}
-        </Button>
-      ))}
-    </div>
-  );
-}
 
 export function EmptyScreen({
   setInput,
@@ -79,10 +77,11 @@ export function EmptyScreen({
             <IconArrowRight className="mr-2 text-muted-foreground" />
             {summaryMessage.heading}
           </Button>
-          {content && (
+        
+        </div>
+        {content && (
             <QuestionsButtonGroup setInput={setInput} content={content} />
           )}
-        </div>
       </div>
     </div>
   );
