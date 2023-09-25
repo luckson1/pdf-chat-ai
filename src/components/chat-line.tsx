@@ -106,9 +106,9 @@ export function ChatLine({
                   <AccordionItem value={`source-${index}`} key={index}>
                     <AccordionTrigger>{`Source ${index + 1}`}</AccordionTrigger>
                     <AccordionContent>
-                      <ReactMarkdown linkTarget="_blank">
-                        {formattedText(source)}
-                      </ReactMarkdown>
+                   
+                      <ChatMessage message={source} />
+                   
                     </AccordionContent>
                   </AccordionItem>
                 ))}

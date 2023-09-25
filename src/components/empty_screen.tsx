@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { IconArrowRight } from "@/components/ui/icons";
 import { Dispatch, SetStateAction, useCallback, useEffect } from "react";
 import { nanoid } from "nanoid";
+import { ChatMessage } from "./chat_message";
 
 const summaryMessage = {
   heading: "Summarize the source document",
@@ -33,8 +34,9 @@ function QuestionsButtonGroup(props: { content: string ,   setInput: Dispatch<Se
         className="h-auto p-0 text-base mt-3 flex flex-row justify-start items-center text-start"
         onClick={() => props.setInput(question)}
       >
-       
-        {question}
+            <IconArrowRight className="mr-2 text-muted-foreground h-4 w-4" />
+          <ChatMessage message=  {question} />
+      
       </Button>
         ))}
       </div>
@@ -81,7 +83,8 @@ export function EmptyScreen({
             onClick={() => setInput(summaryMessage.message)}
           >
           <IconArrowRight className="mr-2 text-muted-foreground h-4 w-4" />
-            {summaryMessage.heading}
+          <ChatMessage message={summaryMessage.heading} />
+            
           </Button>
         
         </div>
