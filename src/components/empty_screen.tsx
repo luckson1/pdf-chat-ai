@@ -56,7 +56,7 @@ export function EmptyScreen({
     const id = nanoid();
     append({
       content:
-        "provide summarize the entire context in form of bullet points of 3 well thought out questions ONLY. The questions should focus on the main concepts covered by the entire context.",
+        "provide summarize the entire context in form of numbered list of 3 well thought out questions ONLY. The questions should focus on the main concepts covered by the entire context.",
       id,
       role: "user",
     });
