@@ -5,8 +5,8 @@ import { IconArrowRight } from '@/components/ui/icons'
 
 const exampleMessages = [
   {
-    heading: 'Explain technical concepts',
-    message: `What is a "serverless function"?`
+    heading: 'Summarize the source document',
+    message: `Summarize the context and extract any key points with reasoning`
   },
   {
     heading: 'Summarize an article',
