@@ -16,7 +16,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const PDFRenderer: DocRenderer = ({ mainState }) => {
   return (
     <PDFProvider mainState={mainState}>
-      <div className="flex flex-col  flex-1 overflow-y-hidden text-white scrollbar-track-primary, scrollbar-thumb-primary">
+      <div className="flex flex-col  flex-1 overflow-y-hidden text-white scrollbar-track-primary, scrollbar-thumb-primary bg-slate-100">
         <PDFControls />
         <PDFPages />
       </div>
