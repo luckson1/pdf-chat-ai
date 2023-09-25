@@ -21,7 +21,7 @@ export const HeaderBar: FC<{}> = () => {
     return override;
   } else {
     return (
-      <div className="flex justify-end z-[1] p-1 md:py-3 md:min-h-[50px] min-h-[30px]" >
+      <div className="flex justify-end z-[1] p-1 md:py-3 md:min-h-[50px] min-h-[30px] text-primary-foreground" >
         <FileName />
         <DocumentNav />
       </div>
