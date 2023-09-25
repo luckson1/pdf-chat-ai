@@ -19,7 +19,7 @@ function QuestionsButtonGroup(props: { content: string ,   setInput: Dispatch<Se
     const questions = props.content.split('?')
       .map(question => 
         // Remove common bullet point characters, numbers followed by dots, and trim spaces
-        question.replace(/^(•|−|-|\d+\.)\s*/, '').trim() + '?'
+        question + '?'
       ) 
       // Filter out any non-questions or empty strings
       .filter(question => question.endsWith('?') && question.length > 1); 
@@ -30,11 +30,11 @@ function QuestionsButtonGroup(props: { content: string ,   setInput: Dispatch<Se
         <Button
         key={index}
         variant="link"
-        className="h-auto p-0 text-base mt-2 flex flex-row justify-start items-center text-start"
+        className="h-auto p-0 text-sm mt-2 flex flex-row justify-start items-center text-start"
         onClick={() => props.setInput(question)}
       >
         <IconArrowRight className="mr-2 text-muted-foreground" />
-        {question}
+        {question.replace(/^(•|−|-|\d+\.)\s*/, '').trim()}
       </Button>
         ))}
       </div>
