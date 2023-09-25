@@ -83,8 +83,8 @@ export function Chat({ id }: { id: string }) {
   return (
     <div className="rounded-2xl border h-[85vh] flex flex-col justify-between">
       <div className="p-6 overflow-auto" ref={containerRef}>
-        {messages.length<=0 && <EmptyScreen setInput={setInput} />}
-        {messages.length > 0 &&
+        {!isLoading && messages.length<=0 && <EmptyScreen setInput={setInput} id={id}/>}
+        {!isLoading && messages.length > 0 &&
           messages.map(({ id, role, content, sources }: ExtendedMsg, index) => (
             <ChatLine
               key={id}
