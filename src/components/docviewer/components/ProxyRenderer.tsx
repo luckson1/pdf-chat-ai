@@ -21,6 +21,7 @@ export const ProxyRenderer: FC<{}> = () => {
           className="flex
         flex-1
     h-full
+    min-h-[600px]
         items-center
         justify-center"
         >
@@ -50,7 +51,7 @@ export const ProxyRenderer: FC<{}> = () => {
 
   return (
     <div className="
-    flex-1 overflow-hidden text-white">
+    flex-1 overflow-y-auto text-white">
       <Contents />
     </div>
   );
