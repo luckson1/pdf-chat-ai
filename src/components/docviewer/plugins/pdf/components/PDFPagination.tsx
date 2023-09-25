@@ -34,11 +34,11 @@ const PDFPagination: FC<{}> = () => {
         onClick={() => dispatch(setCurrentPage(currentPage - 1))}
         disabled={currentPage === 1}
       >
-       <ChevronLeft className="w-6 h-6"/>
+       <ChevronLeft className="w-5 h-5"/>
       </Button>
 
       <div  className='flex flex-row space-x-2 justify-center items-center' >
-       <p>Page</p> <Input className="w-12" value={currentPage} onChange={(e)=>handleChange(e)}/>  / <p>{numPages}</p>
+       <p>Page</p> <Input className="w-12" value={currentPage} onChange={(e)=>handleChange(e)}/> {" "} /  {" "}<p>{numPages}</p>
       </div>
 
       <Button size={'icon'}
@@ -47,7 +47,7 @@ const PDFPagination: FC<{}> = () => {
         onClick={() => dispatch(setCurrentPage(currentPage + 1))}
         disabled={currentPage >= numPages}
       >
-        <ChevronRight className="w-6 h-6"/>
+        <ChevronRight className="w-5 h-5"/>
       </Button>
     </div>
   );
