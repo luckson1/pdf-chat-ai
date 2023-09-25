@@ -21,7 +21,7 @@ const PDFControls: FC<{}> = () => {
   const currentDocument = mainState?.currentDocument || null;
 
   return (
-    <div  className="flex sticky top-0 left-0 z-[1] justify-end p-2 w-full flex-row space-x-3">
+    <div  className="flex sticky top-0 left-0 z-[1] justify-end p-2 w-full flex-row space-x-3 text-primary-foreground">
       {paginated && numPages > 1 && <PDFPagination />}
 
 
