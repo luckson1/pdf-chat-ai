@@ -25,12 +25,12 @@ function QuestionsButtonGroup(props: { content: string ,   setInput: Dispatch<Se
       .filter(question => question.endsWith('?') && question.length > 1); 
   
     return (
-        <div className="mt-4 flex flex-col items-start space-y-2">
+        <div className="mt-4 flex flex-col items-start">
         {questions.map((question, index) => (
         <Button
         key={index}
         variant="link"
-        className="h-auto p-0 text-base"
+        className="h-auto p-0 text-base mt-2"
         onClick={() => props.setInput(question)}
       >
         <IconArrowRight className="mr-2 text-muted-foreground" />
