@@ -34,7 +34,7 @@ function QuestionsButtonGroup(props: { content: string ,   setInput: Dispatch<Se
         className="h-auto p-0 text-base mt-3 flex flex-row justify-start items-center text-start"
         onClick={() => props.setInput(question)}
       >
-            <IconArrowRight className="mr-2 text-muted-foreground h-4 w-4" />
+
           <ChatMessage message=  {question} />
       
       </Button>
@@ -82,8 +82,8 @@ export function EmptyScreen({
             className="h-auto p-0 text-base"
             onClick={() => setInput(summaryMessage.message)}
           >
-          <IconArrowRight className="mr-2 text-muted-foreground h-4 w-4" />
-          <ChatMessage message={summaryMessage.heading} />
+ 
+          <ChatMessage message={`- ${summaryMessage.heading}`} />
             
           </Button>
         
