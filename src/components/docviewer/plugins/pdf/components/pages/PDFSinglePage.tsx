@@ -24,7 +24,7 @@ const PDFSinglePage: FC<Props> = (props) => {
 
 
   return (
-
+<div className="hidden">
       <Page
       
         pageNumber={_pageNum}
@@ -33,7 +33,7 @@ const PDFSinglePage: FC<Props> = (props) => {
         width={(rendererRect?.width || 100) - 100}
       />
       
-
+      </div>
   );
 };
 
