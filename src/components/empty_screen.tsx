@@ -34,7 +34,7 @@ function QuestionsButtonGroup(props: { content: string ,   setInput: Dispatch<Se
         onClick={() => props.setInput(question)}
       >
         <IconArrowRight className="mr-2 text-muted-foreground" />
-        {summaryMessage.heading}
+        {question}
       </Button>
         ))}
       </div>
