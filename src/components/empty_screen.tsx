@@ -33,7 +33,7 @@ function QuestionsButtonGroup(props: { content: string ,   setInput: Dispatch<Se
         className="h-auto p-0 text-base mt-2 flex flex-row justify-start items-center text-start"
         onClick={() => props.setInput(question)}
       >
-        <IconArrowRight className="mr-2 text-muted-foreground" />
+        <IconArrowRight className="mr-2 text-muted-foreground h-4 w-4" />
         {question.replace(/^(•|−|-|\d+\.)\s*/, '').trim()}
       </Button>
         ))}
@@ -80,7 +80,7 @@ export function EmptyScreen({
             className="h-auto p-0 text-base"
             onClick={() => setInput(summaryMessage.message)}
           >
-            <IconArrowRight className="mr-2 text-muted-foreground" />
+          <IconArrowRight className="mr-2 text-muted-foreground h-4 w-4" />
             {summaryMessage.heading}
           </Button>
         
