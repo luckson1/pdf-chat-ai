@@ -6,6 +6,7 @@ import { DocRenderer } from "../../types";
 import PDFPages from "./components/pages/PDFPages";
 import PDFControls from "./components/PDFControls";
 import { PDFProvider } from "./state";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 // pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 // pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -16,10 +17,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const PDFRenderer: DocRenderer = ({ mainState }) => {
   return (
     <PDFProvider mainState={mainState}>
-      <div className="flex flex-col  flex-1 overflow-y-hidden text-white scrollbar-track-primary, scrollbar-thumb-primary bg-slate-100">
+      <ScrollArea className="flex flex-col  flex-1  text-transparent">
         <PDFControls />
         <PDFPages />
-      </div>
+      </ScrollArea>
     </PDFProvider>
   );
 };
