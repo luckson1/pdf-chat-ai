@@ -31,7 +31,7 @@ function QuestionsButtonGroup(props: { content: string ,   setInput: Dispatch<Se
         <Button
         key={index}
         variant="link"
-        className="h-auto p-0 text-base mt-3 flex flex-row justify-start items-center text-start text-primary"
+        className="h-auto p-0 text-base mb-4 flex flex-row justify-start items-center text-start text-primary"
         onClick={() => props.setInput(question)}
       >
 
