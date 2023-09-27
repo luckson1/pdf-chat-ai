@@ -24,7 +24,7 @@ export default function CheckList() {
   return (
     <Card className="w-full h-auto bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-primary via-purple-400 to-primary text-primary-foreground">
       <CardHeader className="text-center text-2xl">
-        <CardTitle>Why Study Pal?</CardTitle>
+        <CardTitle>Why Chat Paperz?</CardTitle>
         <CardDescription className="text-primary-foreground text-lg">
           Try it out for <span className="font-bold tracking-widest">Free</span>, chat with your course resources. Save time reading for your assignments or exams
         </CardDescription>

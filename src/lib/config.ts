@@ -1,5 +1,5 @@
 export const siteConfig = {
-    name: "Study Pal",
+    name: "Chat Paperz",
     url: "/",
     ogImage: "/logo.png",
     description:

@@ -10,7 +10,7 @@ function PrivacyPolicy() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">1. Information We Collect</h2>
           <p>
-           Study Pal may collect the following types of information:
+           Chat Paperz may collect the following types of information:
             <ul className="list-disc ml-6">
               <li>Personal Information (e.g., name, email address)</li>
               <li>Usage Data (e.g., app usage, interactions)</li>

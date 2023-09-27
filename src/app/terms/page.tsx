@@ -10,7 +10,7 @@ function TermsAndConditions() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
           <p>
-            Welcome to Study Pal! By using our services, you agree to comply with and be bound by these terms and conditions. If you do not agree to these terms, please refrain from using our app.
+            Welcome to Chat Paperz! By using our services, you agree to comply with and be bound by these terms and conditions. If you do not agree to these terms, please refrain from using our app.
           </p>
         </section>
 
@@ -55,7 +55,7 @@ function TermsAndConditions() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">6. Termination</h2>
           <p>
-            Study Pal reserves the right to terminate or suspend your account at any time for violations of these terms or for any other reason at our discretion. You may also terminate your account by contacting us.
+            Chat Paperz reserves the right to terminate or suspend your account at any time for violations of these terms or for any other reason at our discretion. You may also terminate your account by contacting us.
           </p>
         </section>
 
@@ -63,7 +63,7 @@ function TermsAndConditions() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">7. Changes to Terms</h2>
           <p>
-            Study Pal may update these terms from time to time. We will notify you of significant changes via email or app notifications. Continued use of the app after such modifications constitutes your acceptance of the updated terms.
+            Chat Paperz may update these terms from time to time. We will notify you of significant changes via email or app notifications. Continued use of the app after such modifications constitutes your acceptance of the updated terms.
           </p>
         </section>
 
