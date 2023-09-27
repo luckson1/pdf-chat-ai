@@ -71,11 +71,11 @@ export default function DocumentPage() {
     try {
       setLoading(true);
       const data = await uploadToS3(docs);
+      console.log(data)
       if (!data) {
         setLoading(false);
         return;
-      }
-      addDoc(data);
+      } else {addDoc(data);}
     } catch (error) {
       console.log(error);
     } finally {
