@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
       width: 400,
     },
   },
-  page: {paddingVertical: 20, paddingHorizontal: 20},
+  page: {paddingVertical: 32, paddingHorizontal: 32},
 });
 
 const MyDocument = ({ uttarances }: { uttarances: Uttarance[] }) => (
