@@ -40,12 +40,13 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
   if (!name) return null
   if (!signedUrl) return null
 
-  // if(isPdf) {return  <DocViewer documents={[{uri: signedUrl, fileType: "pdf"}]}  pluginRenderers={DocViewerRenderers} />}
+  if(isPdf) {return  <DocViewer documents={[{uri: signedUrl, fileType: "pdf"}]}  pluginRenderers={DocViewerRenderers} />}
 
   return (
 <>
 
-      <Card className="w-full h-[85vh] ">
+
+      { !isPdf && <Card className="w-full h-[85vh] ">
       <CardHeader>
         <CardTitle className="h-[90%] overflow-hidden flex flex-row justify-between">
           {name}
@@ -65,7 +66,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
       </CardContent>
       
     </Card>
-
+}
 </>
   );
 };
