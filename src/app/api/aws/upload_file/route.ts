@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
 import { NextResponse , NextRequest} from "next/server";
 import { env } from "@/lib/env.mjs";
+import { nanoid } from "nanoid";
 
 
 const s3 = new S3({
@@ -38,7 +39,8 @@ export  async function GET(
         status: 500,
       });
     }
-    const Key=name
+
+    const Key=nanoid()
 
       const s3Params = {
         Bucket: env.BUCKET_NAME,
