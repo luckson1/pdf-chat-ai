@@ -40,6 +40,7 @@ export default function DocumentPage() {
       await axios.get(`/api/aws/upload_file?type=${type}&name=${name}`);
 
     const { uploadUrl, key } = data;
+    console.log(uploadUrl, key)
     await axios.put(uploadUrl, files[0]);
     return { key, name, type };
   };
