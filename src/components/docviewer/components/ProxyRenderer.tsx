@@ -22,6 +22,7 @@ export const ProxyRenderer: FC<{}> = () => {
         flex-1
     h-full
     min-h-[600px]
+    w-full
         items-center
         justify-center"
         >
