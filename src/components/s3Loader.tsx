@@ -48,7 +48,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
 
       { !isPdf && <Card className="w-full h-[85vh] ">
       <CardHeader>
-        <CardTitle className="h-[90%] overflow-hidden flex flex-row justify-between">
+        <CardTitle className="h-[90%] overflow-x-auto overflow-y-hidden flex flex-row justify-between">
           {name}
           <Button size={'sm'} variant={'outline'} >
             

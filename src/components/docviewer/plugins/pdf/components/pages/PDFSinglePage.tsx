@@ -24,7 +24,7 @@ const PDFSinglePage: FC<Props> = (props) => {
 
 
   return (
-<div className="overflow-hidden text-[1px]">
+<div className="overflow-x-auto overflow-y-hidden text-[1px]">
       <Page
       
         pageNumber={_pageNum}
