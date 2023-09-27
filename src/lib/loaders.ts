@@ -7,19 +7,20 @@ import { env } from "./env.mjs";
 
 export async function getChunkedDocsFromPDF(blob: Blob, userId:string, id:string) {
   try {
+    "got the message"
     const loader = new PDFLoader(blob);
     const docs = await loader.load();
 
-    const textSplitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 1000,
-      chunkOverlap: 200,
-    });
+    // const textSplitter = new RecursiveCharacterTextSplitter({
+    //   chunkSize: 1000,
+    //   chunkOverlap: 200,
+    // });
 
-    const chunkedDocs = await textSplitter.splitDocuments(docs);
-    for (const doc of chunkedDocs) {
+    // const chunkedDocs = await textSplitter.splitDocuments(docs);
+    for (const doc of docs) {
       doc.metadata={...doc.metadata, userId, id}
     }
-    return chunkedDocs;
+    return docs;
   } catch (e) {
     console.error(e);
     throw new Error("PDF docs chunking failed !");

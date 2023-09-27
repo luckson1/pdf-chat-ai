@@ -84,25 +84,25 @@ export const createS3Embeddings = inngest.createFunction(
   }
 );
 
-export const createWebEmbeddings = inngest.createFunction(
-  { name: "WebDocs embeddings Created" },
-  { event: "docs/web.create" },
-  async ({ event, step }) => {
-    const embeddings = await step.run("create embeddings from s3", async () => {
-      const pineconeClient = await getPineconeClient();
+// export const createWebEmbeddings = inngest.createFunction(
+//   { name: "WebDocs embeddings Created" },
+//   { event: "docs/web.create" },
+//   async ({ event, step }) => {
+//     const embeddings = await step.run("create embeddings from s3", async () => {
+//       const pineconeClient = await getPineconeClient();
 
-      const docs = await getChunkedDocsFromWeb(
-        event.data.url,
-        event.data.userId,
-        event.data.userId
-      );
+//       const docs = await getChunkedDocsFromWeb(
+//         event.data.url,
+//         event.data.userId,
+//         event.data.userId
+//       );
 
-      await pineconeEmbedAndStore(pineconeClient, docs);
-    });
+//       await pineconeEmbedAndStore(pineconeClient, docs);
+//     });
 
-    return embeddings;
-  }
-);
+//     return embeddings;
+//   }
+// );
 
 export const createAudioEmbeddings = inngest.createFunction(
   { name: "Audio Docs embeddings Created" },
