@@ -11,16 +11,16 @@ export async function getChunkedDocsFromPDF(blob: Blob, userId:string, id:string
     const loader = new PDFLoader(blob);
     const docs = await loader.load();
 
-    // const textSplitter = new RecursiveCharacterTextSplitter({
-    //   chunkSize: 1000,
-    //   chunkOverlap: 200,
-    // });
+    const textSplitter = new RecursiveCharacterTextSplitter({
+      chunkSize: 1000,
+      chunkOverlap: 200,
+    });
 
-    // const chunkedDocs = await textSplitter.splitDocuments(docs);
-    for (const doc of docs) {
+    const chunkedDocs = await textSplitter.splitDocuments(docs);
+    for (const doc of chunkedDocs) {
       doc.metadata={...doc.metadata, userId, id}
     }
-    return docs;
+    return chunkedDocs;
   } catch (e) {
     console.error(e);
     throw new Error("PDF docs chunking failed !");
