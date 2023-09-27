@@ -10,10 +10,10 @@ export default function Home() {
   return (
   
         <main className="w-full flex flex-col-reverse lg:flex-row space-y-5 lg:space-y-0 lg:space-x-5">
-          <div className="w-full max-w-xl h-auto">
+          <div className="w-full lg:w-1/2 h-auto">
 <MainDocumentViewer />
           </div>
-          <div className="w-full max-w-4xl">
+          <div className="w-full lg:w-1/2 ">
 <Chat id={id}/>
           </div>
        
