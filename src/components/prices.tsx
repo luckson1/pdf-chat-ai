@@ -58,8 +58,8 @@ export default function Credits() {
           </CardContent>
           <CardFooter>
             <Button className="w-full" size={"lg"}>
-              <Link href="https://app.piccraftai.com/auth">
-                Save time 
+              <Link href="/auth">
+              Save time while reading
               </Link>
             </Button>
           </CardFooter>

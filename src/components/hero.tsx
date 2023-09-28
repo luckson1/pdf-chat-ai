@@ -2,6 +2,8 @@
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import { Badge } from "./ui/badge";
+import { cn } from "@/lib/utils";
 
 export function SquigglyLines() {
   return (
@@ -18,10 +20,13 @@ export function SquigglyLines() {
 export const Hero = () => {
   const router = useRouter();
   return (
-    <div className=" flex  w-full  mx-auto   lg:max-w-screen-xl my-5 min-h-[40vh] h-auto ">
+    <div className=" flex  w-full  mx-auto   lg:max-w-screen-xl my-5 min-h-[40vh] h-auto">
       <div className="flex flex-col items-start w-full max-w-4xl">
         <div className=" flex flex-col mb-16 space-y-5 lg:my-10 ">
-          <h1 className="mx-auto max-w-4xl font-display text-3xl md:text-5xl font-bold tracking-normal leading-loose">
+          <Badge className={cn('animate-bounce w-fit space-x-1 ')}>
+<strong>Limited Offer: </strong> <span >Whole year access for </span> <span  className="line-through font-bold text-red-400">$129 </span>{" "} <strong className="text-green-500"> $59</strong>
+          </Badge>
+          <h1 className="mx-auto max-w-4xl font-display text-2xl md:text-5xl font-bold tracking-normal leading-loose">
             Speed-Read & Chat with Documents:
             <span className="relative whitespace-nowrap text-violet-600">
               <SquigglyLines />
@@ -46,7 +51,7 @@ export const Hero = () => {
                 router.replace("/auth");
               }}
             >
-              Chat with your docs
+              Save time while reading
             </Button>
           </div>
         </div>

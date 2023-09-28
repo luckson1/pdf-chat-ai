@@ -26,7 +26,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <Provider>
            <TRPCProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <div className="relative container flex min-h-screen flex-col">
+            <div className="relative md:container flex min-h-screen flex-col">
    <SiteHeader />
       <div className="flex flex-1 py-4">
               {children}

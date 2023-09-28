@@ -98,10 +98,10 @@ export default function CheckList() {
               className="w-full"
               variant={"secondary"}
               onClick={() => {
-                router.replace("https://app.piccraftai.com/auth");
+                router.replace("/auth");
               }}
             >
-              Chat with your course documents
+              Save time while reading
             </Button>
           </div>
           <Separator

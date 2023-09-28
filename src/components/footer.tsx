@@ -12,22 +12,13 @@ export default function Footer() {
                   <ul className=" mb-6">
                     <li className="mr-2 mt-2 inline-block md:mr-0 md:block">
                       <Link
-                        href="/"
+                        href="/#faqs"
                         className=" no-underline   hover:underline"
                       >
                         FAQ
                       </Link>
                     </li>
-                    <li className="mr-2 mt-2 inline-block md:mr-0 md:block">
-                      <a
-                       href="mailto:support@piccraftai.com"
-                           target="_blank"
-            rel="noreferrer nofollow"
-                        className=" no-underline   hover:underline"
-                      >
-                        Help
-                      </a>
-                    </li>
+                  
                     <li className="mr-2 mt-2 inline-block md:mr-0 md:block">
                       <a
                        href="mailto:support@piccraftai.com"
