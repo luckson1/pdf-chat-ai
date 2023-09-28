@@ -39,7 +39,8 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  credits       Int       @default(52)
+  credits       Int       @default(0)
+  isPro Boolean @default(false)
   accounts      Account[]
   sessions      Session[]
 
@@ -67,6 +68,16 @@ model Document {
   userId  String
   Message Message[]
   QAPairs QAPairs[]
+}
+model Subscription {
+    id      String    @id
+          product_id Int 
+          product_name String 
+          variant_id Int
+          variant_name String 
+
+          status String 
+          user_email String
 }
 
 enum ChatRole {
