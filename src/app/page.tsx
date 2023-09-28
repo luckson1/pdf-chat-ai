@@ -12,8 +12,8 @@ export default function Home() {
 <div className='w-full h-fit min-h-screen space-y-10'>
 
 <Hero />
-<CheckList />
 <Features />
+<CheckList />
 <Credits />
 <Faqs />
 <Footer />

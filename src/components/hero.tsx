@@ -21,7 +21,7 @@ export const Hero = () => {
     <div className="relative flex  w-full  mx-auto   lg:max-w-screen-xl my-5 h-[60vh]  ">
       <div className="relative flex flex-col items-start w-full max-w-4xl mt-20">
         <div className=" flex flex-col mb-16 space-y-5 lg:my-10 ">
-          <h1 className="mx-auto max-w-4xl font-display text-3xl md:text-5xl leading-relaxed font-bold tracking-normal ">
+          <h1 className="mx-auto max-w-4xl font-display text-3xl md:text-5xl leading-relaxed font-bold tracking-normal space-y-5">
             Speed-Read & Chat with Documents:
             <span className="relative whitespace-nowrap text-violet-600">
               <SquigglyLines />
