@@ -43,11 +43,18 @@ export function MainNav() {
         </span>
       </Link>
       <nav className="flex items-center space-x-6 text-sm font-medium">
-     <Link
-          href={"/"}
+  
+        <Link
+        href={"/#pricing"}
           className={cn("flex items-center px-4", "font-bold ")}
         >
-        Documents
+      Pricing
+        </Link>
+        <Link
+          href={"/#faqs"}
+          className={cn("flex items-center px-4", "font-bold ")}
+        >
+       FAQs
         </Link>
       </nav>
     </div>

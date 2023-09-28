@@ -25,7 +25,7 @@ export default function Credits() {
   ];
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center py-2 container">
+    <div className="mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center py-2 container" id="pricing">
       <main className="mb-8 mt-4 flex w-full flex-1 flex-col items-center space-y-10 justify-center px-4 text-center sm:mb-0">
         <h1 className="text-4xl font-bold">
           Save time reading for your assignments and exams

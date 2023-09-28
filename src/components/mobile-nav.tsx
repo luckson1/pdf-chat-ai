@@ -39,15 +39,20 @@ export function MobileNav() {
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="flex flex-col space-y-3">
       
-          <MobileLink
-          href={"/"}
+      
+            
+        <MobileLink
+        href={"/#pricing"}
           className={cn("flex items-center px-4", "font-bold ")}
-          onOpenChange={setOpen}
         >
-    Documents
+      Pricing
         </MobileLink>
-            
-            
+        <MobileLink
+          href={"/#faqs"}
+          className={cn("flex items-center px-4", "font-bold ")}
+        >
+       FAQs
+        </MobileLink>
           </div>
         </ScrollArea>
       </SheetContent>
