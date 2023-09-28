@@ -3,6 +3,7 @@ import getRawBody from "raw-body";
 import { Readable } from "stream";
 import { PrismaClient } from "@prisma/client";
 import { env } from "@/lib/env.mjs";
+import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 export interface LemonResponse {
@@ -90,7 +91,7 @@ const subWebHook = async (req: Request) => {
     //     res.status(200).json({ response });
     //   }
     console.log(response.data)
-    return
+    return NextResponse.json({ success: true },{status: 200} );
     } catch (error) {
       console.log(error);
     }
