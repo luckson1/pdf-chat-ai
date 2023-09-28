@@ -15,7 +15,7 @@ export default function Credits() {
   const benefits = [
     "Upto 1.5 hours of audio transcription",
     "Unlimited documents",
-    "Upload files larger than 10 mbs",
+    "Upload files larger than 3 mbs",
     "Premium support by email ",
     "Ability to request features",
 
@@ -59,7 +59,7 @@ export default function Credits() {
           <CardFooter>
             <Button className="w-full" size={"lg"}>
               <Link href="https://app.piccraftai.com/auth">
-                Buy more photos
+                Save time 
               </Link>
             </Button>
           </CardFooter>
