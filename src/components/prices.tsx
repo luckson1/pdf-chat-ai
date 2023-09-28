@@ -52,7 +52,7 @@ export default function Credits() {
             <div className="flex items-start  space-x-5 my-5">
 
   <span className="text-green-500 font-bold text-7xl">$59</span> 
-  <span className="text-red-500 mr-2 line-through text-4xl text-bold"> {" "}$180 {" "}</span>
+  <span className="text-red-500 mr-2 line-through text-4xl text-bold"> {" "}$129 {" "}</span>
 </div>
             </div>
           </CardContent>
