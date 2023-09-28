@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { CheckIcon } from "@radix-ui/react-icons";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 
@@ -24,6 +26,12 @@ export default function Credits() {
     "Secure your discount forever",
   ];
 
+const session=useSession()
+const isAuthenticated = session.status==='authenticated'
+const userId=session.data?.user.id
+const email=session.data?.user.email
+const url=isAuthenticated ? `https://chat-paperz.lemonsqueezy.com/checkout/buy/d014a55a-0046-41cd-b9bf-706038c6904a?checkout[custom][userId]=${userId}
+&checkout[custom][email]=${email}` : "/auth"
   return (
     <div className="mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center py-2 container" id="pricing">
       <main className="mb-8 mt-4 flex w-full flex-1 flex-col items-center space-y-10 justify-center px-4 text-center sm:mb-0">
@@ -58,7 +66,7 @@ export default function Credits() {
           </CardContent>
           <CardFooter>
             <Button className="w-full" size={"lg"}>
-              <Link href="/auth">
+              <Link href={url}>
               Save time while reading
               </Link>
             </Button>
