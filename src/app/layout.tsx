@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Provider from "@/components/provider";
 import TRPCProvider from "./api/_trpc/Provider";
 import { SiteHeader } from "@/components/site-header";
+import dynamic from 'next/dynamic'
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,11 +20,17 @@ type RootLayoutProps = {
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {
+
+  const CrispWithNoSSR = dynamic(
+    () => import('../components/crisp')
+  )
+
   return (
     <>
       <html lang="en" suppressHydrationWarning>
         <head />
         <body>
+        <CrispWithNoSSR />
           <Provider>
            <TRPCProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

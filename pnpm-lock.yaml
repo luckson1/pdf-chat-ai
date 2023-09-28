@@ -109,6 +109,9 @@ dependencies:
   clsx:
     specifier: ^2.0.0
     version: 2.0.0
+  crisp-sdk-web:
+    specifier: ^1.0.21
+    version: 1.0.21
   dotenv:
     specifier: ^16.3.1
     version: 16.3.1
@@ -4296,6 +4299,10 @@ packages:
       parse-json: 5.2.0
       path-type: 4.0.0
       typescript: 5.1.6
+    dev: false
+
+  /crisp-sdk-web@1.0.21:
+    resolution: {integrity: sha512-jNF/zSSA0lsAWT3q4JLG6YxtMRvgai++PwesxEL2Zm6utZaN+AoWPAH01QTfjJC/c++nFT7YM56ucdi+Y5yP4A==}
     dev: false
 
   /cross-fetch@3.1.8(encoding@0.1.13):
