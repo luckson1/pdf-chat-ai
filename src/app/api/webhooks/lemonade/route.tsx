@@ -159,7 +159,7 @@ export  async function POST(req: Request) {
         },
       });
 
-      if (status === "paid") {
+      if (status === "active") {
         await prisma.user.update({
           where: {
             email: user_email,
