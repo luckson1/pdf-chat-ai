@@ -3,11 +3,7 @@ import getRawBody from "raw-body";
 import { Readable } from "stream";
 import { PrismaClient } from "@prisma/client";
 import { env } from "@/lib/env.mjs";
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+
 const prisma = new PrismaClient();
 export interface LemonResponse {
   data: {
