@@ -9,7 +9,7 @@ import Credits from '@/components/prices'
 export default function Home() {
   return (
   
-<div className='w-full h-fit min-h-screen space-y-10'>
+<div className='w-full h-fit min-h-screen space-y-10 flex flex-col'>
 
 <Hero />
 <Features />

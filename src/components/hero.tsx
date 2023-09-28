@@ -18,8 +18,8 @@ export function SquigglyLines() {
 export const Hero = () => {
   const router = useRouter();
   return (
-    <div className="relative flex  w-full  mx-auto   lg:max-w-screen-xl my-5 h-[50vh]  ">
-      <div className="relative flex flex-col items-start w-full max-w-4xl mt-20">
+    <div className=" flex  w-full  mx-auto   lg:max-w-screen-xl my-5 min-h-[40vh] h-auto ">
+      <div className="flex flex-col items-start w-full max-w-4xl">
         <div className=" flex flex-col mb-16 space-y-5 lg:my-10 ">
           <h1 className="mx-auto max-w-4xl font-display text-3xl md:text-5xl font-bold tracking-normal leading-loose">
             Speed-Read & Chat with Documents:

@@ -1,10 +1,10 @@
 
 import React from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
+import { Card } from './ui/card'
 
 export default function Features() {
   return (
-    <div className=' w-full min-h-70vh] flex flex-col space-y-5 container my-16'>
+    <div className=' w-full h-auto  flex flex-col space-y-5 my-16'>
      
         <Card className='flex-1'>
         <video controls className="flex-1 rounded-lg">
