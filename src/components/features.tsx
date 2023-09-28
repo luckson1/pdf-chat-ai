@@ -8,7 +8,7 @@ export default function Features() {
      
         <Card className='flex-1'>
         <video controls className="flex-1 rounded-lg">
-                    <source src={'/intro.mp4'} type="video/mp4" />
+                    <source src={'/introv1.1.mp4'} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
         </Card>
