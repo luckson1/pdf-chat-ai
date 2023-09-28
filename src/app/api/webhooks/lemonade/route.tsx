@@ -26,8 +26,7 @@ export interface LemonResponse {
     };
   };
 }
-
-const subWebHook = async (req: Request) => {
+export  async function POST(req: Request) {
     const rawBody = await getRawBody(Readable.from(Buffer.from(await req.text())));
 
     const secret = env.secret_key;
@@ -96,4 +95,3 @@ const subWebHook = async (req: Request) => {
       console.log(error);
     }
   };
-
