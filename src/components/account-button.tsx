@@ -62,7 +62,7 @@ const handleSignOut = async () => {
                 <div className="flex items-center text-xs">
         <Avatar className="h-7 w-7">
           <AvatarImage src={user?.image ?? "/c.jpg"} alt="Avatar" />
-          <AvatarFallback>You</AvatarFallback>
+          <AvatarFallback>User</AvatarFallback>
         </Avatar>
         <div className="ml-4 space-y-1">
           <p className=" font-medium leading-none">{user?.name}</p>
@@ -83,24 +83,7 @@ const handleSignOut = async () => {
              </Button>}
             </Link>
                 </DropdownMenuItem>
-           {!session && <>
-            <div className="relative my-3">
-                <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Or create account
-            </span>
-          </div>
-        </div>
-            
-                <DropdownMenuItem>
-                <Button variant={'outline'} className="w-full" onClick={  ()=> { router.replace('/auth')}}> 
-             Sign up
-             </Button>
-                </DropdownMenuItem>
-           </>}
+           
          
               </DropdownMenuContent>
             </DropdownMenu>
