@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { IconRefresh } from "./ui/icons";
 
 import DocViewer, { DocViewerRenderers } from "./docviewer";
+import PdfRenderer from "./pdf_renderer";
 
 
 
@@ -40,7 +41,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
   if (!name) return null
   if (!signedUrl) return null
 
-  if(isPdf) {return  <DocViewer documents={[{uri: signedUrl, fileType: "pdf"}]}  pluginRenderers={DocViewerRenderers} />}
+  if(isPdf) {return  <PdfRenderer url={signedUrl}/>}
 
   return (
 <>
