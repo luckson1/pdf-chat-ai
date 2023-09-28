@@ -30,8 +30,8 @@ const session=useSession()
 const isAuthenticated = session.status==='authenticated'
 const userId=session.data?.user.id
 const email=session.data?.user.email
-const url=isAuthenticated ? `https://chat-paperz.lemonsqueezy.com/checkout/buy/d014a55a-0046-41cd-b9bf-706038c6904a?checkout[custom][userId]=${userId}
-&checkout[custom][email]=${email}` : "/auth"
+const url=(isAuthenticated && userId && email) ? `https://chat-paperz.lemonsqueezy.com/checkout/buy/d014a55a-0046-41cd-b9bf-706038c6904a?checkout[userId]=${userId}
+&checkout[email]=${email}` : "/auth"
   return (
     <div className="mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center py-2 container" id="pricing">
       <main className="mb-8 mt-4 flex w-full flex-1 flex-col items-center space-y-10 justify-center px-4 text-center sm:mb-0">
