@@ -18,11 +18,16 @@ import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { Separator } from "./ui/separator";
 import { DollarSign, ShieldIcon, StoreIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function CheckList() {
   const router = useRouter();
   return (
-    <Card className="w-full h-auto bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-primary via-purple-400 to-primary text-primary-foreground">
+  <div className="pt-16 flex flex-col space-y-10 justify-center items-center w-full">
+      <Badge className={cn('animate-bounce w-fit space-x-1 ')}>
+<strong>Limited Offer: </strong> <span >Whole year access for </span> <span  className="line-through font-bold text-red-400">$129 </span>{" "} <strong className="text-green-500"> $59</strong>
+          </Badge>
+      <Card className="w-full h-auto bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-primary via-purple-300 to-primary text-primary-foreground py-10">
       <CardHeader className="text-center text-2xl">
         <CardTitle>Why Chat Paperz?</CardTitle>
         <CardDescription className="text-primary-foreground text-lg">
@@ -31,13 +36,13 @@ export default function CheckList() {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col md:flex-row space-y-5 md:space-y-0  w-full justify-between items-center ">
-          <ul className="space-y-2 w-full max-w-sm">
+          <ul className="space-y-7 w-full max-w-sm">
             <li className="flex flex-row space-x-4">
               <CheckboxIcon className="h-8 w-8 text-primary-foreground" />
               <div className=" w-full ">
                 <p className="font-bold">Why read when you can ask?</p>
                 <p className="font-light text-sm tracking-wider">
-                Ask away, summarize, find facts, and have a blast doing it!
+                Chat with documents such as pdfs, word documents, excel, epub and audio files. Ask away, summarize, find facts, and have a blast doing it! 
                 </p>
               </div>
             </li>
@@ -66,7 +71,7 @@ export default function CheckList() {
             className="md:hidden bg-primary-foreground"
           />
 
-          <div className="w-full flex flex-col space-y-5 max-w-xs">
+          <div className="w-full flex flex-col space-y-7 max-w-xs">
             <Badge variant="secondary" className="w-fit">
               SPECIAL BETA PRICE
             </Badge>
@@ -101,7 +106,7 @@ export default function CheckList() {
                 router.replace("/auth");
               }}
             >
-              Save time while reading
+              Claim your discount now
             </Button>
           </div>
           <Separator
@@ -109,7 +114,7 @@ export default function CheckList() {
             className="md:hidden bg-primary-foreground"
           />
 
-          <ul className="space-y-2 w-full max-w-sm">
+<ul className="space-y-7 w-full max-w-sm">
             <li className="flex flex-row space-x-4">
               <LightningBoltIcon className="h-8 w-8 text-primary-foreground" />
               <div className=" w-full ">
@@ -141,5 +146,6 @@ export default function CheckList() {
         </div>
       </CardContent>
     </Card>
+  </div>
   );
 }
