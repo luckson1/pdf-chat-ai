@@ -222,6 +222,32 @@ export const documentRouter = createTRPCRouter({
       });
       return docs;
     }),
+    deleteOne: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const docs = await ctx.prisma.document.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          isDeleted: true
+        }
+      });
+      return docs;
+    }),
+    changeName: protectedProcedure
+    .input(z.object({ name: z.string(), id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const docs = await ctx.prisma.document.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+         name: input.name
+        }
+      });
+      return docs;
+    }),
   getUrlInfo: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
