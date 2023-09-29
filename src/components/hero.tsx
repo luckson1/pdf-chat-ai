@@ -20,29 +20,23 @@ export function SquigglyLines() {
 export const Hero = () => {
   const router = useRouter();
   return (
-    <div className=" flex  w-full  mx-auto   lg:max-w-screen-xl my-5 min-h-[40vh] h-auto">
+    <div className=" flex  w-full  mx-auto   lg:max-w-screen-xl mt-5  min-h-[30vh] h-auto">
       <div className="flex flex-col items-start w-full max-w-4xl">
         <div className=" flex flex-col mb-16 space-y-5 lg:my-10 ">
-          <Badge className={cn('animate-bounce w-fit space-x-1 ')}>
-<strong>Limited Offer: </strong> <span >Whole year access for </span> <span  className="line-through font-bold text-red-400">$129 </span>{" "} <strong className="text-green-500"> $59</strong>
-          </Badge>
+        
           <h1 className="mx-auto max-w-4xl font-display text-2xl md:text-5xl font-bold tracking-normal leading-loose">
-            Speed-Read & Chat with Documents:
-            <span className="relative whitespace-nowrap text-violet-600">
+          <span>  Speed-Read & </span>
+            <span className="relative whitespace-nowrap text-violet-600 mt-5">
               <SquigglyLines />
-              <span className="relative"> Tackle Assignments Faster</span>
+              <span className="relative"> Chat with Documents.</span>
             </span>
           </h1>
          
-            <p className="pr-5 mb-5 text-base  md:text-lg">
-            {" "}
-            Chat with your documents (.pdf, .doc, .docx, .md, .ppt, .epub, .txt) instead of flipping endless pages!
-          </p>
+          <p className="pr-5 mb-5 text-base  md:text-lg">Get summaries, info and facts, <strong>with cited sources.</strong> <span className="text-primary font-bold"> Fast!</span></p>
           <p className="pr-5 mb-5 text-base  md:text-lg">
-          Record future lectures, let our AI turn the audio into notes, and
-            chat with them later!{" "}
-          </p>{" "}{" "}
-            <p className="pr-5 mb-5 text-base  md:text-lg">Get summaries, info, facts etc. <strong>with cited sources!</strong></p>
+          Record future lectures, and let our AI turn the audio into notes.
+          </p>
+            
           <div className="flex flex-wrap items-center space-x-4">
             <Button
               size={"lg"}
