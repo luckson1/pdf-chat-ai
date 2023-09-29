@@ -203,6 +203,7 @@ export const documentRouter = createTRPCRouter({
     const docs = await ctx.prisma.document.findMany({
       where: {
         userId,
+        isDeleted: false
       },
       skip,
       take
@@ -216,6 +217,7 @@ export const documentRouter = createTRPCRouter({
       const docs = await ctx.prisma.document.findUniqueOrThrow({
         where: {
           key: input.key,
+          isDeleted: false
         },
       });
       return docs;
@@ -226,6 +228,7 @@ export const documentRouter = createTRPCRouter({
       const document = await ctx.prisma.document.findUniqueOrThrow({
         where: {
           id: input.id,
+          isDeleted: false
         },
         select: {
           key: true,

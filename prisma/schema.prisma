@@ -65,6 +65,7 @@ model Document {
   user    User      @relation(fields: [userId], references: [id])
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt  @default(now())
+    isDeleted Boolean @default(false)
   userId  String
   Message Message[]
   QAPairs QAPairs[]
