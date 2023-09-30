@@ -6,6 +6,7 @@ import { inngest } from "@/inngest/client";
 import { nanoid } from "nanoid";
 import axios, { AxiosResponse } from "axios";
 import path from "path";
+import { TRPCError } from "@trpc/server";
 
 type Uttarance= {
   confidence:number,
@@ -135,7 +136,7 @@ export const documentRouter = createTRPCRouter({
         const data = response.data;
         const status = response.data.status;
     
-        const Key = input.name
+        const Key = input.id
 
         inngest.send({
           name: "docs/audio.create",
@@ -147,27 +148,26 @@ export const documentRouter = createTRPCRouter({
           },
         });
         if (status === "completed") {
-         console.log('success')
-
-          // const document = await ctx.prisma.document.create({
-          //   data: {
-          //     key: Key,
-          //     name: `${input.name}`,
-          //     userId,
-          //     type: "text/plain",
-          //   },
-          // });
-
-          
-
-          // inngest.send({
-          //   name: "aws/txt.create",
-          //   data: {
-          //     text,
-          //     Key,
-          //   },
-          // });
+       const document= ctx.prisma.document.findUnique({
+        where: {
+          key:Key
         }
+       })
+if(!document) {
+  ctx.prisma.document.create({
+    data: {
+      name: input.name,
+      key:Key,
+      type: "application/pdf",
+      userId
+    }
+  })
+}
+         
+        } else {
+          throw new TRPCError({code: "NOT_IMPLEMENTED" , message: 'not processed yet'})
+        }
+
         return data;
       } catch (error) {
         console.log(error);
