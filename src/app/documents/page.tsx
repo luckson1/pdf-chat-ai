@@ -29,13 +29,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from "@radix-ui/react-dialog";
+
 import { DialogFooter, DialogHeader } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -48,7 +42,7 @@ export default function DocumentPage() {
   const [url, setUrl] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
   const uploadToS3 = async (files: File[]) => {
     if (!files || files.length <= 0) {
       return null;
@@ -93,7 +87,7 @@ export default function DocumentPage() {
         }
       },
     });
-  const urlSchema = z.string().url();
+
   const handleSubmitDocs = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -292,7 +286,7 @@ export default function DocumentPage() {
       <div className="w-full">
         {isLoading &&
         <div className=" w-full max-w-4xl grid grid-row md:grid-cols-2 gap-2">
-          {  Array.from({ length: 5 })
+          {  Array.from({ length:  itemsPerPage})
             .fill(0)
             .map((_, index) => (
               <Skeleton className="w-full max-w-sm h-28 overflow-hidden" key={index} />
