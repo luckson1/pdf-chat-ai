@@ -292,28 +292,9 @@ export default function DocumentPage() {
               >{doc.name}</Link></CardTitle>
                   </CardHeader>
                   <CardFooter className="flex flex-row justify-between items-center">
-                  <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline"><PenIcon className="w-5 h-5"/></Button>
-      </DialogTrigger>
-  
-      <DialogContent className="sm:max-w-[425px]">
         
-        <DialogHeader>
-          <DialogTitle>Edit Name</DialogTitle>
-          <DialogDescription>
-           Change the name of the file. Click save when you are done.
-          </DialogDescription>
-        </DialogHeader>
-     
-        <DialogFooter>
-          <Button type="submit" onSubmit={ e=> {e.preventDefault(), handleSubmit(data=> (rename({id:doc.id, name:data.name})))} }>Save changes</Button>
-        </DialogFooter>
-    
-      </DialogContent>
-   
-    </Dialog>
 <AlertDialog>
+<AlertDialogTrigger><PenIcon className="w-5 h-5"/></AlertDialogTrigger>
     <AlertDialogContent>
     <AlertDialogHeader>
       <AlertDialogTitle>Edit Name</AlertDialogTitle>
