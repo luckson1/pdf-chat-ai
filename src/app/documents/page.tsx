@@ -268,15 +268,15 @@ export default function DocumentPage() {
           </Card>
         </TabsContent>
       </Tabs>
-      <div className="w-full max-w-4xl flex flex-col space-y-5">
+      <div className="w-full max-w-4xl grid  md:grid-rows-2 space-y-3">
         {isLoading &&
           Array.from({ length: 5 })
             .fill(0)
             .map((_, index) => (
-              <Skeleton className="w-full h-16" key={index} />
+              <Skeleton className="w-full h-16  max-w-sm" key={index} />
             ))}
         {(!docsData || docsData.length <= 0) && !isLoading ? (
-          <Card className="w-full max-w-xs">
+          <Card className="w-full max-w-sm">
             <CardHeader>No Documents</CardHeader>
           </Card>
         ) : docsData && !isLoading ? (
@@ -312,7 +312,7 @@ export default function DocumentPage() {
             </Label>
             <Input
               id="name"
-              defaultValue="Pedro Duarte"
+              defaultValue={doc.name}
               className="col-span-3"
             />
           </div>
