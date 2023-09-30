@@ -162,13 +162,14 @@ if(!document) {
       userId
     }
   })
+  return data
 }
-         
+    return data     
         } else {
           throw new TRPCError({code: "NOT_IMPLEMENTED" , message: 'not processed yet'})
         }
 
-        return data;
+     
       } catch (error) {
         console.log(error);
       }
