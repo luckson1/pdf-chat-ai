@@ -309,7 +309,7 @@ export default function DocumentPage() {
         ) : docsData && !isLoading ? (
           <div className="w-full max-w-4xl grid grid-row md:grid-cols-2 gap-2">
             {docsData.map((doc) => (
-              <Card className="w-full max-w-sm h-28 overflow-hidden" key={doc.id}>
+              <Card className="w-full max-w-sm h-auto overflow-hidden" key={doc.id}>
                 <CardHeader className="underline ">
                   <CardTitle className="overflow-hidden">
                 
