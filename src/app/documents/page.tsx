@@ -280,7 +280,7 @@ export default function DocumentPage() {
             <CardHeader>No Documents</CardHeader>
           </Card>
         ) : docsData && !isLoading ? (
-          <div className="grid md:grid-rows-2 space-y-5">
+          <div className="grid  md:grid-rows-2 space-y-3">
             {docsData.map((doc) => (
             
                 <Card className="w-full max-w-xs" key={doc.id}>
@@ -291,13 +291,14 @@ export default function DocumentPage() {
                 href={{ pathname: "/documents/[id]", query: { id: doc.id } }}
               >{doc.name}</Link></CardTitle>
                   </CardHeader>
-                  <CardFooter>
+                  <CardFooter className="flex flex-col justify-between items-center">
                   <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline"><PenIcon className="w-5 h-5"/></Button>
       </DialogTrigger>
+      <form className="w-auto h-auto" onSubmit={ e=> {e.stopPropagation(), handleSubmit(data=> (rename({id:doc.id, name:data.name})))} }>
       <DialogContent className="sm:max-w-[425px]">
-        <form className="w-full" onSubmit={ e=> {e.stopPropagation(), handleSubmit(data=> (rename({id:doc.id, name:data.name})))} }>
+        
         <DialogHeader>
           <DialogTitle>Edit Name</DialogTitle>
           <DialogDescription>
@@ -320,11 +321,12 @@ export default function DocumentPage() {
         <DialogFooter>
           <Button type="submit">Save changes</Button>
         </DialogFooter>
-        </form>
+    
       </DialogContent>
+      </form>
     </Dialog>
                   <AlertDialog>
-  <AlertDialogTrigger><Trash2 className="w-5 h-5 text-destructive"/></AlertDialogTrigger>
+  <AlertDialogTrigger><Button variant={'destructive'} size={'icon'}><Trash2 className="w-5 h-5"/></Button></AlertDialogTrigger>
   <AlertDialogContent>
     <AlertDialogHeader>
       <AlertDialogTitle>Are you sure you want to delete the document?</AlertDialogTitle>
