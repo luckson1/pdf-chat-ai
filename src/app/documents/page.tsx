@@ -268,7 +268,7 @@ console.log(errors)
           </Card>
         </TabsContent>
       </Tabs>
-      <div className="w-full max-w-4xl grid grid-row md:grid-cols-2 space-y-3">
+      <div className="w-full max-w-4xl grid grid-row md:grid-cols-2 gap-2">
         {isLoading &&
           Array.from({ length: 5 })
             .fill(0)
@@ -291,7 +291,7 @@ console.log(errors)
                 href={{ pathname: "/documents/[id]", query: { id: doc.id } }}
               >{doc.name}</Link></CardTitle>
                   </CardHeader>
-                  <CardFooter className="flex flex-row justify-between items-center">
+                  <CardFooter className="flex flex-row justify-between items-center bg-red-400">
         
 <AlertDialog>
 <AlertDialogTrigger><PenIcon className="w-5 h-5"/></AlertDialogTrigger>
@@ -328,8 +328,7 @@ console.log(errors)
     <AlertDialogHeader>
       <AlertDialogTitle>Are you sure you want to delete the document?</AlertDialogTitle>
       <AlertDialogDescription>
-        This action cannot be undone. This will permanently delete your account
-        and remove your data from our servers.
+        This action cannot be undone. This will permanently delete the file.
       </AlertDialogDescription>
     </AlertDialogHeader>
     <AlertDialogFooter>
