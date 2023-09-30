@@ -17,8 +17,14 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
 import { Icons } from "@/components/Icons";
-import { ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, PenIcon, Trash2 } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@radix-ui/react-dialog";
+import { DialogFooter, DialogHeader } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
@@ -51,6 +57,11 @@ export default function DocumentPage() {
     },
   });
   const { mutate: del } = api.documents.deleteOne.useMutation({
+    onSuccess: () => {
+      ctx.documents.getAll.invalidate();
+    },
+  });
+  const { mutate: rename } = api.documents.changeName.useMutation({
     onSuccess: () => {
       ctx.documents.getAll.invalidate();
     },
@@ -171,6 +182,24 @@ export default function DocumentPage() {
       });
     }
   }, [isPreviousData, page, hasMore]);
+  const NameSchema = z.object({
+    name: z
+      .string()
+    
+  })
+
+  type TNameSchema = z.infer<
+    typeof NameSchema
+  >
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  
+  } = useForm<TNameSchema>({
+  
+    resolver: zodResolver(NameSchema),
+  })
 
   return (
     <div className="w-full h-fit flex flex-col md:flex-row space-x-0 md:space-x-5 space-y-5 md:space-y-0">
@@ -262,6 +291,37 @@ export default function DocumentPage() {
                     <CardTitle>{doc.name}</CardTitle>
                   </CardHeader>
                   <CardFooter>
+                  <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline"><PenIcon className="w-5 h-5"/></Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <form className="w-full" onSubmit={ e=> {e.stopPropagation(), handleSubmit(data=> (rename({id:doc.id, name:data.name})))} }>
+        <DialogHeader>
+          <DialogTitle>Edit Name</DialogTitle>
+          <DialogDescription>
+           Change the name of the file. Click save when you are done.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Name
+            </Label>
+            <Input
+              id="name"
+              defaultValue="Pedro Duarte"
+              className="col-span-3"
+            />
+          </div>
+      
+        </div>
+        <DialogFooter>
+          <Button type="submit">Save changes</Button>
+        </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
                   <AlertDialog>
   <AlertDialogTrigger><Trash2 className="w-5 h-5 text-destructive"/></AlertDialogTrigger>
   <AlertDialogContent>
@@ -274,7 +334,7 @@ export default function DocumentPage() {
     </AlertDialogHeader>
     <AlertDialogFooter>
       <AlertDialogCancel>Cancel</AlertDialogCancel>
-      <AlertDialogAction onClick={()=> del({id:doc.id})}>Delete</AlertDialogAction>
+      <AlertDialogAction onClick={(e)=> {e.stopPropagation(), del({id:doc.id})}}>Delete</AlertDialogAction>
     </AlertDialogFooter>
   </AlertDialogContent>
 </AlertDialog>
