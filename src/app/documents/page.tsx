@@ -303,7 +303,7 @@ export default function DocumentPage() {
               <Card className="w-full max-w-sm h-28 overflow-hidden" key={doc.id}>
                 <CardHeader className="underline ">
                   <CardTitle className="overflow-hidden">
-                    {" "}
+                
                     <Link
                       key={doc.id}
                       href={{
@@ -311,14 +311,16 @@ export default function DocumentPage() {
                         query: { id: doc.id },
                       }}
                     >
+                      <Button variant={'link'}>
                       {doc.name}
+                      </Button>
                     </Link>
                   </CardTitle>
                 </CardHeader>
                 <CardFooter className="flex flex-row justify-between items-center">
                   <AlertDialog>
                     <AlertDialogTrigger>
-                      <PenIcon className="w-5 h-5" />
+                      <PenIcon className="w-5 h-5 text-primary" />
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
