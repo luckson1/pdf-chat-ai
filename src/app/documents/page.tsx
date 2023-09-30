@@ -200,7 +200,7 @@ export default function DocumentPage() {
   
     resolver: zodResolver(NameSchema),
   })
-
+console.log(errors)
   return (
     <div className="w-full h-fit flex flex-col md:flex-row space-x-0 md:space-x-5 space-y-5 md:space-y-0">
       <Tabs defaultValue="docs" className="w-full max-w-sm">
@@ -309,6 +309,7 @@ export default function DocumentPage() {
             </Label>
             <Input
               id="name"
+              {...register('name')}
               defaultValue={doc.name}
               className="col-span-3"
             />
