@@ -207,7 +207,7 @@ export default function DocumentPage() {
   });
   console.log(errors);
   return (
-    <div className="w-full h-fit flex flex-col md:flex-row space-x-0 md:space-x-5 space-y-5 md:space-y-0">
+    <div className="w-full h-fit flex flex-col md:flex-row space-x-0 md:space-x-10 space-y-5 md:space-y-0">
       <Tabs defaultValue="docs" className="w-full max-w-sm">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="docs">Study Documents</TabsTrigger>
