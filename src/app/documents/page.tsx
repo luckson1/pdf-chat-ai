@@ -289,13 +289,16 @@ export default function DocumentPage() {
           </Card>
         </TabsContent>
       </Tabs>
-      <div className="w-full max-w-4xl grid grid-row md:grid-cols-2 gap-2">
+      <div className="w-full">
         {isLoading &&
-          Array.from({ length: 5 })
+        <div className=" w-full max-w-4xl grid grid-row md:grid-cols-2 gap-2">
+          {  Array.from({ length: 5 })
             .fill(0)
             .map((_, index) => (
               <Skeleton className="w-full max-w-sm h-28 overflow-hidden" key={index} />
             ))}
+        </div>
+        }
         {(!docsData || docsData.length <= 0) && !isLoading ? (
           <Card className="w-full max-w-sm">
             <CardHeader>No Documents</CardHeader>
