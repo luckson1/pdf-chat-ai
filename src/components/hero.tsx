@@ -24,15 +24,15 @@ export const Hero = () => {
       <div className="flex flex-col items-start w-full max-w-4xl">
         <div className=" flex flex-col mb-16 space-y-5 lg:my-10 ">
         
-          <h1 className="mx-auto max-w-4xl font-display text-xl md:text-5xl font-bold tracking-normal leading-loose">
+          <h1 className="mx-auto max-w-4xl font-display text-xl md:text-5xl font-bold tracking-normal leading-loose text-start">
           <span>  Speed-Read & </span>
             <span className="relative whitespace-nowrap text-violet-600 mt-5">
               <SquigglyLines />
-              <span className="relative"> Chat With Your Content.</span>
+              <span className="relative"> Chat With Your Course Content.</span>
             </span>
           </h1>
          
-          <p className="pr-5 mb-5 text-base  md:text-lg">Get info and facts  <strong>with citations</strong>, from your PDFs, word , power point, and audio files. <span className="text-primary font-bold"> Fast!</span></p>
+          <p className="pr-5 mb-5 text-base  md:text-lg">Get info & facts from PDFs, Word docs, Slides, and Audio—sources included. <span className="text-primary font-bold"> Fast!</span></p>
             
           <div className="flex flex-wrap items-center space-x-4">
             <Button
