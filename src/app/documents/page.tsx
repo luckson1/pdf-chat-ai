@@ -282,13 +282,14 @@ export default function DocumentPage() {
         ) : docsData && !isLoading ? (
           <div className="grid md:grid-rows-2 space-y-5">
             {docsData.map((doc) => (
-              <Link
+            
+                <Card className="w-full max-w-xs" key={doc.id}>
+                  <CardHeader className="underline ">
+
+                    <CardTitle className="overflow-hidden">   <Link
                 key={doc.id}
                 href={{ pathname: "/documents/[id]", query: { id: doc.id } }}
-              >
-                <Card className="w-full max-w-xs">
-                  <CardHeader className="underline ">
-                    <CardTitle className="overflow-hidden">{doc.name}</CardTitle>
+              >{doc.name}</Link></CardTitle>
                   </CardHeader>
                   <CardFooter>
                   <Dialog>
@@ -341,7 +342,7 @@ export default function DocumentPage() {
                   </CardFooter>
                 </Card>
               
-              </Link>
+             
             ))}
             <div className="flex flex-row w-full justify-center items-center text-sm space-x-2">
               <Button
