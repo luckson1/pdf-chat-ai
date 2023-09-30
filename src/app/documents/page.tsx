@@ -296,7 +296,7 @@ export default function DocumentPage() {
       <DialogTrigger asChild>
         <Button variant="outline"><PenIcon className="w-5 h-5"/></Button>
       </DialogTrigger>
-      <form className="w-auto h-auto" onSubmit={ e=> {e.stopPropagation(), handleSubmit(data=> (rename({id:doc.id, name:data.name})))} }>
+  
       <DialogContent className="sm:max-w-[425px]">
         
         <DialogHeader>
@@ -319,11 +319,11 @@ export default function DocumentPage() {
       
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button type="submit" onSubmit={ e=> {e.preventDefault(), handleSubmit(data=> (rename({id:doc.id, name:data.name})))} }>Save changes</Button>
         </DialogFooter>
     
       </DialogContent>
-      </form>
+   
     </Dialog>
                   <AlertDialog>
   <AlertDialogTrigger><Button variant={'destructive'} size={'icon'}><Trash2 className="w-5 h-5"/></Button></AlertDialogTrigger>
