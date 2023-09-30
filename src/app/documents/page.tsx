@@ -18,8 +18,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
 import { Icons } from "@/components/Icons";
 import { ChevronLeft, ChevronRight, PenIcon, Trash2 } from "lucide-react";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@radix-ui/react-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@radix-ui/react-dialog";
 import { DialogFooter, DialogHeader } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -46,7 +62,7 @@ export default function DocumentPage() {
       await axios.get(`/api/aws/upload_file?type=${type}&name=${name}`);
 
     const { uploadUrl, key } = data;
-    console.log(uploadUrl, key)
+    console.log(uploadUrl, key);
     await axios.put(uploadUrl, files[0]);
     return { key, name, type };
   };
@@ -83,11 +99,13 @@ export default function DocumentPage() {
     try {
       setLoading(true);
       const data = await uploadToS3(docs);
-      console.log(data)
+      console.log(data);
       if (!data) {
         setLoading(false);
         return;
-      } else {addDoc(data);}
+      } else {
+        addDoc(data);
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -160,7 +178,6 @@ export default function DocumentPage() {
     }
   };
 
-
   const {
     data: docsData,
     isLoading,
@@ -183,24 +200,18 @@ export default function DocumentPage() {
     }
   }, [isPreviousData, page, hasMore]);
   const NameSchema = z.object({
-    name: z
-      .string()
-    
-  })
+    name: z.string(),
+  });
 
-  type TNameSchema = z.infer<
-    typeof NameSchema
-  >
+  type TNameSchema = z.infer<typeof NameSchema>;
   const {
     register,
     handleSubmit,
     formState: { errors },
-  
   } = useForm<TNameSchema>({
-  
     resolver: zodResolver(NameSchema),
-  })
-console.log(errors)
+  });
+  console.log(errors);
   return (
     <div className="w-full h-fit flex flex-col md:flex-row space-x-0 md:space-x-5 space-y-5 md:space-y-0">
       <Tabs defaultValue="docs" className="w-full max-w-sm">
@@ -223,7 +234,12 @@ console.log(errors)
                 onSubmit={(e) => handleSubmitDocs(e)}
                 id="docs"
               >
-                <Dropzone files={docs} setFiles={setDocs} audio={false} type="a document"/>
+                <Dropzone
+                  files={docs}
+                  setFiles={setDocs}
+                  audio={false}
+                  type="a document"
+                />
                 <Button
                   type="submit"
                   disabled={docs.length <= 0}
@@ -252,7 +268,12 @@ console.log(errors)
                 onSubmit={(e) => handleSubmitAudio(e)}
                 id="audio"
               >
-                <Dropzone files={audio} setFiles={setAudio} audio={true} type="an audio recording"/>
+                <Dropzone
+                  files={audio}
+                  setFiles={setAudio}
+                  audio={true}
+                  type="an audio recording"
+                />
                 <Button
                   type="submit"
                   disabled={audio.length <= 0}
@@ -273,7 +294,7 @@ console.log(errors)
           Array.from({ length: 5 })
             .fill(0)
             .map((_, index) => (
-              <Skeleton className="w-full h-16  max-w-sm" key={index} />
+              <Skeleton className="w-full max-w-sm h-32 overflow-hidden" key={index} />
             ))}
         {(!docsData || docsData.length <= 0) && !isLoading ? (
           <Card className="w-full max-w-sm">
@@ -282,88 +303,110 @@ console.log(errors)
         ) : docsData && !isLoading ? (
           <div className="grid grid-cols-1   md:grid-cols-2 gap-2">
             {docsData.map((doc) => (
-            
-                <Card className="w-full max-w-sm" key={doc.id}>
-                  <CardHeader className="underline ">
-
-                    <CardTitle className="overflow-hidden">   <Link
-                key={doc.id}
-                href={{ pathname: "/documents/[id]", query: { id: doc.id } }}
-              >{doc.name}</Link></CardTitle>
-                  </CardHeader>
-                  <CardFooter className="flex flex-row justify-between items-center bg-red-400">
-        
-<AlertDialog>
-<AlertDialogTrigger><PenIcon className="w-5 h-5"/></AlertDialogTrigger>
-    <AlertDialogContent>
-    <AlertDialogHeader>
-      <AlertDialogTitle>Edit Name</AlertDialogTitle>
-      <AlertDialogDescription>
-      Change the name of the file. Click save when you are done.
-      </AlertDialogDescription>
-    </AlertDialogHeader>
-    <form className="grid gap-4 py-4" onSubmit={ handleSubmit(data=> rename({id:doc.id, name: data.name}))} >
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              {...register('name')}
-              defaultValue={doc.name}
-              className="col-span-3"
-            />
-          </div>
-          <AlertDialogFooter>
-      <AlertDialogCancel type="button">Cancel</AlertDialogCancel>
-      <AlertDialogAction type="submit" >Save</AlertDialogAction>
-    </AlertDialogFooter>
-        </form>
-
-  </AlertDialogContent>
-</AlertDialog>
+              <Card className="w-full max-w-sm h-32 overflow-hidden" key={doc.id}>
+                <CardHeader className="underline ">
+                  <CardTitle className="overflow-hidden">
+                    {" "}
+                    <Link
+                      key={doc.id}
+                      href={{
+                        pathname: "/documents/[id]",
+                        query: { id: doc.id },
+                      }}
+                    >
+                      {doc.name}
+                    </Link>
+                  </CardTitle>
+                </CardHeader>
+                <CardFooter className="flex flex-row justify-between items-center">
                   <AlertDialog>
-  <AlertDialogTrigger><Trash2 className="w-5 h-5 text-destructive"/></AlertDialogTrigger>
-  <AlertDialogContent>
-    <AlertDialogHeader>
-      <AlertDialogTitle>Are you sure you want to delete the document?</AlertDialogTitle>
-      <AlertDialogDescription>
-        This action cannot be undone. This will permanently delete the file.
-      </AlertDialogDescription>
-    </AlertDialogHeader>
-    <AlertDialogFooter>
-      <AlertDialogCancel>Cancel</AlertDialogCancel>
-      <AlertDialogAction onClick={(e)=> { del({id:doc.id})}} className="bg-destructive hover:bg-destructive/10">Delete</AlertDialogAction>
-    </AlertDialogFooter>
-  </AlertDialogContent>
-</AlertDialog>
-                  </CardFooter>
-                </Card>
-              
-             
+                    <AlertDialogTrigger>
+                      <PenIcon className="w-5 h-5" />
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Edit Name</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Change the name of the file. Click save when you are
+                          done.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <form
+                        className="grid gap-4 py-4"
+                        onSubmit={handleSubmit((data) =>
+                          rename({ id: doc.id, name: data.name })
+                        )}
+                      >
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="name" className="text-right">
+                            Name
+                          </Label>
+                          <Input
+                            id="name"
+                            {...register("name")}
+                            defaultValue={doc.name}
+                            className="col-span-3"
+                          />
+                        </div>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel type="button">
+                            Cancel
+                          </AlertDialogCancel>
+                          <AlertDialogAction type="submit">
+                            Save
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </form>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <Trash2 className="w-5 h-5 text-destructive" />
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you sure you want to delete the document?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete the file.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={(e) => {
+                            del({ id: doc.id });
+                          }}
+                          className="bg-destructive hover:bg-destructive/10"
+                        >
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </CardFooter>
+              </Card>
             ))}
             <div className="flex flex-row w-full justify-center items-center text-sm space-x-2">
               <Button
                 variant="outline"
-              
                 size="sm"
                 onClick={() => setPage((p) => p - 1)}
                 disabled={page === 1}
               >
                 <ChevronLeft className="w-8 h-8" />
-           
               </Button>
 
               <span>Page {page}</span>
 
               <Button
                 variant="outline"
-                
                 size="sm"
                 onClick={() => setPage((p) => p + 1)}
                 disabled={hasMore}
               >
-            
                 <ChevronRight className="w-8 h-8" />
               </Button>
             </div>
