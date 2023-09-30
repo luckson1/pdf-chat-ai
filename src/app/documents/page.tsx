@@ -268,7 +268,7 @@ export default function DocumentPage() {
           </Card>
         </TabsContent>
       </Tabs>
-      <div className="w-full max-w-4xl grid  md:grid-rows-2 space-y-3">
+      <div className="w-full max-w-4xl grid grid-row md:grid-rows-2 space-y-3">
         {isLoading &&
           Array.from({ length: 5 })
             .fill(0)
@@ -280,7 +280,7 @@ export default function DocumentPage() {
             <CardHeader>No Documents</CardHeader>
           </Card>
         ) : docsData && !isLoading ? (
-          <div className="grid  md:grid-rows-2 space-y-3">
+          <div className="grid  grid-row md:grid-rows-2 space-y-3">
             {docsData.map((doc) => (
             
                 <Card className="w-full max-w-xs" key={doc.id}>
@@ -291,7 +291,7 @@ export default function DocumentPage() {
                 href={{ pathname: "/documents/[id]", query: { id: doc.id } }}
               >{doc.name}</Link></CardTitle>
                   </CardHeader>
-                  <CardFooter className="flex flex-col justify-between items-center">
+                  <CardFooter className="flex flex-row justify-between items-center">
                   <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline"><PenIcon className="w-5 h-5"/></Button>
@@ -305,7 +305,23 @@ export default function DocumentPage() {
            Change the name of the file. Click save when you are done.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+     
+        <DialogFooter>
+          <Button type="submit" onSubmit={ e=> {e.preventDefault(), handleSubmit(data=> (rename({id:doc.id, name:data.name})))} }>Save changes</Button>
+        </DialogFooter>
+    
+      </DialogContent>
+   
+    </Dialog>
+<AlertDialog>
+    <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Edit Name</AlertDialogTitle>
+      <AlertDialogDescription>
+      Change the name of the file. Click save when you are done.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
               Name
@@ -318,15 +334,14 @@ export default function DocumentPage() {
           </div>
       
         </div>
-        <DialogFooter>
-          <Button type="submit" onSubmit={ e=> {e.preventDefault(), handleSubmit(data=> (rename({id:doc.id, name:data.name})))} }>Save changes</Button>
-        </DialogFooter>
-    
-      </DialogContent>
-   
-    </Dialog>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction onClick={ handleSubmit(data=> rename({id:doc.id, name: data.name}))} className="bg-destructive">Delete</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
                   <AlertDialog>
-  <AlertDialogTrigger><Button variant={'destructive'} size={'icon'}><Trash2 className="w-5 h-5"/></Button></AlertDialogTrigger>
+  <AlertDialogTrigger><Trash2 className="w-5 h-5 text-destructive"/></AlertDialogTrigger>
   <AlertDialogContent>
     <AlertDialogHeader>
       <AlertDialogTitle>Are you sure you want to delete the document?</AlertDialogTitle>
