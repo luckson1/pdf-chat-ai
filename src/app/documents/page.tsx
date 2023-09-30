@@ -5,11 +5,10 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -18,7 +17,8 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
 import { Icons } from "@/components/Icons";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
@@ -50,7 +50,7 @@ export default function DocumentPage() {
       ctx.documents.getAll.invalidate();
     },
   });
-  const { mutate: addWebDoc } = api.documents.addWebDoc.useMutation({
+  const { mutate: del } = api.documents.deleteOne.useMutation({
     onSuccess: () => {
       ctx.documents.getAll.invalidate();
     },
@@ -148,20 +148,7 @@ export default function DocumentPage() {
       console.log(error);
     }
   };
-  const handleSubmitWebPage = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
 
-      const validUrl = urlSchema.parse(url);
-      addWebDoc({ url: validUrl });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-      setUrl("");
-    }
-  };
 
   const {
     data: docsData,
@@ -222,45 +209,6 @@ export default function DocumentPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        {/* <TabsContent value="url">
-          <Card className="w-full max-w-sm h-fit min-h-[500px]">
-            <CardHeader>
-              <CardTitle>Link to your online study material</CardTitle>
-              <CardDescription>
-                Provide a working link to a blog or news article (online pdfs
-                are not valid)
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form
-                onSubmit={(e) => {
-                  handleSubmitWebPage(e);
-                }}
-                className="flex w-full  max-w-sm items-center space-y-5 mt-10  flex-col"
-              >
-                <div className="w-full space-y-2">
-                  <Label htmlFor="url">Add url to your source</Label>
-                  <Input
-                    type="text"
-                    placeholder="https://..."
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                  />
-                </div>
-                <Button
-                  className="mt-8 w-full max-w-xs"
-                  type="submit"
-                  disabled={!urlSchema.safeParse(url).success}
-                >
-                  {loading && (
-                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  Chat with your web page
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        </TabsContent> */}
         <TabsContent value="audio">
           <Card className="w-full max-w-sm h-fit min-h-[500px]">
             <CardHeader>
@@ -299,19 +247,40 @@ export default function DocumentPage() {
               <Skeleton className="w-full h-16" key={index} />
             ))}
         {(!docsData || docsData.length <= 0) && !isLoading ? (
-          <Card className="w-full">
+          <Card className="w-full max-w-xs">
             <CardHeader>No Documents</CardHeader>
           </Card>
         ) : docsData && !isLoading ? (
-          <div className="flex flex-col space-y-5">
+          <div className="grid md:grid-rows-2 space-y-5">
             {docsData.map((doc) => (
               <Link
                 key={doc.id}
                 href={{ pathname: "/documents/[id]", query: { id: doc.id } }}
               >
-                <Card className="w-full">
-                  <CardHeader className="underline">{doc.name}</CardHeader>
+                <Card className="w-full max-w-xs">
+                  <CardHeader className="underline overflow-hidden">
+                    <CardTitle>{doc.name}</CardTitle>
+                  </CardHeader>
+                  <CardFooter>
+                  <AlertDialog>
+  <AlertDialogTrigger><Trash2 className="w-5 h-5 text-destructive"/></AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Are you sure you want to delete the document?</AlertDialogTitle>
+      <AlertDialogDescription>
+        This action cannot be undone. This will permanently delete your account
+        and remove your data from our servers.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction onClick={()=> del({id:doc.id})}>Delete</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+                  </CardFooter>
                 </Card>
+              
               </Link>
             ))}
             <div className="flex flex-row w-full justify-center items-center text-sm space-x-2">
