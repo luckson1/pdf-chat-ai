@@ -302,7 +302,7 @@ export default function DocumentPage() {
       Change the name of the file. Click save when you are done.
       </AlertDialogDescription>
     </AlertDialogHeader>
-    <div className="grid gap-4 py-4">
+    <form className="grid gap-4 py-4" onSubmit={ handleSubmit(data=> rename({id:doc.id, name: data.name}))} >
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
               Name
@@ -313,12 +313,12 @@ export default function DocumentPage() {
               className="col-span-3"
             />
           </div>
-      
-        </div>
-    <AlertDialogFooter>
-      <AlertDialogCancel>Cancel</AlertDialogCancel>
-      <AlertDialogAction onClick={ handleSubmit(data=> rename({id:doc.id, name: data.name}))} className="bg-destructive">Delete</AlertDialogAction>
+          <AlertDialogFooter>
+      <AlertDialogCancel type="button">Cancel</AlertDialogCancel>
+      <AlertDialogAction type="submit" >Save</AlertDialogAction>
     </AlertDialogFooter>
+        </form>
+
   </AlertDialogContent>
 </AlertDialog>
                   <AlertDialog>
@@ -333,7 +333,7 @@ export default function DocumentPage() {
     </AlertDialogHeader>
     <AlertDialogFooter>
       <AlertDialogCancel>Cancel</AlertDialogCancel>
-      <AlertDialogAction onClick={(e)=> {e.stopPropagation(), del({id:doc.id})}}>Delete</AlertDialogAction>
+      <AlertDialogAction onClick={(e)=> { del({id:doc.id})}} className="bg-destructive hover:bg-destructive/10">Delete</AlertDialogAction>
     </AlertDialogFooter>
   </AlertDialogContent>
 </AlertDialog>
