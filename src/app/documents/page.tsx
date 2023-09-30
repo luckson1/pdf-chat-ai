@@ -280,7 +280,7 @@ export default function DocumentPage() {
             <CardHeader>No Documents</CardHeader>
           </Card>
         ) : docsData && !isLoading ? (
-          <div className="grid  grid-row md:grid-rows-2 space-y-3">
+          <div className="grid grid-rows-1   md:grid-rows-2 space-y-3 w-full bg-red-200">
             {docsData.map((doc) => (
             
                 <Card className="w-full max-w-xs" key={doc.id}>
