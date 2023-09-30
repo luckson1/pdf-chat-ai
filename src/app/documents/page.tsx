@@ -287,8 +287,8 @@ export default function DocumentPage() {
                 href={{ pathname: "/documents/[id]", query: { id: doc.id } }}
               >
                 <Card className="w-full max-w-xs">
-                  <CardHeader className="underline overflow-hidden">
-                    <CardTitle>{doc.name}</CardTitle>
+                  <CardHeader className="underline ">
+                    <CardTitle className="overflow-hidden">{doc.name}</CardTitle>
                   </CardHeader>
                   <CardFooter>
                   <Dialog>
