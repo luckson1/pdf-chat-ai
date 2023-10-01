@@ -25,8 +25,8 @@ export default function Home() {
         {!exceededPageCount && <Chat id={id} />}
         {exceededPageCount && (
           <Card className="w-full h-[85vh]">
-            <CardContent className="flex flex-row space-x-4 justify-center items-center text-destructive w-full h-full text-xl">
-              <XCircleIcon className="w-8 h-8" /> Exceeds 25 pages. Please Upgrade to contininue
+            <CardContent className="flex flex-col space-y-4 justify-center items-center text-destructive w-full h-full text-xl">
+              <XCircleIcon className="w-12 h-12" /> Exceeds 25 pages. Please Upgrade to contininue
             </CardContent>
           </Card>
         )}
