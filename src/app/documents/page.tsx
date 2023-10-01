@@ -78,16 +78,7 @@ export default function DocumentPage() {
   });
 
   const { mutate: getTranscription, data: transcription } =
-    api.documents.getTranscription.useMutation( {
-     retry(failureCount, error) {
-       if (error.data?.code==='NOT_IMPLEMENTED') {
-        return true
-       } else {
-        return false
-       }
-     },
-     retryDelay: 5000,
-    });
+    api.documents.getTranscription.useMutation();
   const { mutate: addTranscription, data: id } =
     api.documents.transcribe.useMutation({
       onSuccess(id) {
@@ -129,43 +120,43 @@ export default function DocumentPage() {
   };
   const status = transcription?.status;
   const text = transcription?.text;
-  // useEffect(() => {
-  //   let timeoutId: NodeJS.Timeout;
-  //   const fetchTranscription = async () => {
-  //     try {
-  //       if (id && (status === "processing" || status === "queued")) {
-  //         console.log("status", status);
-  //         setTimeout(
-  //           () => getTranscription({ id, name: audio[0]?.name ?? id }),
-  //           5000
-  //         );
-  //       }
-  //       if (status === "completed") {
-  //         setAudio([]);
-  //         ctx.documents.getAll.invalidate();
-  //       }
-  //       if (status === "error") {
-  //         setAudio([]);
-  //         console.log("an error occurred");
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    const fetchTranscription = async () => {
+      try {
+        if (id && (status === "processing" || status === "queued")) {
+          console.log("status", status);
+          setTimeout(
+            () => getTranscription({ id, name: audio[0]?.name ?? id }),
+            5000
+          );
+        }
+        if (status === "completed") {
+          setAudio([]);
+          ctx.documents.getAll.invalidate();
+        }
+        if (status === "error") {
+          setAudio([]);
+          console.log("an error occurred");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  //   fetchTranscription();
+    fetchTranscription();
 
-  //   // Cleanup function to clear the timeout when the component is unmounted or if dependencies change
-  //   return () => clearTimeout(timeoutId);
-  // }, [id, status, text]);
-  // useEffect(() => {
-  //   if (status === "processing" || status === "queued") {
-  //     setLoading(true);
-  //   }
-  //   if (status === "error" || status === "completed") {
-  //     setLoading(false);
-  //   }
-  // }, [status]);
+    // Cleanup function to clear the timeout when the component is unmounted or if dependencies change
+    return () => clearTimeout(timeoutId);
+  }, [id, status, text]);
+  useEffect(() => {
+    if (status === "processing" || status === "queued") {
+      setLoading(true);
+    }
+    if (status === "error" || status === "completed") {
+      setLoading(false);
+    }
+  }, [status]);
   const handleSubmitAudio = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {

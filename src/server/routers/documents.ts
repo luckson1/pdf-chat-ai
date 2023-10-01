@@ -6,6 +6,7 @@ import { inngest } from "@/inngest/client";
 import { nanoid } from "nanoid";
 import axios, { AxiosResponse } from "axios";
 import path from "path";
+
 import { TRPCError } from "@trpc/server";
 
 type Uttarance= {
@@ -162,14 +163,11 @@ if(!document) {
       userId
     }
   })
-  return data
 }
-    return data     
-        } else {
-          throw new TRPCError({code: "NOT_IMPLEMENTED" , message: 'not processed yet'})
-        }
+         
+        } 
 
-     
+        return data;
       } catch (error) {
         console.log(error);
       }
