@@ -10,23 +10,8 @@ import { siteConfig } from "@/lib/config";
 
 
 
-export default function Credits({session}: {session: Session}) {
-  const credits=session.user.credits
-  return (
-   <>
-    <Link
-            href={"/credits"}
-            className={cn("flex items-center px-4", "font-bold ")}
-          >
-        Credits:    {credits}
-          </Link>
-   </>
-  )
-}
-
 
 export function MainNav() {
-  const { data: session } = useSession();
   return (
     <div className="mr-4 hidden md:flex">
       <Link href="/" className="mr-6 flex items-center space-x-4">
