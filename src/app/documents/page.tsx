@@ -88,6 +88,7 @@ if(!data) {
   const { mutate: addDoc } = api.documents.addDoc.useMutation({
     onSettled: () => {
       ctx.documents.getAll.invalidate();
+      setLoading(false)
     },
     onError: ()=> {
       toast({
