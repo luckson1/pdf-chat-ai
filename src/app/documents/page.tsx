@@ -115,9 +115,8 @@ export default function DocumentPage() {
       addTranscription({ key });
     } catch (error) {
       console.log(error);
-    } finally {
       setLoading(false);
-    }
+    } 
   };
   const status = transcription?.status;
   const text = transcription?.text;
