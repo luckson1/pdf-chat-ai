@@ -89,8 +89,13 @@ export const documentRouter = createTRPCRouter({
             }
           }
           const blob = await fetchBlobFromSignedUrl(signedUrl);
-    
+    if(!blob) {
+      throw new TRPCError({code: "INTERNAL_SERVER_ERROR", message: "Somethingwent  wrong "})
+    }
           const docs = await getChunkedDocsFromPDF(blob, userId, document.id);
+          if(!docs) {
+            throw new TRPCError({code: "INTERNAL_SERVER_ERROR", message: "Somethingwent  wrong "})
+          }
           const pineconeClient = await getPineconeClient();
     
           return await pineconeEmbedAndStore(pineconeClient, docs);
@@ -102,7 +107,9 @@ export const documentRouter = createTRPCRouter({
             userId,
             document.id
           );
-    
+          if(!docs) {
+            throw new TRPCError({code: "INTERNAL_SERVER_ERROR", message: "Somethingwent  wrong "})
+          }
           return await pineconeEmbedAndStore(pineconeClient, docs);
         }
       } catch (error) {
