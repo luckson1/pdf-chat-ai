@@ -50,7 +50,7 @@ export  async function GET(
       };
 
       const uploadUrl = await s3.getSignedUrlPromise("putObject", s3Params);
-
+console.log(Key, uploadUrl)
     return NextResponse.json({
         uploadUrl,
         key: Key,

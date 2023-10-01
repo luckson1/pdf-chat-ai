@@ -29,8 +29,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
-import { DialogFooter, DialogHeader } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -42,7 +40,6 @@ import { ToastAction } from "@radix-ui/react-toast";
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
   const [audio, setAudio] = useState<File[]>([]);
-  const [url, setUrl] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
@@ -82,7 +79,9 @@ if(!data) {
 }
     const { uploadUrl, key } = data;
     await axios.put(uploadUrl, files[0]);
+       console.log(key)
     return { key, name, type };
+ 
   };
   const ctx = api.useContext();
   const { mutate: addDoc } = api.documents.addDoc.useMutation({

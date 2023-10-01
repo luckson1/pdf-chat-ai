@@ -55,7 +55,7 @@ export const documentRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       try {
         const userId = ctx.session.user.id;
-
+console.log(input.key)
         const document = await ctx.prisma.document.create({
           data: {
             key: input.key,
