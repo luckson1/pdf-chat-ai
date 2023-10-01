@@ -79,7 +79,11 @@ export default function DocumentPage() {
   });
 
   const { mutate: getTranscription, data: transcription } =
-    api.documents.getTranscription.useMutation();
+    api.documents.getTranscription.useMutation({onSuccess(data) {
+      if(data?.status  === "completed") {
+        ctx.documents.getAll.invalidate()
+      }
+    },});
   const { mutate: addTranscription, data: id } =
     api.documents.transcribe.useMutation({
       onSuccess(id) {
@@ -131,7 +135,7 @@ export default function DocumentPage() {
         }
         if (status === "completed") {
           setAudio([]);
-          ctx.documents.getAll.invalidate();
+         
         }
         if (status === "error") {
           setAudio([]);
