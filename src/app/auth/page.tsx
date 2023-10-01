@@ -12,6 +12,8 @@ import { signIn } from "next-auth/react";
 import { type LucideProps } from "lucide-react";
 import { siteConfig } from "@/lib/config";
 import { Icons } from "@/components/Icons";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
 const Google = (props: LucideProps) => {
@@ -28,7 +30,7 @@ const Google = (props: LucideProps) => {
 function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
-
+  const { toast } = useToast()
   const [email, setEmail] = useState("");
 
   const signInWithGoogle = async () => {
@@ -36,7 +38,13 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     setIsLoading(true);
     await signIn("google", { callbackUrl: "/" })
   } catch (error) {
-    console.log(error)
+    toast({
+    
+      description: "Something went wrong",
+      variant:'destructive',
+      action: <ToastAction altText="Try again">Try Again</ToastAction>,
+      
+    })
   } finally {
     setIsLoading(false)
   }

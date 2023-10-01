@@ -11,7 +11,6 @@ export function MainDocumentViewer({ id , numPages, setNumPages}: { id:  string,
 const signedUrl=data?.signedUrl
 const docName=data?.name
 const type=data?.type
-console.log(signedUrl)
   return (<div className="w-full h-auto">
   <DocumentViewer signedUrl={signedUrl}  docName={docName}  type={type} numPages={numPages} setNumPages={setNumPages}/>
   </div>)

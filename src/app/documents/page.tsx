@@ -79,7 +79,6 @@ if(!data) {
 }
     const { uploadUrl, key } = data;
     await axios.put(uploadUrl, files[0]);
-       console.log(key)
     return { key, name, type };
  
   };

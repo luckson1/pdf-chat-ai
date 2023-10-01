@@ -12,7 +12,6 @@ import { siteConfig } from "@/lib/config";
 
 export default function Credits({session}: {session: Session}) {
   const credits=session.user.credits
-  console.log(session.user)
   return (
    <>
     <Link

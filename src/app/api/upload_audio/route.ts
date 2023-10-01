@@ -5,7 +5,7 @@ export async function POST(req: Request) {
 try {
     const formData = await req.formData();
         formData.append("model", "whisper-1");
-   console.log(formData)
+
     const res = await fetch("https://api.openai.com/v1/audio/transcriptions", {
             headers: {
               Authorization: `Bearer ${env.OPENAI_API_KEY}`,

@@ -68,7 +68,6 @@ export function EmptyScreen({
   }, [messages]);
 
   const content = getAssistantMessage()?.content;
-  console.log(getAssistantMessage()?.content);
   return (
     <div className="mx-auto max-w-2xl px-4">
       <div className="rounded-lg border bg-background p-8">

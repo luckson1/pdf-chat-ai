@@ -20,7 +20,6 @@ async function createIndex(client: PineconeClient, indexName: string) {
       `Waiting for ${env.INDEX_INIT_TIMEOUT} seconds for index initialization to complete...`
     );
     await delay(env.INDEX_INIT_TIMEOUT);
-    console.log("Index created !!");
   } catch (error) {
     console.error("error ", error);
     throw new Error("Index creation failed");
@@ -40,9 +39,7 @@ async function initPineconeClient() {
 
     if (!existingIndexes.includes(indexName)) {
       createIndex(pineconeClient, indexName);
-    } else {
-      console.log("Your index already exists. nice !!");
-    }
+    } 
 
     return pineconeClient;
   } catch (error) {
