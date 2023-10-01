@@ -131,11 +131,14 @@ export default function DocumentPage() {
           );
         }
         if (status === "completed") {
-          setAudio([]);
+          
           ctx.documents.getAll.invalidate();
+          setAudio([]);
+          setLoading(true)
         }
         if (status === "error") {
           setAudio([]);
+          setLoading(true)
           console.log("an error occurred");
         }
       } catch (error) {
@@ -148,14 +151,14 @@ export default function DocumentPage() {
     // Cleanup function to clear the timeout when the component is unmounted or if dependencies change
     return () => clearTimeout(timeoutId);
   }, [id, status, text]);
-  useEffect(() => {
-    if (status === "processing" || status === "queued") {
-      setLoading(true);
-    }
-    if (status === "error" || status === "completed") {
-      setLoading(false);
-    }
-  }, [status]);
+  // useEffect(() => {
+  //   if (status === "processing" || status === "queued") {
+  //     setLoading(true);
+  //   }
+  //   if (status === "error" || status === "completed") {
+  //     setLoading(false);
+  //   }
+  // }, [status]);
   const handleSubmitAudio = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {

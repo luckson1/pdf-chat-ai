@@ -94,7 +94,7 @@ export const documentRouter = createTRPCRouter({
           const docs = await getChunkedDocsFromPDF(blob, userId, document.id);
           const pineconeClient = await getPineconeClient();
     
-          await pineconeEmbedAndStore(pineconeClient, docs);
+          return await pineconeEmbedAndStore(pineconeClient, docs);
         } else {
           const pineconeClient = await getPineconeClient();
 
@@ -104,11 +104,8 @@ export const documentRouter = createTRPCRouter({
             document.id
           );
     
-          await pineconeEmbedAndStore(pineconeClient, docs);
+          return await pineconeEmbedAndStore(pineconeClient, docs);
         }
-        
-
-        return document;
       } catch (error) {
         console.log(error);
       }
@@ -187,7 +184,7 @@ export const documentRouter = createTRPCRouter({
         }
        })
 if(!document) {
-  ctx.prisma.document.create({
+  await ctx.prisma.document.create({
     data: {
       name: input.name,
       key:Key,
@@ -195,8 +192,9 @@ if(!document) {
       userId
     }
   })
+  return data
 }
-         
+     return data   
         } 
 
         return data;
