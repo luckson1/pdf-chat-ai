@@ -441,7 +441,8 @@ if(!data) {
                       <ChatBubbleIcon className="w-5 h-5"/>
                       <p className="text-xs font-extralight">{doc.Message.length}</p>
                     </Link>
-                  <AlertDialog>
+              <div className="flex flex-row justify-between items-center w-1/3">
+              <AlertDialog>
                     <AlertDialogTrigger>
                       <PenIcon className="w-5 h-5 text-primary" />
                     </AlertDialogTrigger>
@@ -508,6 +509,7 @@ if(!data) {
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
+              </div>
                 </CardFooter>
               </Card>
             ))}
