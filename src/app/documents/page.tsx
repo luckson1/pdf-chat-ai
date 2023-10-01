@@ -58,7 +58,7 @@ export default function DocumentPage() {
     if (!name || !type || !size) {
       return null;
     }
-    if(size>=4000) {
+    if(size>=4000000) {
 toast({
   title: "File larger than 4MB.",
   description: "Upgrade to upload larger files",
@@ -68,9 +68,18 @@ toast({
 })
 return
     }
+console.log(size)
     const { data }: { data: { uploadUrl: string; key: string } } =
       await axios.get(`/api/aws/upload_file?type=${type}&name=${name}`);
-
+if(!data) {
+  toast({
+    
+    description: "Upload failed",
+    variant:'destructive',
+    action: <ToastAction altText="Try again">Try Again</ToastAction>,
+    
+  })
+}
     const { uploadUrl, key } = data;
     await axios.put(uploadUrl, files[0]);
     return { key, name, type };
