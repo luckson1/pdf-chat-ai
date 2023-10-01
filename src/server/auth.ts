@@ -67,7 +67,7 @@ export const authOptions: NextAuthOptions = {
       user: {
         ...session.user,
         id: user.id,
-        credits:user.isPro
+        isPro:user.isPro
       },
     }),
   },
