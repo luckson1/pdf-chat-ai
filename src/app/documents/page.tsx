@@ -64,8 +64,7 @@ export default function DocumentPage() {
   const { mutate: addDoc } = api.documents.addDoc.useMutation({
     onSettled: () => {
       ctx.documents.getAll.invalidate();
-      setLoading(false);
-      setDocs([]);
+      
     },
   });
   const { mutate: del } = api.documents.deleteOne.useMutation({
@@ -131,14 +130,11 @@ export default function DocumentPage() {
           );
         }
         if (status === "completed") {
-          
-          ctx.documents.getAll.invalidate();
           setAudio([]);
-          setLoading(true)
+          ctx.documents.getAll.invalidate();
         }
         if (status === "error") {
           setAudio([]);
-          setLoading(true)
           console.log("an error occurred");
         }
       } catch (error) {
@@ -151,14 +147,14 @@ export default function DocumentPage() {
     // Cleanup function to clear the timeout when the component is unmounted or if dependencies change
     return () => clearTimeout(timeoutId);
   }, [id, status, text]);
-  // useEffect(() => {
-  //   if (status === "processing" || status === "queued") {
-  //     setLoading(true);
-  //   }
-  //   if (status === "error" || status === "completed") {
-  //     setLoading(false);
-  //   }
-  // }, [status]);
+  useEffect(() => {
+    if (status === "processing" || status === "queued") {
+      setLoading(true);
+    }
+    if (status === "error" || status === "completed") {
+      setLoading(false);
+    }
+  }, [status]);
   const handleSubmitAudio = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
