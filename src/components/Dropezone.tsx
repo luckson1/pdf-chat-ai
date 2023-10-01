@@ -13,7 +13,6 @@ const Dropzone=({files, setFiles, audio, type }: {
  const docFiles={
   "text/csv": [],
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [],
-  "application/epub+zip": [],
   "application/pdf": [],
   "text/plain": [],
   "application/vnd.ms-powerpoint": [],
