@@ -274,7 +274,7 @@ export default function DocumentPage() {
                   disabled={audio.length <= 0}
                   className="max-w-xs w-full"
                 >
-                  {(loading || isTranscribing )&& (
+                  {loading && (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   )}
                   Transcribe and chat with audio
