@@ -40,7 +40,7 @@ model User {
   emailVerified DateTime?
   image         String?
   credits       Int       @default(0)
-  isPro Boolean @default(false)
+  isPro         Boolean   @default(false)
   accounts      Account[]
   sessions      Session[]
 
@@ -58,34 +58,35 @@ model VerificationToken {
 }
 
 model Document {
-  id      String    @id @default(cuid())
-  name    String
-  key     String    @unique
-  type    String
-  user    User      @relation(fields: [userId], references: [id])
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt  @default(now())
-    isDeleted Boolean @default(false)
-  userId  String
-  Message Message[]
-  QAPairs QAPairs[]
+  id        String    @id @default(cuid())
+  name      String
+  key       String    @unique
+  type      String
+  user      User      @relation(fields: [userId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  isDeleted Boolean   @default(false)
+  userId    String
+  Message   Message[]
+  QAPairs   QAPairs[]
 }
-model Subscription {
-    id      String    @id
-          product_id Int 
-          product_name String 
-          variant_id Int
-          variant_name String 
 
-          status String 
-          user_email String
+model Subscription {
+  id           String @id
+  product_id   Int
+  product_name String
+  variant_id   Int
+  variant_name String
+
+  status     String
+  user_email String
 }
 
 enum ChatRole {
   user
   assistant
-   system
-   function
+  system
+  function
 }
 
 model Message {
@@ -98,7 +99,7 @@ model Message {
 
   userId     String
   documentId String
-  createdAt DateTime @default(now())
+  createdAt  DateTime @default(now())
 }
 
 model QAPairs {

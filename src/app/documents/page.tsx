@@ -36,6 +36,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
+import { useSession } from "next-auth/react";
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
@@ -43,7 +44,10 @@ export default function DocumentPage() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
+  const sizeLimit=4000000
   const { toast } = useToast()
+  const session=useSession()
+  const isProMember=session.data?.user.isPro
   const uploadToS3 = async (files: File[]) => {
     if (!files || files.length <= 0) {
       return null;
@@ -55,7 +59,7 @@ export default function DocumentPage() {
     if (!name || !type || !size) {
       return null;
     }
-    if(size>=4000000) {
+    if(size>=sizeLimit && !isProMember) {
 toast({
   title: "File larger than 4MB.",
   description: "Upgrade to upload larger files",

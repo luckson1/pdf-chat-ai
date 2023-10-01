@@ -3,6 +3,7 @@ import { Chat } from "@/components/aiChat";
 import { MainDocumentViewer } from "@/components/documentViewer";
 import { Card, CardContent } from "@/components/ui/card";
 import { XCircleIcon} from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -10,8 +11,13 @@ export default function Home() {
   const [numPages, setNumPages] = useState<number>();
   const params = useSearchParams();
   const id = params?.get("id");
+ 
+  const session=useSession()
+  const isProMember=session.data?.user.isPro
+  const pageLimit=20
+  const exceededPageCount = numPages ? (!isProMember && numPages > pageLimit ): false;
   if (!id) return null;
-  const exceededPageCount = numPages ? numPages > 25 : false;
+
   return (
     <main className="w-full flex flex-col-reverse lg:flex-row space-y-5 lg:space-y-0 lg:space-x-5">
       <div className="w-full max-w-3xl h-auto">

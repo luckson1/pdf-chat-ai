@@ -11,7 +11,6 @@ import   EmailProvider, { SendVerificationRequestParams } from 'next-auth/provid
 import { prisma } from "@/server/db";
 import { Resend } from "resend";
 import { env } from "@/lib/env.mjs";
-import { inngest } from "@/inngest/client";
 
 
 export const resend = new Resend(env.RESEND_API_KEY);
@@ -45,13 +44,13 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: DefaultSession["user"] & {
       id: string;
-      credits: number
+      isPro: boolean
     };
   }
 
   interface User {
 
-   credits: number
+    isPro: boolean
  }
 }
 
@@ -68,7 +67,7 @@ export const authOptions: NextAuthOptions = {
       user: {
         ...session.user,
         id: user.id,
-        credits:user.credits
+        credits:user.isPro
       },
     }),
   },
