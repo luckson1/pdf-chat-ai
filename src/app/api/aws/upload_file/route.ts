@@ -40,13 +40,13 @@ export  async function GET(
       });
     }
 
-    const Key=nanoid()
+    const Key=name
 
       const s3Params = {
         Bucket: env.BUCKET_NAME,
         Key,
         Expires: 60,
-        // ContentType: type
+        ContentType: type
       };
 
       const uploadUrl = await s3.getSignedUrlPromise("putObject", s3Params);
