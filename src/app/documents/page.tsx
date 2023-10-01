@@ -80,16 +80,43 @@ return
     onSettled: () => {
       ctx.documents.getAll.invalidate();
     },
+    onError: ()=> {
+      toast({
+    
+        description: "Something went wrong",
+        variant:'destructive',
+        action: <ToastAction altText="Try again">Try Again</ToastAction>,
+        
+      })
+    }
   });
   const { mutate: del } = api.documents.deleteOne.useMutation({
     onSuccess: () => {
       ctx.documents.getAll.invalidate();
     },
+    onError: ()=> {
+      toast({
+    
+        description: "Something went wrong",
+        variant:'destructive',
+        action: <ToastAction altText="Try again">Try Again</ToastAction>,
+        
+      })
+    }
   });
   const { mutate: rename } = api.documents.changeName.useMutation({
     onSuccess: () => {
       ctx.documents.getAll.invalidate();
     },
+    onError: ()=> {
+      toast({
+    
+        description: "Something went wrong",
+        variant:'destructive',
+        action: <ToastAction altText="Try again">Try Again</ToastAction>,
+        
+      })
+    }
   });
 
   const { mutate: getTranscription, data: transcription } =
@@ -99,6 +126,15 @@ return
           ctx.documents.getAll.invalidate();
         }
       },
+      onError: ()=> {
+        toast({
+      
+          description: "Something went wrong",
+          variant:'destructive',
+          action: <ToastAction altText="Try again">Try Again</ToastAction>,
+          
+        })
+      }
     });
   const {
     mutate: addTranscription,
@@ -110,6 +146,15 @@ return
         getTranscription({ id: id, name: audio[0]?.name ?? id });
       }
     },
+    onError: ()=> {
+      toast({
+    
+        description: "Something went wrong",
+        variant:'destructive',
+        action: <ToastAction altText="Try again">Try Again</ToastAction>,
+        
+      })
+    }
   });
 
   const handleSubmitDocs = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -117,15 +162,29 @@ return
     try {
       setLoading(true);
       const data = await uploadToS3(docs);
-      console.log(data);
       if (!data) {
         setLoading(false);
+   
+          toast({
+        
+            description: "Something went wrong",
+            variant:'destructive',
+            action: <ToastAction altText="Try again">Try Again</ToastAction>,
+            
+          })
+        
         return;
       } else {
         addDoc(data);
       }
     } catch (error) {
-      console.log(error);
+      toast({
+    
+        description: "Something went wrong",
+        variant:'destructive',
+        action: <ToastAction altText="Try again">Try Again</ToastAction>,
+        
+      })
     }
   };
 
@@ -134,7 +193,14 @@ return
       setLoading(true);
       addTranscription({ key });
     } catch (error) {
-      console.log(error);
+      toast({
+    
+        description: "Something went wrong",
+        variant:'destructive',
+        action: <ToastAction altText="Try again">Try Again</ToastAction>,
+        
+      })
+    
       setLoading(false);
     }
   };
@@ -145,7 +211,6 @@ return
     const fetchTranscription = async () => {
       try {
         if (id && (status === "processing" || status === "queued")) {
-          console.log("status", status);
           setTimeout(
             () => getTranscription({ id, name: audio[0]?.name ?? id }),
             5000
@@ -156,10 +221,22 @@ return
         }
         if (status === "error") {
           setAudio([]);
-          console.log("an error occurred");
+          toast({
+    
+            description: "Something went wrong",
+            variant:'destructive',
+            action: <ToastAction altText="Try again">Try Again</ToastAction>,
+            
+          })
         }
       } catch (error) {
-        console.error(error);
+        toast({
+    
+          description: "Something went wrong",
+          variant:'destructive',
+          action: <ToastAction altText="Try again">Try Again</ToastAction>,
+          
+        })
       }
     };
 
@@ -183,11 +260,26 @@ return
       const data = await uploadToS3(audio);
       if (!data) {
         setLoading(false);
+   
+          toast({
+        
+            description: "Something went wrong",
+            variant:'destructive',
+            action: <ToastAction altText="Try again">Try Again</ToastAction>,
+            
+          })
+        
         return;
       }
       transcribe(data.key);
     } catch (error) {
-      console.log(error);
+      toast({
+    
+        description: "Something went wrong",
+        variant:'destructive',
+        action: <ToastAction altText="Try again">Try Again</ToastAction>,
+        
+      })
     }
   };
 
