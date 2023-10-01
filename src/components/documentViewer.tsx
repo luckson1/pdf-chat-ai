@@ -2,33 +2,18 @@
 
 
 import { useSearchParams } from "next/navigation";
-// import { ReactNode } from "react";
-// import { DocumentViewer } from "./s3Loader";
 import { api } from "@/app/api/_trpc/client";
 import { DocumentViewer } from "./s3Loader";
+import { Dispatch, SetStateAction } from "react";
 
-export function ViewLoader({ id }: { id:  string}) {
+export function MainDocumentViewer({ id , numPages, setNumPages}: { id:  string, numPages?: number, setNumPages: Dispatch<SetStateAction<number | undefined>>}) {
   const {data, isLoading}=api.documents.getUrlInfo.useQuery({id})
 const signedUrl=data?.signedUrl
 const docName=data?.name
 const type=data?.type
   return (<div className="w-full h-auto">
-  <DocumentViewer signedUrl={signedUrl}  docName={docName} isLoading={isLoading} type={type}/>
+  <DocumentViewer signedUrl={signedUrl}  docName={docName}  type={type} numPages={numPages} setNumPages={setNumPages}/>
   </div>)
 }
 
-export default function MainDocumentViewer() {
-  const params = useSearchParams();
-  const id = params?.get("id");
- 
 
-  if (!id) {
-    return null;
-  }
-  return (
-    <div className="w-full h-auto">
-      <ViewLoader id={id}/>
-     
-    </div>
-  );
-}

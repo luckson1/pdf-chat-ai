@@ -16,7 +16,7 @@ import { useToast } from './ui/use-toast'
 import { useResizeDetector } from 'react-resize-detector'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 
 
 import { useForm } from 'react-hook-form'
@@ -39,12 +39,14 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 interface PdfRendererProps {
   url: string
+  numPages?: number
+  setNumPages: Dispatch<SetStateAction<number | undefined>>
 }
 
-const PdfRenderer = ({ url }: PdfRendererProps) => {
+const PdfRenderer = ({ url, numPages, setNumPages }: PdfRendererProps) => {
   const { toast } = useToast()
 
-  const [numPages, setNumPages] = useState<number>()
+
   const [currPage, setCurrPage] = useState<number>(1)
   const [scale, setScale] = useState<number>(1)
   const [rotation, setRotation] = useState<number>(0)
@@ -78,7 +80,6 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
     resolver: zodResolver(CustomPageValidator),
   })
 
-  console.log(errors)
 
   const { width, ref } = useResizeDetector()
 

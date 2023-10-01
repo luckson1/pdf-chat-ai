@@ -1,17 +1,15 @@
 'use client'
-import {   useEffect, useState } from "react";
+import {   Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { IconRefresh } from "./ui/icons";
-
-import DocViewer, { DocViewerRenderers } from "./docviewer";
 import PdfRenderer from "./pdf_renderer";
 
 
 
 // pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
-export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedUrl?:string, docName?:string, isLoading: boolean, type?:string} ) => {
+export const DocumentViewer=({  signedUrl, docName, type, numPages,setNumPages }: {setNumPages: Dispatch<SetStateAction<number | undefined>>,   signedUrl?:string, docName?:string, type?:string, numPages?: number} ) => {
   const [msUrl , setMsUrl ]=useState<string>()
   const [gUrl , setGUrl ]=useState<string>()
   const [name, setName]=useState<string>()
@@ -41,7 +39,7 @@ export const DocumentViewer=({  signedUrl, docName, isLoading, type}: {  signedU
   if (!name) return null
   if (!signedUrl) return null
 
-  if(isPdf) {return  <PdfRenderer url={signedUrl}/>}
+  if(isPdf) {return  <PdfRenderer url={signedUrl} setNumPages={setNumPages} numPages={numPages}/>}
 
   return (
 <>
