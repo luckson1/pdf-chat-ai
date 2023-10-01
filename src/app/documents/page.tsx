@@ -62,8 +62,10 @@ export default function DocumentPage() {
   };
   const ctx = api.useContext();
   const { mutate: addDoc } = api.documents.addDoc.useMutation({
-    onSuccess: () => {
+    onSettled: () => {
       ctx.documents.getAll.invalidate();
+      setLoading(false);
+      setDocs([]);
     },
   });
   const { mutate: del } = api.documents.deleteOne.useMutation({
@@ -102,10 +104,7 @@ export default function DocumentPage() {
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
-      setDocs([]);
-    }
+    } 
   };
 
   const transcribe = async (key: string) => {
