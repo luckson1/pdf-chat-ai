@@ -68,7 +68,7 @@ toast({
 })
 return
     }
-console.log(size)
+
     const { data }: { data: { uploadUrl: string; key: string } } =
       await axios.get(`/api/aws/upload_file?type=${type}&name=${name}`);
 if(!data) {
@@ -173,14 +173,6 @@ if(!data) {
       const data = await uploadToS3(docs);
       if (!data) {
         setLoading(false);
-   
-          toast({
-        
-            description: "Something went wrong",
-            variant:'destructive',
-            action: <ToastAction altText="Try again">Try Again</ToastAction>,
-            
-          })
         
         return;
       } else {
