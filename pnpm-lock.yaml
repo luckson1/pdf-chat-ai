@@ -94,6 +94,12 @@ dependencies:
   '@types/react-dom':
     specifier: 18.2.7
     version: 18.2.7
+  '@upstash/ratelimit':
+    specifier: ^0.4.4
+    version: 0.4.4(encoding@0.1.13)
+  '@upstash/redis':
+    specifier: ^1.22.1
+    version: 1.22.1(encoding@0.1.13)
   ai:
     specifier: ^2.2.13
     version: 2.2.13(encoding@0.1.13)(react@18.2.0)(solid-js@1.7.12)(svelte@4.2.1)(vue@3.3.4)
@@ -135,7 +141,7 @@ dependencies:
     version: 2.6.0(encoding@0.1.13)(typescript@5.1.6)
   langchain:
     specifier: 0.0.150
-    version: 0.0.150(@aws-sdk/client-s3@3.412.0)(@pinecone-database/pinecone@0.1.6)(axios@1.5.0)(encoding@0.1.13)(pdf-parse@1.1.1)(puppeteer@21.2.1)
+    version: 0.0.150(@aws-sdk/client-s3@3.412.0)(@pinecone-database/pinecone@0.1.6)(@upstash/redis@1.22.1)(axios@1.5.0)(encoding@0.1.13)(pdf-parse@1.1.1)(puppeteer@21.2.1)
   lodash:
     specifier: ^4.17.21
     version: 4.17.21
@@ -3446,6 +3452,31 @@ packages:
       eslint-visitor-keys: 3.4.3
     dev: false
 
+  /@upstash/core-analytics@0.0.6(encoding@0.1.13):
+    resolution: {integrity: sha512-cpPSR0XJAJs4Ddz9nq3tINlPS5aLfWVCqhhtHnXt4p7qr5+/Znlt1Es736poB/9rnl1hAHrOsOvVj46NEXcVqA==}
+    engines: {node: '>=16.0.0'}
+    dependencies:
+      '@upstash/redis': 1.22.1(encoding@0.1.13)
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
+  /@upstash/ratelimit@0.4.4(encoding@0.1.13):
+    resolution: {integrity: sha512-y3q6cNDdcRQ2MRPRf5UNWBN36IwnZ4kAEkGoH3i6OqdWwz4qlBxNsw4/Rpqn9h93+Nx1cqg5IOq7O2e2zMJY1w==}
+    dependencies:
+      '@upstash/core-analytics': 0.0.6(encoding@0.1.13)
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
+  /@upstash/redis@1.22.1(encoding@0.1.13):
+    resolution: {integrity: sha512-7ec2eCMkVxZzuHNb+hPKonX4b/Pu0BdDeSBsEy+jKIqiweXzCs5Dpu9642vJgf57YnEsfwgXnQMVEataarvyeQ==}
+    dependencies:
+      isomorphic-fetch: 3.0.0(encoding@0.1.13)
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
   /@vue/compiler-core@3.3.4:
     resolution: {integrity: sha512-cquyDNvZ6jTbf/+x+AgM2Arrp6G4Dzbb0R64jiG804HRMfRiFXWI6kqUVqZ6ZR0bQhIoQjB4+2bhNtVwndW15g==}
     dependencies:
@@ -6208,6 +6239,15 @@ packages:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: false
 
+  /isomorphic-fetch@3.0.0(encoding@0.1.13):
+    resolution: {integrity: sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==}
+    dependencies:
+      node-fetch: 2.7.0(encoding@0.1.13)
+      whatwg-fetch: 3.6.19
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
   /isomorphic-ws@4.0.1(ws@8.14.1):
     resolution: {integrity: sha512-BhBvN2MBpWTaSHdWRb/bwdZJ1WaehQ2L1KngkCkfLUGF0mAWAT1sQUQacEmQ0jXkFw/czDXPNQSL5u2/Krsz1w==}
     peerDependencies:
@@ -6358,7 +6398,7 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
-  /langchain@0.0.150(@aws-sdk/client-s3@3.412.0)(@pinecone-database/pinecone@0.1.6)(axios@1.5.0)(encoding@0.1.13)(pdf-parse@1.1.1)(puppeteer@21.2.1):
+  /langchain@0.0.150(@aws-sdk/client-s3@3.412.0)(@pinecone-database/pinecone@0.1.6)(@upstash/redis@1.22.1)(axios@1.5.0)(encoding@0.1.13)(pdf-parse@1.1.1)(puppeteer@21.2.1):
     resolution: {integrity: sha512-UXpz9vbMgIOfSmV705FxBRaooleaKITcWcZVgLntetaJmciFTzAlMmF4ca63XGwiGPSpPb/cfLFkE55x8jxUFg==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -6607,6 +6647,7 @@ packages:
       '@anthropic-ai/sdk': 0.6.2(encoding@0.1.13)
       '@aws-sdk/client-s3': 3.412.0(aws-crt@1.18.0)
       '@pinecone-database/pinecone': 0.1.6(encoding@0.1.13)
+      '@upstash/redis': 1.22.1(encoding@0.1.13)
       ansi-styles: 5.2.0
       axios: 1.5.0
       binary-extensions: 2.2.0
@@ -10002,6 +10043,10 @@ packages:
       - '@swc/core'
       - esbuild
       - uglify-js
+    dev: false
+
+  /whatwg-fetch@3.6.19:
+    resolution: {integrity: sha512-d67JP4dHSbm2TrpFj8AbO8DnL1JXL5J9u0Kq2xW6d0TFDbCA3Muhdt8orXC22utleTVj7Prqt82baN6RBvnEgw==}
     dev: false
 
   /whatwg-url@5.0.0:

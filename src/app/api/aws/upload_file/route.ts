@@ -5,7 +5,8 @@ import { authOptions } from "@/server/auth";
 import { NextResponse , NextRequest} from "next/server";
 import { env } from "@/lib/env.mjs";
 import { nanoid } from "nanoid";
-
+import {Ratelimit} from "@upstash/ratelimit";
+import {Redis} from "@upstash/redis";
 
 const s3 = new S3({
   apiVersion: "2006-03-01",
@@ -23,6 +24,7 @@ export  async function GET(
   const type = searchParams.get('type')
   const name = searchParams.get('name')
 
+
   try {
    
     const session = await getServerSession(authOptions);
@@ -39,7 +41,23 @@ export  async function GET(
         status: 500,
       });
     }
+    const redis = new Redis({
+      url: env.UPSTASH_REDIS_REST_URL,
+      token: env.UPSTASH_REDIS_REST_TOKEN,
+    })
+    // Create a new ratelimiter, that allows 5 requests per 5 seconds
+    const ratelimit = new Ratelimit({
+      redis: redis,
+      limiter: Ratelimit.fixedWindow(10, "5 s"),
+    });
+    const { success } = await ratelimit.limit(userId)
 
+    if (!success) {
+      return new NextResponse("Too many requests", {
+        status: 429,
+      })
+    }
+  
     const Key=nanoid()+name
 
       const s3Params = {
