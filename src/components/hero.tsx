@@ -20,7 +20,7 @@ export function SquigglyLines() {
 export const Hero = () => {
   const router = useRouter();
   return (
-    <div className=" flex  w-full  mx-auto   lg:max-w-screen-xl mt-5  min-h-[20vh] h-auto">
+    <div className=" flex  w-full  mx-auto   lg:max-w-screen-xl mt-5  min-h-[30vh] h-auto">
       <div className="flex flex-col items-start w-full max-w-4xl">
         <div className=" flex flex-col mb-16 space-y-5 lg:my-10 ">
         
