@@ -46,7 +46,7 @@ export  async function GET(
         Bucket: env.BUCKET_NAME,
         Key,
         Expires: 60,
-        ContentType: type
+        // ContentType: type
       };
 
       const uploadUrl = await s3.getSignedUrlPromise("putObject", s3Params);
