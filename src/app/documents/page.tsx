@@ -56,7 +56,6 @@ export default function DocumentPage() {
       await axios.get(`/api/aws/upload_file?type=${type}&name=${name}`);
 
     const { uploadUrl, key } = data;
-    console.log(uploadUrl, key);
     await axios.put(uploadUrl, files[0]);
     return { key, name, type };
   };
@@ -84,7 +83,7 @@ export default function DocumentPage() {
         ctx.documents.getAll.invalidate()
       }
     },});
-  const { mutate: addTranscription, data: id } =
+  const { mutate: addTranscription, data: id, isLoading: isTranscribing } =
     api.documents.transcribe.useMutation({
       onSuccess(id) {
         if (id) {
@@ -275,7 +274,7 @@ export default function DocumentPage() {
                   disabled={audio.length <= 0}
                   className="max-w-xs w-full"
                 >
-                  {loading && (
+                  {loading && isTranscribing && (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   )}
                   Transcribe and chat with audio
