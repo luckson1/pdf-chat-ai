@@ -8,6 +8,9 @@ import axios, { AxiosResponse } from "axios";
 import path from "path";
 
 import { TRPCError } from "@trpc/server";
+import { getChunkedDocsFromPDF, getChunkedDocsFromS3Files } from "@/lib/loaders";
+import { getPineconeClient } from "@/lib/pinecone-client";
+import { pineconeEmbedAndStore } from "@/lib/vector-store";
 
 type Uttarance= {
   confidence:number,
@@ -64,15 +67,44 @@ export const documentRouter = createTRPCRouter({
         const extention=path.extname(input.name).slice(1)
         const isPdf=extention==='pdf'
         if (isPdf) {
-          inngest.send({
-            name: 'docs/pdf.create',
-            data: { Key: input.key, userId: document.userId, id: document.id },
-          });
+          function generateSignedUrl() {
+            const params = {
+              Bucket: env.BUCKET_NAME,
+              Key:input.key,
+            };
+    
+            return s3.getSignedUrl("getObject", params);
+          }
+          const signedUrl = generateSignedUrl();
+          async function fetchBlobFromSignedUrl(signedUrl: string) {
+            try {
+              const response = await fetch(signedUrl);
+              if (!response.ok) {
+                throw new Error("An error occured");
+              }
+              const blob = await response.blob();
+    
+              return blob;
+            } catch (err) {
+              throw new Error(`Failed to fetch Blob: ${err}`);
+            }
+          }
+          const blob = await fetchBlobFromSignedUrl(signedUrl);
+    
+          const docs = await getChunkedDocsFromPDF(blob, userId, document.id);
+          const pineconeClient = await getPineconeClient();
+    
+          await pineconeEmbedAndStore(pineconeClient, docs);
         } else {
-          inngest.send({
-            name: "docs/s3.create",
-            data: { key: input.key, userId: document.userId, id: document.id },
-          });
+          const pineconeClient = await getPineconeClient();
+
+          const docs = await getChunkedDocsFromS3Files(
+            input.key,
+            userId,
+            document.id
+          );
+    
+          await pineconeEmbedAndStore(pineconeClient, docs);
         }
         
 

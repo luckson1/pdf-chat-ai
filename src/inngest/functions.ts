@@ -3,7 +3,6 @@ import { inngest } from "./client";
 import {
   getChunkedDocsFromPDF,
   getChunkedDocsFromS3Files,
-  getChunkedDocsFromWeb,
 } from "@/lib/loaders";
 import { pineconeEmbedAndStore } from "@/lib/vector-store";
 import { Document } from "langchain/document";
