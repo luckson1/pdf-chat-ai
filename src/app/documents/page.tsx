@@ -289,7 +289,7 @@ export default function DocumentPage() {
       </Tabs>
       <div className="w-full">
         {isLoading && (
-          <div className=" w-full max-w-4xl grid grid-row md:grid-cols-2 gap-2">
+          <div className=" w-full max-w-4xl grid grid-row lg:grid-cols-2 gap-2">
             {Array.from({ length: itemsPerPage })
               .fill(0)
               .map((_, index) => (
@@ -305,7 +305,7 @@ export default function DocumentPage() {
             <CardHeader>No Documents</CardHeader>
           </Card>
         ) : docsData && !isLoading ? (
-          <div className="w-full max-w-4xl grid grid-row md:grid-cols-2 gap-2">
+          <div className="w-full max-w-4xl grid grid-row lg:grid-cols-2 gap-2">
             {docsData.map((doc) => (
               <Card
                 className="w-full max-w-sm h-auto overflow-hidden"
