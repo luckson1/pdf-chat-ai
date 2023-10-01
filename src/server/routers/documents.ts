@@ -235,7 +235,14 @@ if(!document) {
         isDeleted: false
       },
       skip,
-      take
+      take,
+  include:{
+    Message: {
+      select: {
+      id: true
+      }
+    }
+  }
     });
     return docs;
   }),

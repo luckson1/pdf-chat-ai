@@ -35,6 +35,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ChatBubbleIcon } from "@radix-ui/react-icons";
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
@@ -63,7 +64,6 @@ export default function DocumentPage() {
   const { mutate: addDoc } = api.documents.addDoc.useMutation({
     onSettled: () => {
       ctx.documents.getAll.invalidate();
-      
     },
   });
   const { mutate: del } = api.documents.deleteOne.useMutation({
@@ -78,19 +78,24 @@ export default function DocumentPage() {
   });
 
   const { mutate: getTranscription, data: transcription } =
-    api.documents.getTranscription.useMutation({onSuccess(data) {
-      if(data?.status  === "completed") {
-        ctx.documents.getAll.invalidate()
-      }
-    },});
-  const { mutate: addTranscription, data: id, isLoading: isTranscribing } =
-    api.documents.transcribe.useMutation({
-      onSuccess(id) {
-        if (id) {
-          getTranscription({ id: id, name: audio[0]?.name ?? id });
+    api.documents.getTranscription.useMutation({
+      onSuccess(data) {
+        if (data?.status === "completed") {
+          ctx.documents.getAll.invalidate();
         }
       },
     });
+  const {
+    mutate: addTranscription,
+    data: id,
+    isLoading: isTranscribing,
+  } = api.documents.transcribe.useMutation({
+    onSuccess(id) {
+      if (id) {
+        getTranscription({ id: id, name: audio[0]?.name ?? id });
+      }
+    },
+  });
 
   const handleSubmitDocs = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -106,7 +111,7 @@ export default function DocumentPage() {
       }
     } catch (error) {
       console.log(error);
-    } 
+    }
   };
 
   const transcribe = async (key: string) => {
@@ -116,7 +121,7 @@ export default function DocumentPage() {
     } catch (error) {
       console.log(error);
       setLoading(false);
-    } 
+    }
   };
   const status = transcription?.status;
   const text = transcription?.text;
@@ -133,7 +138,6 @@ export default function DocumentPage() {
         }
         if (status === "completed") {
           setAudio([]);
-         
         }
         if (status === "error") {
           setAudio([]);
@@ -284,15 +288,18 @@ export default function DocumentPage() {
         </TabsContent>
       </Tabs>
       <div className="w-full">
-        {isLoading &&
-        <div className=" w-full max-w-4xl grid grid-row md:grid-cols-2 gap-2">
-          {  Array.from({ length:  itemsPerPage})
-            .fill(0)
-            .map((_, index) => (
-              <Skeleton className="w-full max-w-sm h-28 overflow-hidden" key={index} />
-            ))}
-        </div>
-        }
+        {isLoading && (
+          <div className=" w-full max-w-4xl grid grid-row md:grid-cols-2 gap-2">
+            {Array.from({ length: itemsPerPage })
+              .fill(0)
+              .map((_, index) => (
+                <Skeleton
+                  className="w-full max-w-sm h-28 overflow-hidden"
+                  key={index}
+                />
+              ))}
+          </div>
+        )}
         {(!docsData || docsData.length <= 0) && !isLoading ? (
           <Card className="w-full max-w-sm">
             <CardHeader>No Documents</CardHeader>
@@ -300,10 +307,12 @@ export default function DocumentPage() {
         ) : docsData && !isLoading ? (
           <div className="w-full max-w-4xl grid grid-row md:grid-cols-2 gap-2">
             {docsData.map((doc) => (
-              <Card className="w-full max-w-sm h-auto overflow-hidden" key={doc.id}>
+              <Card
+                className="w-full max-w-sm h-auto overflow-hidden"
+                key={doc.id}
+              >
                 <CardHeader className="underline ">
                   <CardTitle className="overflow-hidden">
-                
                     <Link
                       key={doc.id}
                       href={{
@@ -311,13 +320,22 @@ export default function DocumentPage() {
                         query: { id: doc.id },
                       }}
                     >
-                      <Button variant={'link'}>
-                      {doc.name}
-                      </Button>
+                      <Button variant={"link"}>{doc.name}</Button>
                     </Link>
                   </CardTitle>
                 </CardHeader>
                 <CardFooter className="flex flex-row justify-between items-center">
+                <Link
+                className="flex flex-row space-x-1 items-start"
+                      key={doc.id}
+                      href={{
+                        pathname: "/documents/[id]",
+                        query: { id: doc.id },
+                      }}
+                    >
+                      <ChatBubbleIcon className="w-5 h-5"/>
+                      <p className="text-xs font-extralight">{doc.Message.length}</p>
+                    </Link>
                   <AlertDialog>
                     <AlertDialogTrigger>
                       <PenIcon className="w-5 h-5 text-primary" />
