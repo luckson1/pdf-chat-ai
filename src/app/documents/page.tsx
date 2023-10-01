@@ -37,6 +37,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
@@ -61,6 +62,9 @@ export default function DocumentPage() {
 toast({
   title: "File larger than 4MB.",
   description: "Upgrade to upload larger files",
+  variant:'destructive',
+  action: <ToastAction altText="Try again">Upgrade</ToastAction>,
+  
 })
 return
     }
