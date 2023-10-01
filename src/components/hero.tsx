@@ -32,7 +32,7 @@ export const Hero = () => {
             </span>
           </h1>
          
-          <p className="pr-5 mb-5 text-base  md:text-lg">Get info & facts from PDFs, Word docs, Slides, and Audio—sources included. <span className="text-primary font-bold"> Fast!</span></p>
+          <p className="pr-5 mb-5 text-base  md:text-lg">Get info & explanations from PDFs, Word docs, Slides, and Audio—citations included. <span className="text-primary font-bold"> Fast!</span></p>
             
           <div className="flex flex-wrap items-center space-x-4">
             <Button
