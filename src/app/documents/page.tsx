@@ -48,6 +48,7 @@ export default function DocumentPage() {
   const { toast } = useToast()
   const session=useSession()
   const isProMember=session.data?.user.isPro
+  console.log( isProMember)
   const uploadToS3 = async (files: File[]) => {
     if (!files || files.length <= 0) {
       return null;
