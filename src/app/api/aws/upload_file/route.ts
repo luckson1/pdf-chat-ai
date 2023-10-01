@@ -40,7 +40,7 @@ export  async function GET(
       });
     }
 
-    const Key=name
+    const Key=nanoid()+name
 
       const s3Params = {
         Bucket: env.BUCKET_NAME,
