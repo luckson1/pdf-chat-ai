@@ -6,6 +6,7 @@ import Provider from "@/components/provider";
 import TRPCProvider from "./api/_trpc/Provider";
 import { SiteHeader } from "@/components/site-header";
 import dynamic from 'next/dynamic'
+import { Toaster } from "@/components/ui/toaster";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               {children}
               </div>
               </div>
+              <Toaster />
             </ThemeProvider>
             </TRPCProvider> 
           </Provider>

@@ -36,6 +36,7 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
@@ -44,14 +45,24 @@ export default function DocumentPage() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
+  const { toast } = useToast()
   const uploadToS3 = async (files: File[]) => {
     if (!files || files.length <= 0) {
       return null;
     }
     const name = files.at(0)?.name;
     const type = files.at(0)?.type;
-    if (!name || !type) {
+    const size=files.at(0)?.size
+  
+    if (!name || !type || !size) {
       return null;
+    }
+    if(size>=4000) {
+toast({
+  title: "File larger than 4MB.",
+  description: "Upgrade to upload larger files",
+})
+return
     }
     const { data }: { data: { uploadUrl: string; key: string } } =
       await axios.get(`/api/aws/upload_file?type=${type}&name=${name}`);
