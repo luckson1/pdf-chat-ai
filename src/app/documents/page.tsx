@@ -90,10 +90,10 @@ if(!data) {
       ctx.documents.getAll.invalidate();
       setLoading(false)
     },
-    onError: ()=> {
+    onError: (error)=> {
       toast({
     
-        description: "Something went wrong",
+        description: `Something went wrong ${error.message}`,
         variant:'destructive',
         action: <ToastAction altText="Try again">Try Again</ToastAction>,
         
@@ -262,14 +262,7 @@ if(!data) {
       const data = await uploadToS3(audio);
       if (!data) {
         setLoading(false);
-   
-          toast({
-        
-            description: "Something went wrong",
-            variant:'destructive',
-            action: <ToastAction altText="Try again">Try Again</ToastAction>,
-            
-          })
+
         
         return;
       }
