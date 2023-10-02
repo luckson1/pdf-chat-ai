@@ -99,7 +99,7 @@ export function Chat({ id }: { id: string }) {
   );
   return (
     <div className="rounded-2xl border h-[85vh] flex flex-col justify-between" >
-      <div className="p-6 overflow-auto" ref={containerRef} >
+      <div className="pt-6 pb-16 overflow-auto" ref={containerRef} >
         { messages.length<=0 && <EmptyScreen setInput={setInput} id={id}/>}
         {messages.length > 0 &&
           messages.map(({ id, role, content, sources }: ExtendedMsg, index) => (
@@ -111,10 +111,10 @@ export function Chat({ id }: { id: string }) {
               sources={sources ?? handleGetSources(role, index)}
             />
           ))}
-            <ChatPanel onSubmit={extendedHandleSubmit} input={input} isLoading={isLoading} setInput={setInput} />
+          
       </div>
 
-  
+      <ChatPanel onSubmit={extendedHandleSubmit} input={input} isLoading={isLoading} setInput={setInput} />
     </div>
   );
 }
