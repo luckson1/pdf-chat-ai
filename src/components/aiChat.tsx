@@ -1,6 +1,6 @@
 "use client";
 
-import { scrollToBottom, getSources, initialMessages } from "@/lib/utils";
+import { scrollToBottom, getSources } from "@/lib/utils";
 import { ChatLine } from "./chat-line";
 import { useChat, Message } from "ai/react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -98,8 +98,8 @@ export function Chat({ id }: { id: string }) {
     [dataLength, savedMessages?.length]
   );
   return (
-    <div className="rounded-2xl border h-[85vh] flex flex-col justify-between">
-      <div className="p-6 overflow-auto" ref={containerRef}>
+    <div className="rounded-2xl border h-[85vh] flex flex-col justify-between" ref={containerRef}>
+      <div className="p-6 overflow-auto" >
         { messages.length<=0 && <EmptyScreen setInput={setInput} id={id}/>}
         {messages.length > 0 &&
           messages.map(({ id, role, content, sources }: ExtendedMsg, index) => (

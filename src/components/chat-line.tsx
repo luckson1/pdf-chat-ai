@@ -14,8 +14,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Message } from "ai/react";
-import ReactMarkdown from "react-markdown";
-import { formattedText } from "@/lib/utils";
 import { User2Icon } from "lucide-react";
 import { IconOpenAI } from "./ui/icons";
 import { ChatMessage } from "./chat_message";
