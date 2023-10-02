@@ -86,7 +86,7 @@ export default function AuthenticationPage() {
             className="absolute inset-0 bg-cover rounded-md lg:rounded-none lg:rounded-l-md"
             style={{
               backgroundImage:
-               ` url(${siteConfig.ogImage})`,
+               ` url(https://res.cloudinary.com/dhciks96e/image/upload/v1696276515/chatpaperzshare_d6vjxb.png)`,
             }}
           />
           <div className="relative z-20 flex items-center text-lg font-medium">

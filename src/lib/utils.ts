@@ -74,7 +74,7 @@ export const getSources = ( role: string, index: number, data: Data[], initialMe
 export function constructMetadata({
   title = "ChatPaperz - Student's best research tool",
   description = siteConfig.description,
-  image = siteConfig.ogImage,
+  image = 'https://res.cloudinary.com/dhciks96e/image/upload/v1696276515/chatpaperzshare_d6vjxb.png',
   icons = "/favicon.ico",
   noIndex = false
 }: {
