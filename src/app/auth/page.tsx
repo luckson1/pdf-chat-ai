@@ -22,7 +22,7 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const signInWithGoogle = async () => {
   try {
     setIsLoading(true);
-    await signIn("google", { callbackUrl: "/" })
+    await signIn("google", { callbackUrl: "/documents" })
   } catch (error) {
     toast({
     
