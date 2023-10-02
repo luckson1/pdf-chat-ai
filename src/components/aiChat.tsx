@@ -3,9 +3,6 @@
 import { scrollToBottom, getSources, initialMessages } from "@/lib/utils";
 import { ChatLine } from "./chat-line";
 import { useChat, Message } from "ai/react";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { Spinner } from "./ui/spinner";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "@/app/api/_trpc/client";
 import { EmptyScreen } from "./empty_screen";
