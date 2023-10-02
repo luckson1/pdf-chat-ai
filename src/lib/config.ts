@@ -1,14 +1,13 @@
 export const siteConfig = {
     name: "Chat Paperz",
     url: "/",
-    ogImage: "/logo.png",
+    ogImage: "/chatpaperz.png",
     description:
-  "Make studying easier and research faster",
+  "Speed-read & and save time researching by chatting with your docs",
     links: {
       twitter: "/",
       facebook: "/",
-      site: "http://piccraftai.com/",
-      github: "/"
+      site: "http://chatpaperz.com",
     },
   }
   
