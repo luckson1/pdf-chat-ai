@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
         status: 403,
       });
     }
-    const allowedDailyMessages=isPro? 500 : 50
+    const allowedDailyMessages=isPro? 500 : 2
     const redis = new Redis({
       url: env.UPSTASH_REDIS_REST_URL,
       token: env.UPSTASH_REDIS_REST_TOKEN,
