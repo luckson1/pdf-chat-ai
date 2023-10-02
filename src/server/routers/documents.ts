@@ -98,7 +98,8 @@ export const documentRouter = createTRPCRouter({
           }
           const pineconeClient = await getPineconeClient();
     
-          return await pineconeEmbedAndStore(pineconeClient, docs);
+         await pineconeEmbedAndStore(pineconeClient, docs);
+         return document
         } else {
           const pineconeClient = await getPineconeClient();
 
@@ -110,7 +111,8 @@ export const documentRouter = createTRPCRouter({
           if(!docs) {
             throw new TRPCError({code: "INTERNAL_SERVER_ERROR", message: "Somethingwent  wrong "})
           }
-          return await pineconeEmbedAndStore(pineconeClient, docs);
+           await pineconeEmbedAndStore(pineconeClient, docs);
+           return document
         }
       } catch (error) {
         console.log(error);

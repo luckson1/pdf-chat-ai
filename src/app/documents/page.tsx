@@ -1,6 +1,6 @@
 "use client";
 import Dropzone from "@/components/Dropezone";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -17,7 +17,13 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
 import { Icons } from "@/components/Icons";
-import { ChevronLeft, ChevronRight, PenIcon, Trash2 } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  PenIcon,
+  Trash2,
+} from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -37,6 +43,7 @@ import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
@@ -44,92 +51,89 @@ export default function DocumentPage() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
-  const sizeLimit=4000000
-  const { toast } = useToast()
-  const session=useSession()
-  const isProMember=session.data?.user.isPro
-  console.log( isProMember)
+  const sizeLimit = 4000000;
+  const { toast } = useToast();
+  const session = useSession();
+  const isProMember = session.data?.user.isPro;
+  console.log(isProMember);
   const uploadToS3 = async (files: File[]) => {
     if (!files || files.length <= 0) {
       return null;
     }
     const name = files.at(0)?.name;
     const type = files.at(0)?.type;
-    const size=files.at(0)?.size
-  
+    const size = files.at(0)?.size;
+
     if (!name || !type || !size) {
       return null;
     }
-    if(size>=sizeLimit && !isProMember) {
-toast({
-  title: "File larger than 4MB.",
-  description: "Upgrade to upload larger files",
-  variant:'destructive',
-  action: <ToastAction altText="Try again">Upgrade</ToastAction>,
-  
-})
-return
+    if (size >= sizeLimit && !isProMember) {
+      toast({
+        title: "File larger than 4MB.",
+        description: "Upgrade to upload larger files",
+        variant: "destructive",
+        action: <ToastAction altText="Try again">Upgrade</ToastAction>,
+      });
+      return;
     }
 
     const { data }: { data: { uploadUrl: string; key: string } } =
       await axios.get(`/api/aws/upload_file?type=${type}&name=${name}`);
-if(!data) {
-  toast({
-    
-    description: "Upload failed",
-    variant:'destructive',
-    action: <ToastAction altText="Try again">Try Again</ToastAction>,
-    
-  })
-}
+    if (!data) {
+      toast({
+        description: "Upload failed",
+        variant: "destructive",
+        action: <ToastAction altText="Try again">Try Again</ToastAction>,
+      });
+    }
     const { uploadUrl, key } = data;
     await axios.put(uploadUrl, files[0]);
     return { key, name, type };
- 
   };
   const ctx = api.useContext();
+  const router = useRouter();
   const { mutate: addDoc } = api.documents.addDoc.useMutation({
     onSettled: () => {
       ctx.documents.getAll.invalidate();
-      setLoading(false)
+      setLoading(false);
+      setDocs([]);
     },
-    onError: (error)=> {
+    onError: (error) => {
       toast({
-    
         description: `Something went wrong ${error.message}`,
-        variant:'destructive',
+        variant: "destructive",
         action: <ToastAction altText="Try again">Try Again</ToastAction>,
-        
-      })
-    }
+      });
+    },
+    onSuccess(data) {
+      if (data) {
+        router.push(`/documents/[id]?id=${data.id}`);
+      }
+    },
   });
   const { mutate: del } = api.documents.deleteOne.useMutation({
     onSuccess: () => {
       ctx.documents.getAll.invalidate();
     },
-    onError: ()=> {
+    onError: () => {
       toast({
-    
         description: "Something went wrong",
-        variant:'destructive',
+        variant: "destructive",
         action: <ToastAction altText="Try again">Try Again</ToastAction>,
-        
-      })
-    }
+      });
+    },
   });
   const { mutate: rename } = api.documents.changeName.useMutation({
     onSuccess: () => {
       ctx.documents.getAll.invalidate();
     },
-    onError: ()=> {
+    onError: () => {
       toast({
-    
         description: "Something went wrong",
-        variant:'destructive',
+        variant: "destructive",
         action: <ToastAction altText="Try again">Try Again</ToastAction>,
-        
-      })
-    }
+      });
+    },
   });
 
   const { mutate: getTranscription, data: transcription } =
@@ -139,15 +143,13 @@ if(!data) {
           ctx.documents.getAll.invalidate();
         }
       },
-      onError: ()=> {
+      onError: () => {
         toast({
-      
           description: "Something went wrong",
-          variant:'destructive',
+          variant: "destructive",
           action: <ToastAction altText="Try again">Try Again</ToastAction>,
-          
-        })
-      }
+        });
+      },
     });
   const {
     mutate: addTranscription,
@@ -159,15 +161,13 @@ if(!data) {
         getTranscription({ id: id, name: audio[0]?.name ?? id });
       }
     },
-    onError: ()=> {
+    onError: () => {
       toast({
-    
         description: "Something went wrong",
-        variant:'destructive',
+        variant: "destructive",
         action: <ToastAction altText="Try again">Try Again</ToastAction>,
-        
-      })
-    }
+      });
+    },
   });
 
   const handleSubmitDocs = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -177,19 +177,17 @@ if(!data) {
       const data = await uploadToS3(docs);
       if (!data) {
         setLoading(false);
-        
+
         return;
       } else {
         addDoc(data);
       }
     } catch (error) {
       toast({
-    
         description: "Something went wrong",
-        variant:'destructive',
+        variant: "destructive",
         action: <ToastAction altText="Try again">Try Again</ToastAction>,
-        
-      })
+      });
     }
   };
 
@@ -199,13 +197,11 @@ if(!data) {
       addTranscription({ key });
     } catch (error) {
       toast({
-    
         description: "Something went wrong",
-        variant:'destructive',
+        variant: "destructive",
         action: <ToastAction altText="Try again">Try Again</ToastAction>,
-        
-      })
-    
+      });
+
       setLoading(false);
     }
   };
@@ -227,21 +223,17 @@ if(!data) {
         if (status === "error") {
           setAudio([]);
           toast({
-    
             description: "Something went wrong",
-            variant:'destructive',
+            variant: "destructive",
             action: <ToastAction altText="Try again">Try Again</ToastAction>,
-            
-          })
+          });
         }
       } catch (error) {
         toast({
-    
           description: "Something went wrong",
-          variant:'destructive',
+          variant: "destructive",
           action: <ToastAction altText="Try again">Try Again</ToastAction>,
-          
-        })
+        });
       }
     };
 
@@ -266,18 +258,15 @@ if(!data) {
       if (!data) {
         setLoading(false);
 
-        
         return;
       }
       transcribe(data.key);
     } catch (error) {
       toast({
-    
         description: "Something went wrong",
-        variant:'destructive',
+        variant: "destructive",
         action: <ToastAction altText="Try again">Try Again</ToastAction>,
-        
-      })
+      });
     }
   };
 
@@ -392,21 +381,21 @@ if(!data) {
           </Card>
         </TabsContent>
       </Tabs>
-      <div className="w-full">
+      <div className="w-full flex flex-col space-y-5">
         {isLoading && (
           <div className=" w-full max-w-4xl grid grid-row lg:grid-cols-2 gap-2">
             {Array.from({ length: itemsPerPage })
               .fill(0)
               .map((_, index) => (
                 <Skeleton
-                  className="w-full max-w-sm h-28 overflow-hidden"
+                  className="w-full max-w-sm h-32 overflow-hidden"
                   key={index}
                 />
               ))}
           </div>
         )}
         {(!docsData || docsData.length <= 0) && !isLoading ? (
-          <Card className="w-full max-w-sm">
+          <Card className="w-full max-w-sm h-32">
             <CardHeader>No Documents</CardHeader>
           </Card>
         ) : docsData && !isLoading ? (
@@ -429,113 +418,130 @@ if(!data) {
                     </Link>
                   </CardTitle>
                 </CardHeader>
+                <CardContent>
+                  <Link
+                    href={{
+                      pathname: "/documents/[id]",
+                      query: { id: doc.id },
+                    }}
+                    className={buttonVariants({
+                      className: "w-full",
+                      variant: "secondary",
+                    })}
+                  >
+                    Chat with Document
+                    <ArrowRight className="h-5 w-5 ml-1.5" />
+                  </Link>
+                </CardContent>
                 <CardFooter className="flex flex-row justify-between items-center">
-                <Link
-                className="flex flex-row space-x-1 items-start"
-                      key={doc.id}
-                      href={{
-                        pathname: "/documents/[id]",
-                        query: { id: doc.id },
-                      }}
-                    >
-                      <ChatBubbleIcon className="w-5 h-5"/>
-                      <p className="text-xs font-extralight">{doc.Message.length}</p>
-                    </Link>
-              <div className="flex flex-row justify-between items-center w-1/5">
-              <AlertDialog>
-                    <AlertDialogTrigger>
-                      <PenIcon className="w-5 h-5 text-primary" />
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Edit Name</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Change the name of the file. Click save when you are
-                          done.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <form
-                        className="grid gap-4 py-4"
-                        onSubmit={handleSubmit((data) =>
-                          rename({ id: doc.id, name: data.name })
-                        )}
-                      >
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="name" className="text-right">
-                            Name
-                          </Label>
-                          <Input
-                            id="name"
-                            {...register("name")}
-                            defaultValue={doc.name}
-                            className="col-span-3"
-                          />
-                        </div>
+                  <Link
+                    className="flex flex-row space-x-1 items-start"
+                    key={doc.id}
+                    href={{
+                      pathname: "/documents/[id]",
+                      query: { id: doc.id },
+                    }}
+                  >
+                    <ChatBubbleIcon className="w-5 h-5" />
+                    <p className="text-xs font-extralight">
+                      {doc.Message.length}
+                    </p>
+                  </Link>
+                  <div className="flex flex-row justify-between items-center w-1/5">
+                    <AlertDialog>
+                      <AlertDialogTrigger>
+                        <PenIcon className="w-5 h-5 text-primary" />
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Edit Name</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Change the name of the file. Click save when you are
+                            done.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <form
+                          className="grid gap-4 py-4"
+                          onSubmit={handleSubmit((data) =>
+                            rename({ id: doc.id, name: data.name })
+                          )}
+                        >
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="name" className="text-right">
+                              Name
+                            </Label>
+                            <Input
+                              id="name"
+                              {...register("name")}
+                              defaultValue={doc.name}
+                              className="col-span-3"
+                            />
+                          </div>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel type="button">
+                              Cancel
+                            </AlertDialogCancel>
+                            <AlertDialogAction type="submit">
+                              Save
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </form>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                    <AlertDialog>
+                      <AlertDialogTrigger>
+                        <Trash2 className="w-5 h-5 text-destructive" />
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Are you sure you want to delete the document?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone. This will permanently
+                            delete the file.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel type="button">
-                            Cancel
-                          </AlertDialogCancel>
-                          <AlertDialogAction type="submit">
-                            Save
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={(e) => {
+                              del({ id: doc.id });
+                            }}
+                            className="bg-destructive hover:bg-destructive/10"
+                          >
+                            Delete
                           </AlertDialogAction>
                         </AlertDialogFooter>
-                      </form>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                  <AlertDialog>
-                    <AlertDialogTrigger>
-                      <Trash2 className="w-5 h-5 text-destructive" />
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Are you sure you want to delete the document?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This action cannot be undone. This will permanently
-                          delete the file.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={(e) => {
-                            del({ id: doc.id });
-                          }}
-                          className="bg-destructive hover:bg-destructive/10"
-                        >
-                          Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-              </div>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
                 </CardFooter>
               </Card>
             ))}
-            <div className="flex flex-row w-full justify-center items-center text-sm space-x-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setPage((p) => p - 1)}
-                disabled={page === 1}
-              >
-                <ChevronLeft className="w-8 h-8" />
-              </Button>
-
-              <span>Page {page}</span>
-
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setPage((p) => p + 1)}
-                disabled={hasMore}
-              >
-                <ChevronRight className="w-8 h-8" />
-              </Button>
-            </div>
           </div>
         ) : null}
+        <div className="flex flex-row w-full justify-center items-center text-sm space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPage((p) => p - 1)}
+            disabled={page === 1}
+          >
+            <ChevronLeft className="w-8 h-8" />
+          </Button>
+
+          <span>Page {page}</span>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPage((p) => p + 1)}
+            disabled={hasMore}
+          >
+            <ChevronRight className="w-8 h-8" />
+          </Button>
+        </div>
       </div>
     </div>
   );
