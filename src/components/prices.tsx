@@ -121,7 +121,7 @@ Claim your Discount
     {
       plan: 'Pro',
       tagline: 'For larger projects with higher needs.',
-      quota: 500,
+      quota: 1000,
       price: 59,
       features: [
         {
