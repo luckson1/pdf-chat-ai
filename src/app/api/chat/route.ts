@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
         status: 403,
       });
     }
-    const allowedDailyMessages=isPro? 500 : 2
+    const allowedDailyMessages=isPro? 500 : 50
     const redis = new Redis({
       url: env.UPSTASH_REDIS_REST_URL,
       token: env.UPSTASH_REDIS_REST_TOKEN,
@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
     const { success } = await ratelimit.limit(userId)
 
     if (!success) {
-      return new NextResponse("You have exceeded allowed daily requests", {
+      return new NextResponse("Exceeded allowed daily requests. Please upgrade", {
         status: 429,
       })
     }
