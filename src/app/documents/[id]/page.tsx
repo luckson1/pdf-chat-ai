@@ -1,7 +1,9 @@
 "use client";
 import { Chat } from "@/components/aiChat";
 import { MainDocumentViewer } from "@/components/documentViewer";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent } from "@/components/ui/card";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { XCircleIcon} from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
@@ -32,7 +34,13 @@ export default function Home() {
         {exceededPageCount && (
           <Card className="w-full h-[85vh]">
             <CardContent className="flex flex-col space-y-4 justify-center items-center text-destructive w-full h-full text-xl">
-              <XCircleIcon className="w-12 h-12" /> Exceeds 25 pages. Please Upgrade to contininue
+            <Alert variant="destructive">
+      <ExclamationTriangleIcon className="h-4 w-4" />
+      <AlertTitle>Error</AlertTitle>
+      <AlertDescription>
+        {`The document exceeds ${pageLimit} pages. Please upgrade to chat`}
+      </AlertDescription>
+    </Alert>
             </CardContent>
           </Card>
         )}
