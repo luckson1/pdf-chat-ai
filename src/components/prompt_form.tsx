@@ -7,6 +7,7 @@ import { IconArrowElbow, IconPlus, IconSpinner } from "@/components/ui/icons";
 import {
   Tooltip,
   TooltipContent,
+  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useEnterSubmit } from "@/lib/hooks/use_enter_submit";
@@ -47,6 +48,7 @@ export function PromptForm({
       ref={formRef}
     >
       <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background px-8 sm:rounded-md sm:border sm:px-12">
+      < TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <button
@@ -92,6 +94,7 @@ export function PromptForm({
             <TooltipContent>Send message</TooltipContent>
           </Tooltip>
         </div>
+        </TooltipProvider>
       </div>
     </form>
   );
