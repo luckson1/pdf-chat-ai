@@ -340,7 +340,7 @@ export default function DocumentPage() {
                   {loading && (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  Chat with your document
+                 {loading? "Uploading doc..." : "Upload doc"}
                 </Button>
               </form>
             </CardContent>
@@ -374,7 +374,7 @@ export default function DocumentPage() {
                   {loading && (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  Transcribe and chat with audio
+                  {loading? "Uploading audio..." : "Upload audio"}
                 </Button>
               </form>
             </CardContent>
