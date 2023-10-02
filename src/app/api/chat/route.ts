@@ -47,6 +47,9 @@ import { callChain } from "@/lib/langchain";
 import { Message } from "ai";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
+import { Redis } from "@upstash/redis/nodejs";
+import { env } from "@/lib/env.mjs";
+import { Ratelimit } from "@upstash/ratelimit";
 
 const formatMessage = (message: Message) => {
   return `${message.role === "user" ? "Human" : "Assistant"}: ${
@@ -69,19 +72,38 @@ export async function POST(req: NextRequest) {
   }
   
   const session = await getServerSession(authOptions);
-    const userId = session?.user?.id;
+  if (!session) {
+    return NextResponse.json("Un authenticated", {
+      status: 401,
+    });
+  }
+    const userId = session.user.id;
+    const isPro=session.user.isPro
 
     // make entries to image table for the product images
 
-    if (!userId) {
-      return NextResponse.json("Un authenticated", {
-        status: 401,
-      });
-    }
+ 
     if (!id) {
       return NextResponse.json("Forbidden", {
         status: 403,
       });
+    }
+    const allowedDailyMessages=isPro? 10000 : 100
+    const redis = new Redis({
+      url: env.UPSTASH_REDIS_REST_URL,
+      token: env.UPSTASH_REDIS_REST_TOKEN,
+    })
+  
+    const ratelimit = new Ratelimit({
+      redis: redis,
+      limiter: Ratelimit.fixedWindow(allowedDailyMessages, "1 d"),
+    });
+    const { success } = await ratelimit.limit(userId)
+
+    if (!success) {
+      return new NextResponse("You have exceeded allowed daily requests", {
+        status: 429,
+      })
     }
   try {
     const streamingTextResponse = callChain({

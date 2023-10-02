@@ -87,7 +87,7 @@ Claim your Discount
     {
       plan: 'Free',
       tagline: 'For small side projects.',
-      quota: 2,
+      quota: 100,
       price: 0,
       features: [
      
@@ -119,7 +119,7 @@ Claim your Discount
     {
       plan: 'Pro',
       tagline: 'For larger projects with higher needs.',
-      quota: 'Unlimited',
+      quota: '10,000',
       price: 59,
       features: [
         {
@@ -163,7 +163,7 @@ Claim your Discount
         <div className='pt-12 grid grid-cols-1 gap-10 lg:grid-cols-2'>
           <TooltipProvider>
             {pricingItems.map(
-              ({ plan, tagline, quota, features, price }) => {
+              ({ plan, tagline, quota, features }) => {
                
 
                 return (
@@ -206,8 +206,7 @@ Claim your Discount
                     <div className='flex h-20 items-center justify-center border-b border-t border-gray-200 bg-gray-50'>
                       <div className='flex items-center space-x-1'>
                         <p>
-                          {quota.toLocaleString()} documents/mo
-                          included
+                          {quota.toLocaleString()} chat messages per day
                         </p>
 
                         <Tooltip delayDuration={300}>
@@ -215,8 +214,7 @@ Claim your Discount
                             <HelpCircle className='h-4 w-4 text-zinc-500' />
                           </TooltipTrigger>
                           <TooltipContent className='w-80 p-2'>
-                            How many documents you can upload per
-                            month.
+                            How many chat messages you are allowed to make.
                           </TooltipContent>
                         </Tooltip>
                       </div>

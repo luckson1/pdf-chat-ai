@@ -48,7 +48,7 @@ export  async function GET(
     // Create a new ratelimiter, that allows 5 requests per 5 seconds
     const ratelimit = new Ratelimit({
       redis: redis,
-      limiter: Ratelimit.fixedWindow(10, "5 s"),
+      limiter: Ratelimit.slidingWindow(10, "10 s"),
     });
     const { success } = await ratelimit.limit(userId)
 
