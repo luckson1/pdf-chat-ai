@@ -11,6 +11,7 @@ import { api } from "@/app/api/_trpc/client";
 import { EmptyScreen } from "./empty_screen";
 import { useToast } from "./ui/use-toast";
 import { ToastAction } from "./ui/toast";
+import { ChatPanel } from "./chat_panel";
 
 export function Chat({ id }: { id: string }) {
   interface ExtendedMsg extends Message {
@@ -115,22 +116,7 @@ export function Chat({ id }: { id: string }) {
           ))}
       </div>
 
-      <form
-        onSubmit={(e) => extendedHandleSubmit(e, input)}
-        // onSubmit={handleSubmit}
-        className="p-4 flex clear-both"
-      >
-        <Input
-          value={input}
-          placeholder={"Type to chat with AI..."}
-          onChange={handleInputChange}
-          className="mr-2"
-        />
-
-        <Button type="submit" className="w-24">
-          {isLoading ? <Spinner /> : "Ask"}
-        </Button>
-      </form>
+    <ChatPanel onSubmit={extendedHandleSubmit} input={input} isLoading={isLoading} setInput={setInput} />
     </div>
   );
 }
