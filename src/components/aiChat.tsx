@@ -111,7 +111,7 @@ export function Chat({ id }: { id: string }) {
               sources={sources ?? handleGetSources(role, index)}
             />
           ))}
-          <div className="h-4 w-full bg-red-300"></div>
+          <div className="h-4 w-full"></div>
       </div>
 
       <ChatPanel onSubmit={extendedHandleSubmit} input={input} isLoading={isLoading} setInput={setInput} />
