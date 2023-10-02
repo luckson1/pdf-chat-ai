@@ -97,7 +97,7 @@ Claim your Discount
             'The maximum file size of a single document file.',
         },
         {
-          text: '5 pages per document',
+          text: '20 pages per document',
           footnote:
             'The maximum amount of pages per document-file.',
         },
