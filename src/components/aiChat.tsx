@@ -9,6 +9,8 @@ import { Spinner } from "./ui/spinner";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "@/app/api/_trpc/client";
 import { EmptyScreen } from "./empty_screen";
+import { useToast } from "./ui/use-toast";
+import { ToastAction } from "./ui/toast";
 
 export function Chat({ id }: { id: string }) {
   interface ExtendedMsg extends Message {
@@ -21,6 +23,7 @@ export function Chat({ id }: { id: string }) {
     id,
   });
   const { mutate: saveMessage } = api.messages.create.useMutation();
+  const {toast}=useToast()
   const { messages, input,setInput, handleInputChange, handleSubmit, isLoading, data } =
     useChat({
       initialMessages: savedMessages ?? [],
@@ -28,6 +31,13 @@ export function Chat({ id }: { id: string }) {
       onFinish: (message) => {
         setNewAnswer(message.content);
       },
+      onError(message) {
+      toast({
+        description: `Something went wrong ${message.message}`,
+        variant:'destructive',
+        action: <ToastAction altText="Try again">Try Again</ToastAction>,
+      })
+      }
     });
   const saveQuestionAndAnswer = (
     newQuestion: string,

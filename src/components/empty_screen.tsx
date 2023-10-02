@@ -1,10 +1,11 @@
 import { useChat } from "ai/react";
 
 import { Button } from "@/components/ui/button";
-import { IconArrowRight } from "@/components/ui/icons";
 import { Dispatch, SetStateAction, useCallback, useEffect } from "react";
 import { nanoid } from "nanoid";
 import { ChatMessage } from "./chat_message";
+import { ToastAction } from "./ui/toast";
+import { useToast } from "./ui/use-toast";
 
 const summaryMessage = {
   heading: "Summarize the source document",
@@ -50,8 +51,16 @@ export function EmptyScreen({
   setInput: Dispatch<SetStateAction<string>>;
   id: string;
 }) {
+  const {toast}=useToast()
   const { messages, append } = useChat({
     body: { id },
+    onError(message) {
+      toast({
+        description: `Something went wrong ${message.message}`,
+        variant:'destructive',
+        action: <ToastAction altText="Try again">Try Again</ToastAction>,
+      })
+      }
   });
 
   useEffect(() => {
