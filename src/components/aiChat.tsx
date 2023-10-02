@@ -98,8 +98,8 @@ export function Chat({ id }: { id: string }) {
     [dataLength, savedMessages?.length]
   );
   return (
-    <div className="rounded-2xl border h-[85vh] flex flex-col justify-between" >
-      <div className="p-6 overflow-auto" ref={containerRef} >
+    <div className="rounded-2xl border h-[85vh] flex flex-col justify-between p-3" >
+      <div className="p-3 overflow-auto" ref={containerRef} >
         { messages.length<=0 && <EmptyScreen setInput={setInput} id={id}/>}
         {messages.length > 0 &&
           messages.map(({ id, role, content, sources }: ExtendedMsg, index) => (
