@@ -37,7 +37,16 @@ export function Chat({ id }: { id: string }) {
         variant:'destructive',
         action: <ToastAction altText="Try again">Try Again</ToastAction>,
       })
-      }
+      },
+      onResponse(response) {
+        if(response?.status===429) {
+          toast({
+            description: `You have exceeded your daily limit. Please upgrade`,
+            variant:'destructive',
+            action: <ToastAction altText="Try again">Try Again</ToastAction>,
+          })
+        }
+      },
     });
   const saveQuestionAndAnswer = (
     newQuestion: string,
