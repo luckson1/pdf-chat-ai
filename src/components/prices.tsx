@@ -87,7 +87,7 @@ Claim your Discount
     {
       plan: 'Free',
       tagline: 'For small side projects.',
-      quota: 100,
+      quota: 50,
       price: 0,
       features: [
      
@@ -119,7 +119,7 @@ Claim your Discount
     {
       plan: 'Pro',
       tagline: 'For larger projects with higher needs.',
-      quota: '10,000',
+      quota: 500,
       price: 59,
       features: [
         {
