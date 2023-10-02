@@ -89,7 +89,7 @@ export default function AuthenticationPage() {
                ` url(${siteConfig.ogImage})`,
             }}
           />
-          <div className="relative z-20 flex items-center text-lg font-medium text-slate-700">
+          <div className="relative z-20 flex items-center text-lg font-medium">
             <Image
               src={
                 "https://res.cloudinary.com/dhciks96e/image/upload/v1686921534/Screen_Shot_2023-06-16_at_1.45.31_PM-removebg-preview_r97cfc.png"
@@ -101,9 +101,9 @@ export default function AuthenticationPage() {
             />{" "}
           Chat Paperz 
           </div>
-          <div className="relative z-20 mt-auto">
+          <div className="relative z-20 mt-auto hidden md:block">
             <blockquote className="space-y-2">
-              <p className="text-lg text-slate-900">{siteConfig.description}</p>
+              <p className="text-lg">{siteConfig.description}</p>
             </blockquote>
           </div>
         </div>
