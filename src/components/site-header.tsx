@@ -28,7 +28,7 @@ const isAuthenticated=session.status==='authenticated'
       onClick={()=> router.push("/documents")}
        className=""
         >
-        Documents
+        Dashboard
         </Button>}
            {isAuthenticated ? <Account />: <Button variant={'default'} size={'sm'} onClick={()=> router.replace("/auth")}>
 Sign In
