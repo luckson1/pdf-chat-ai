@@ -72,7 +72,7 @@ export const getSources = ( role: string, index: number, data: Data[], initialMe
 };
 
 export function constructMetadata({
-  title = "ChatPaperz - student's best research tool",
+  title = "ChatPaperz - Student's best research tool",
   description = siteConfig.description,
   image = siteConfig.ogImage,
   icons = "/favicon.ico",
