@@ -1,4 +1,4 @@
-import CheckList from '@/components/check_lits'
+import CheckList from '@/components/check_list'
 import Faqs from '@/components/faqs'
 import Features from '@/components/features'
 import Footer from '@/components/footer'
