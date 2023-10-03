@@ -1,8 +1,6 @@
 "use client";
 import {
-  CheckIcon,
   CheckboxIcon,
-  ImageIcon,
   LightningBoltIcon,
   LockClosedIcon,
 } from "@radix-ui/react-icons";
@@ -42,7 +40,7 @@ export default function CheckList() {
               <div className=" w-full ">
                 <p className="font-bold">Why read when you can ask?</p>
                 <p className="font-light text-sm tracking-wider">
-                Chat with documents such as pdfs, word documents, excel, epub and audio files. Ask away, summarize, find facts, and have a blast doing it! 
+                Chat with documents such as pdfs, word documents, excel, and audio files. Get answers, summarize, find facts, and have a blast doing it! 
                 </p>
               </div>
             </li>
@@ -51,14 +49,14 @@ export default function CheckList() {
               <div className=" w-full ">
                 <p className="font-bold">How about a lecture recap? </p>
                 <p className="font-light text-sm tracking-wider">
-                Record your prof, let our AI jot it down, then chat away with your notes!
+                Record your prof, let our AI create comprehensive notes from the audio recording!
                 </p>
               </div>
             </li>
             <li className="flex flex-row space-x-4">
               <CheckboxIcon  className="h-8 w-8 text-primary-foreground" />
               <div className=" w-full ">
-                <p className="font-bold">Tired of ChatGTP making up staff? </p>
+                <p className="font-bold">Tired of ChatGTP making up stuff? </p>
                 <p className="font-light text-sm tracking-wider">
                 Get instant answers with <strong className="font-bold"> cited sources</strong>, every response is backed by citations
                 </p>
