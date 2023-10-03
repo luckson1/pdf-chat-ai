@@ -32,8 +32,8 @@ export const Hero = () => {
             </span>
           </h1>
          
-          <p className=" mb-5 text-base  md:text-lg">Get info , summaries, explanations, and facts - with citations. <span className="text-primary font-bold"> Fast!</span></p>
-          <p className=" mb-5 text-base  md:text-lg">Chat with your course books, journal articles, lecture notes, assignment instructions and grading rubrics</p>
+          <p className=" mb-5 text-base  md:text-lg">Get summaries, explanations, and facts. <span className="text-primary font-bold"> Fast!</span></p>
+          <p className=" mb-5 text-base  md:text-lg">Chat with books, journal articles, lecture notes, and assignment instructions</p>
           <div className="flex flex-wrap items-center w-full">
             <Button
               size={"lg"}
