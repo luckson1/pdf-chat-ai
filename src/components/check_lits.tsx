@@ -27,7 +27,7 @@ export default function CheckList() {
       <Badge className={cn('animate-bounce w-fit space-x-1 ')}>
 <strong>Limited Offer: </strong> <span >Whole year access for </span> <span  className="line-through font-bold text-red-400">$129 </span>{" "} <strong className="text-green-500"> $59</strong>
           </Badge>
-      <Card className="w-full h-auto bg-primary py-10">
+      <Card className="w-full h-auto bg-primary text-primary-foreground py-10">
       <CardHeader className="text-center text-2xl">
         <CardTitle>Why Chat Paperz?</CardTitle>
         <CardDescription className="text-primary-foreground text-lg">
