@@ -99,7 +99,7 @@ export const ChatPaperUserCreated = inngest.createFunction(
       if (email) {
         return sendEmail({
           to: email,
-          subject: name? `Welcome to our Chat Paperz, ${name}!` : "Welcome to our Chat Paperz!",
+          subject: name? `Welcome to Chat Paperz, ${name}!` : "Welcome to our Chat Paperz!",
           react: WelcomeEmail(),
         });
       }

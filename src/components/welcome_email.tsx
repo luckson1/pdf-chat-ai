@@ -35,10 +35,14 @@ import {
            Hello!
             </Text>
             <Text style={paragraph}>
-           Jack here. I am the founder of Chatpaperz. I created this app to save you time with some mundane tasks of your studies. So that you can concentrate on what matters. Enjoy your interactions with documents on the app.
+           Jack here. I am the founder of Chatpaperz. I created this app to save you time with mundane tasks during your research, so that you can concentrate on what matters. 
             </Text>
             <Text style={paragraph}>
-            We value your feedback and support. Let us know how we can improve this app.
+            Enjoy your interactions with documents on the app.
+            </Text>
+         
+            <Text style={paragraph}>
+            I value your feedback and support. Let me know how I can improve this app.
             </Text>
             <Text style={paragraph}>
             You can always contact me using this email.
