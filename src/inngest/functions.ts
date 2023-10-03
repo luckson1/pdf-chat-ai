@@ -88,9 +88,9 @@ export type Events = {
   "user/created": createUser
 };
 
-export const userCreated = inngest.createFunction(
+export const ChatPaperUserCreated = inngest.createFunction(
   { name: "A User Was Created" },
-  { event: "user/created" },
+  { event: "user/chatpaperz.created" },
 
   async ({ event, step }) => {
     const { email, name } = event.data.user;
