@@ -3,7 +3,7 @@ export const siteConfig = {
     url: "/",
     ogImage: "/chatpaperz.png",
     description:
-  "Speed-read & and save time researching by chatting with your docs",
+  "Save hours of reading and researching by chatting with your docs",
     links: {
       twitter: "/",
       facebook: "/",
