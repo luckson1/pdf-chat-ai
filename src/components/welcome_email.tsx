@@ -32,10 +32,10 @@ import {
             />
             <Hr style={hr} />
             <Text style={paragraph}>
-           Hello!
+           Hello! Jack here.
             </Text>
             <Text style={paragraph}>
-           Jack here. I am the founder of Chatpaperz. I created this app to save you time with mundane tasks during your research, so that you can concentrate on what matters. 
+            I am the founder of Chatpaperz. I created this app to save you time with mundane tasks during your research, so that you can concentrate on what matters. 
             </Text>
             <Text style={paragraph}>
             Enjoy your interactions with documents on the app.
