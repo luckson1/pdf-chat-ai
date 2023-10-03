@@ -20,21 +20,21 @@ export function SquigglyLines() {
 export const Hero = () => {
   const router = useRouter();
   return (
-    <div className=" flex  w-full  mx-auto   lg:max-w-screen-xl mt-5  min-h-[30vh] h-auto">
-      <div className="flex flex-col items-start w-full max-w-4xl">
-        <div className=" flex flex-col mb-16 space-y-5 lg:my-10 ">
+    <div className=" flex  w-full  mx-auto   lg:max-w-screen-xl mt-5  min-h-[30vh] h-auto ">
+      <div className="flex flex-col items-center w-full max-w-5xl mx-auto">
+        <div className=" flex flex-col mb-16 space-y-7 lg:my-10 w-full">
         
-          <h1 className="mx-auto max-w-4xl font-display text-xl md:text-5xl font-bold tracking-normal leading-loose text-start">
-          <span>  Speed-Read & </span>
+          <h1 className="mx-auto w-full font-display text-xl md:text-4xl lg:text-7xl  font-bold tracking-normal leading-loose text-start h-auto">
+          <span>  Speed-Read: </span>
             <span className="relative whitespace-nowrap text-violet-600 mt-5">
               <SquigglyLines />
               <span className="relative"> Chat With Your Course Content.</span>
             </span>
           </h1>
          
-          <p className="pr-5 mb-5 text-base  md:text-lg">Get info & explanations from PDFs, Word docs, Slides, and Audio—citations included. <span className="text-primary font-bold"> Fast!</span></p>
-            
-          <div className="flex flex-wrap items-center space-x-4">
+          <p className=" mb-5 text-base  md:text-lg">Get info , summaries, explanations, and facts - with citations. <span className="text-primary font-bold"> Fast!</span></p>
+          <p className=" mb-5 text-base  md:text-lg">Chat with your course books, journal articles, lecture notes, assignment instructions and grading rubrics</p>
+          <div className="flex flex-wrap items-center w-full">
             <Button
               size={"lg"}
               className="w-full max-w-xs"
