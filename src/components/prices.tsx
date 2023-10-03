@@ -70,8 +70,7 @@ const isAuthenticated = session.status==='authenticated'
 const userId=session.data?.user.id
 const isPro=session.data?.user.isPro
 const email=session.data?.user.email
-  const url=(isAuthenticated && userId && email) ? `https://chat-paperz.lemonsqueezy.com/checkout/buy/d014a55a-0046-41cd-b9bf-706038c6904a?checkout[custom][userId]=${userId}
-// &checkout[email]=${email}` : "/auth"
+  const url=(isAuthenticated && userId && email) ? `https://chatpaperz.lemonsqueezy.com/checkout/buy/1d797c55-f46d-42ce-af38-49f0c1b462d8?checkout[custom][userId]=${userId}&checkout[email]=${email}` : "/auth"
   return (
     <Link href={url} target="_blank" rel="noopener noreferrer" className='w-full'>
       <Button className='w-full'>
