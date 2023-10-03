@@ -76,7 +76,7 @@ type PDFPrams = {
   };
 };
 type createUser = {
-  name: "user/created";
+  name: "user/chatpaperz.created",
   data: { user: User };
 };
 export type Events = {

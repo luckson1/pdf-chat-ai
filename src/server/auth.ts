@@ -112,7 +112,7 @@ export const authOptions: NextAuthOptions = {
     
 
    if(isNewUser) {
-    await inngest.send({ name: "user/created",  data: {user} });
+    await inngest.send({ name: "user/chatpaperz.created",  data: {user} });
    } return 
 
     },
