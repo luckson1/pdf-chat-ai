@@ -25,7 +25,7 @@ export const Hero = () => {
         <div className=" flex flex-col mb-16 space-y-7 lg:my-10 w-full">
         
           <h1 className="mx-auto w-full font-display text-xl md:text-4xl lg:text-7xl  font-bold tracking-normal leading-loose text-start h-auto">
-          <span>  Speed-Read: </span>
+
             <span className="relative whitespace-nowrap text-violet-600 mt-5">
               <SquigglyLines />
               <span className="relative"> Chat With Your Course Content.</span>
@@ -33,7 +33,7 @@ export const Hero = () => {
           </h1>
          
           <p className=" mb-5 text-base  md:text-lg">Get summaries, explanations, and facts. <span className="text-primary font-bold"> Fast!</span></p>
-          <p className=" mb-5 text-base  md:text-lg">Chat with books, journal articles, lecture notes, and assignment instructions</p>
+          <p className=" mb-5 text-base  md:text-lg">Save hours reading books, journal articles, and lecture notes.<span className="text-primary font-bold"> Just Chat!</span></p>
           <div className="flex flex-wrap items-center w-full">
             <Button
               size={"lg"}
