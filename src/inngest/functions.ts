@@ -13,6 +13,9 @@ import axios, { AxiosResponse } from "axios";
 import { TranscriptionData } from "@/server/routers/documents";
 import { prisma } from "@/server/db";
 import { BufferValue } from "@/components/pdf";
+import { Resend } from "resend";
+import WelcomeEmail from "@/components/welcome_email";
+import { User } from "next-auth";
 AWS.config.update({
   accessKeyId: env.ACCESS_KEY,
   secretAccessKey: env.SECRET_KEY,
@@ -20,7 +23,23 @@ AWS.config.update({
 });
 
 const s3 = new AWS.S3();
-
+const resend = new Resend(env.RESEND_API_KEY);
+function sendEmail({
+  to,
+  subject,
+  react,
+}: {
+  to: string;
+  subject: string;
+  react: JSX.Element;
+}) {
+  return resend.emails.send({
+    from: "jack@chatpaperz.com",
+    to,
+    subject,
+    react,
+  });
+}
 type s3Prams = {
   data: {
     key: string;
@@ -56,13 +75,38 @@ type PDFPrams = {
     Key: string;
   };
 };
+type createUser = {
+  name: "user/created";
+  data: { user: User };
+};
 export type Events = {
   "docs/s3.create": s3Prams;
   "docs/web.create": webPrams;
   "docs/audio.create": AudioPrams;
   "aws/txt.create": TextPrams;
   "docs/pdf.create": PDFPrams;
+  "user/created": createUser
 };
+
+export const userCreated = inngest.createFunction(
+  { name: "A User Was Created" },
+  { event: "user/created" },
+
+  async ({ event, step }) => {
+    const { email, name } = event.data.user;
+
+    await step.run("send-welcome-email", async () => {
+      if (email) {
+        return sendEmail({
+          to: email,
+          subject: name? `Welcome to our Chat Paperz, ${name}!` : "Welcome to our Chat Paperz!",
+          react: WelcomeEmail(),
+        });
+      }
+      return;
+    });
+  }
+);
 export const createS3Embeddings = inngest.createFunction(
   { name: "s3 Docs embeddings Created" },
   { event: "docs/s3.create" },

@@ -4,6 +4,7 @@ import Features from '@/components/features'
 import Footer from '@/components/footer'
 import { Hero } from '@/components/hero'
 import Credits from '@/components/prices'
+import UseCases from '@/components/use_cases'
 
 
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
 
 <div className='w-full px-5 py-10 h-auto spacec-y-10 flex container flex-col'>
 <CheckList />
+<UseCases />
 <Credits />
 <Faqs />
 <Footer />

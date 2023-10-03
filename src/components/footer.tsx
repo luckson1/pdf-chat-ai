@@ -21,7 +21,7 @@ export default function Footer() {
                   
                     <li className="mr-2 mt-2 inline-block md:mr-0 md:block">
                       <a
-                       href="mailto:support@piccraftai.com"
+                       href="mailto:jack@chatpaperz.com"
                            target="_blank"
             rel="noreferrer nofollow"
                         className=" no-underline   hover:underline"
@@ -92,7 +92,7 @@ export default function Footer() {
                     </li>
                     <li className="mr-2 mt-2 inline-block md:mr-0 md:block">
                       <Link
-                         href="mailto:support@piccraftai.com"
+                         href="mailto:jack@chatpaperz.com"
                              target="_blank"
             rel="noreferrer nofollow"
                         className=" no-underline   hover:underline"

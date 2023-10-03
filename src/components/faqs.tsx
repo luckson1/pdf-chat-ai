@@ -43,7 +43,7 @@ export default function Faqs() {
       ];
       
   return (
-    <div className='flex flex-col space-y-5 w-full max-w-4xl my-10' id='faqs'>
+    <div className='flex flex-col space-y-5 w-full max-w-4xl my-10 justify-center items-center mx-auto' id='faqs'>
   <p className='text-5xl my-5'>Frequently asked questions</p>
 
     <Accordion type="single" collapsible className='w-full'>

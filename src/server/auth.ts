@@ -11,6 +11,7 @@ import   EmailProvider, { SendVerificationRequestParams } from 'next-auth/provid
 import { prisma } from "@/server/db";
 import { Resend } from "resend";
 import { env } from "@/lib/env.mjs";
+import { inngest } from "@/inngest/client";
 
 
 export const resend = new Resend(env.RESEND_API_KEY);
@@ -22,7 +23,7 @@ export const sendVerificationRequest = async (
   const { host } = new URL(url)
   try {
     await resend.emails.send({
-      from: 'support@piccraftai.com',
+      from: 'jack@chatpaperz.com',
       to: identifier,
       subject: `Sign in to ${host}`,
       text: text({ url, host }),
@@ -48,7 +49,7 @@ declare module "next-auth" {
     };
   }
 
-  interface User {
+  export interface User {
 
     isPro: boolean
  }
@@ -83,7 +84,7 @@ export const authOptions: NextAuthOptions = {
     EmailProvider({
    
       server: '',
-      from: 'support@piccraftai.com',
+      from: "jack@chatpaperz.com",
       sendVerificationRequest
     }),
   
@@ -111,7 +112,7 @@ export const authOptions: NextAuthOptions = {
     
 
    if(isNewUser) {
-    // await inngest.send({ name: "user/created",  data: {user} });
+    await inngest.send({ name: "user/created",  data: {user} });
    } return 
 
     },
