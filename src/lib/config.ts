@@ -1,9 +1,9 @@
 export const siteConfig = {
     name: "Chat Paperz",
     url: "/",
-    ogImage: "/chatpaperz.png",
+    ogImage: "https://res.cloudinary.com/dhciks96e/image/upload/v1696276515/chatpaperzshare_d6vjxb.png",
     description:
-  "Save hours of reading and researching by chatting with your docs",
+  "Save hours of reading or researching. Chatting with your docs",
     links: {
       twitter: "/",
       facebook: "/",
