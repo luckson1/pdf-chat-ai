@@ -405,8 +405,8 @@ export default function DocumentPage() {
                 className="w-full max-w-sm h-auto overflow-hidden"
                 key={doc.id}
               >
-                <CardHeader className="underline flex flex-row justify-between items-center">
-                  <CardTitle className="w-2/3">
+                <CardHeader className="underline flex flex-row justify-between items-center w-full">
+                  <CardTitle className="w-2/3 overflow-hidden">
                     <ToolTipComponent content="Name of the document">
                     <Link
                      className={buttonVariants({
@@ -482,6 +482,7 @@ export default function DocumentPage() {
                       {doc.Message.length}
                     </p>
                   </Link>
+                  </ToolTipComponent>
                   <ToolTipComponent content="Click to start chatting with this document">
                   <Link
                     href={{
@@ -491,12 +492,13 @@ export default function DocumentPage() {
                     className={buttonVariants({
                       className: "w-fit",
                       variant: "secondary",
+                      size: "sm"
                     })}
                   >
                     Open
                     <ChevronRight className="h-5 w-5 ml-1.5" />
                   </Link>
-                  </ToolTipComponent>
+                 
                   </ToolTipComponent>
                   <ToolTipComponent content="Delete document">
                     <AlertDialog>
