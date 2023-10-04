@@ -401,7 +401,7 @@ export default function DocumentPage() {
                 key={doc.id}
               >
                 <CardHeader className="underline flex flex-row justify-between items-center w-full">
-                  <CardTitle className="w-2/3 overflow-hidden">
+                  <CardTitle className="w-5/6 overflow-hidden">
                     <ToolTipComponent content="Name of the document">
                       <Link
                         className={buttonVariants({
@@ -418,7 +418,7 @@ export default function DocumentPage() {
                       </Link>
                     </ToolTipComponent>
                   </CardTitle>
-                  <div className=" flex flex-row justify-between items-center w-1/3">
+                  <div className=" flex flex-row justify-between items-center w-1/5">
                   <ToolTipComponent content="Edit name of document">
                     <AlertDialog>
                       <AlertDialogTrigger>
