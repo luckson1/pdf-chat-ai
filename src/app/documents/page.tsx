@@ -295,6 +295,7 @@ export default function DocumentPage() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue
   } = useForm<TNameSchema>({
     resolver: zodResolver(NameSchema),
   });
@@ -408,7 +409,7 @@ export default function DocumentPage() {
                           variant: "link",
                           className: "overflow-hidden",
                         })}
-                        key={doc.id}
+                    
                         href={{
                           pathname: "/documents/[id]",
                           query: { id: doc.id },
@@ -422,7 +423,7 @@ export default function DocumentPage() {
                   <ToolTipComponent content="Edit name of document">
                     <AlertDialog>
                       <AlertDialogTrigger>
-                        <PenIcon className="w-5 h-5 text-primary" />
+                        <PenIcon className="w-5 h-5 text-primary" onClick={()=>setValue('name', doc.name)}/>
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
