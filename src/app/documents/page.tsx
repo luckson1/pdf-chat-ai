@@ -18,7 +18,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
 import { Icons } from "@/components/Icons";
 import {
-  ArrowRight,
   ChevronLeft,
   ChevronRight,
   PenIcon,
@@ -44,6 +43,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import ToolTipComponent from "@/components/tooltip_component";
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
@@ -405,50 +405,26 @@ export default function DocumentPage() {
                 className="w-full max-w-sm h-auto overflow-hidden"
                 key={doc.id}
               >
-                <CardHeader className="underline ">
-                  <CardTitle className="overflow-hidden">
+                <CardHeader className="underline flex flex-row justify-between items-center">
+                  <CardTitle className="w-2/3">
+                    <ToolTipComponent content="Name of the document">
                     <Link
+                     className={buttonVariants({
+                      variant: "link",
+                      className: "overflow-hidden"
+                     })}
                       key={doc.id}
                       href={{
                         pathname: "/documents/[id]",
                         query: { id: doc.id },
                       }}
                     >
-                      <Button variant={"link"}>{doc.name}</Button>
+                    {  doc.name}
                     </Link>
+                    </ToolTipComponent>
                   </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Link
-                    href={{
-                      pathname: "/documents/[id]",
-                      query: { id: doc.id },
-                    }}
-                    className={buttonVariants({
-                      className: "w-full",
-                      variant: "secondary",
-                    })}
-                  >
-                    Chat with Document
-                    <ArrowRight className="h-5 w-5 ml-1.5" />
-                  </Link>
-                </CardContent>
-                <CardFooter className="flex flex-row justify-between items-center">
-                  <Link
-                    className="flex flex-row space-x-1 items-start"
-                    key={doc.id}
-                    href={{
-                      pathname: "/documents/[id]",
-                      query: { id: doc.id },
-                    }}
-                  >
-                    <ChatBubbleIcon className="w-5 h-5" />
-                    <p className="text-xs font-extralight">
-                      {doc.Message.length}
-                    </p>
-                  </Link>
-                  <div className="flex flex-row justify-between items-center w-1/5">
-                    <AlertDialog>
+                  <ToolTipComponent content="Edit name of document">
+                  <AlertDialog>
                       <AlertDialogTrigger>
                         <PenIcon className="w-5 h-5 text-primary" />
                       </AlertDialogTrigger>
@@ -488,6 +464,41 @@ export default function DocumentPage() {
                         </form>
                       </AlertDialogContent>
                     </AlertDialog>
+                    </ToolTipComponent>
+                </CardHeader>
+               
+                <CardFooter className="flex flex-row justify-between items-center">
+                <ToolTipComponent content="Document's number of chats">
+                  <Link
+                    className="flex flex-row space-x-1 items-start"
+                    key={doc.id}
+                    href={{
+                      pathname: "/documents/[id]",
+                      query: { id: doc.id },
+                    }}
+                  >
+                    <ChatBubbleIcon className="w-5 h-5" />
+                    <p className="text-xs font-extralight">
+                      {doc.Message.length}
+                    </p>
+                  </Link>
+                  <ToolTipComponent content="Click to start chatting with this document">
+                  <Link
+                    href={{
+                      pathname: "/documents/[id]",
+                      query: { id: doc.id },
+                    }}
+                    className={buttonVariants({
+                      className: "w-fit",
+                      variant: "secondary",
+                    })}
+                  >
+                    Open
+                    <ChevronRight className="h-5 w-5 ml-1.5" />
+                  </Link>
+                  </ToolTipComponent>
+                  </ToolTipComponent>
+                  <ToolTipComponent content="Delete document">
                     <AlertDialog>
                       <AlertDialogTrigger>
                         <Trash2 className="w-5 h-5 text-destructive" />
@@ -515,7 +526,7 @@ export default function DocumentPage() {
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
-                  </div>
+                    </ToolTipComponent>
                 </CardFooter>
               </Card>
             ))}
