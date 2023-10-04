@@ -25,10 +25,10 @@ export default function Features() {
            <Card key={index}>
            <CardHeader>
              <CardTitle>
-{f.title}
+{<f.icon className='w-8 h-8'/>}
              </CardTitle>
-             <CardDescription className='w-full flex justify-center items-center'>
-{<f.icon className='w-12 h-12'/>}
+             <CardDescription >
+             {f.title}
              </CardDescription>
            </CardHeader>
            <CardContent className='leading-loose'>
