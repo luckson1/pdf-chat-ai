@@ -20,7 +20,9 @@ export default function Features() {
                 </video>
         </Card>
       
-        <div className='grid grid-cols-1 lg:grid-cols-3  space-x-0 space-y-5  lg:space-y-0 lg:space-x-5 w-full  mx-auto my-16'>
+       <div className='w-full h-auto flex flex-col my-16 justify-center items-center'>
+       <h2 className=" text-xl md:text-3xl lg:text-5xl  font-bold tracking-normal leading-loose  h-auto my-5"> Features</h2>
+       <div className='grid grid-cols-1 lg:grid-cols-3  space-x-0 space-y-5  lg:space-y-0 lg:space-x-5 w-full  mx-auto '>
         {featureslist.map((f, index)=> (
            <Card key={index}>
            <CardHeader>
@@ -38,6 +40,7 @@ export default function Features() {
         ))}
 
         </div>
+       </div>
 
     </div>
   )
