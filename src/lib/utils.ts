@@ -56,7 +56,7 @@ export const initialMessages: Message[] = [
 interface Data {
   sources: string[];
   metadata: {
-    pageNumber: number
+    "loc.pageNumber": number
 
   
   }
