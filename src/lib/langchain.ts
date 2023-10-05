@@ -62,6 +62,7 @@ export async function callChain({ question, chatHistory, userId, id }: callChain
         qaTemplate: QA_TEMPLATE,
         questionGeneratorTemplate: STANDALONE_QUESTION_TEMPLATE,
         returnSourceDocuments: true, //default 4
+       
         questionGeneratorChainOptions: {
           llm: nonStreamingModel,
         },
@@ -79,6 +80,7 @@ export async function callChain({ question, chatHistory, userId, id }: callChain
         [handlers]
       )
       .then(async (res) => {
+        console.log(res)
         const sourceDocuments = res?.sourceDocuments;
         const pageContents =  sourceDocuments.map(
           ({ pageContent }: { pageContent: string }) => pageContent
