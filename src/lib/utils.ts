@@ -55,6 +55,7 @@ export const initialMessages: Message[] = [
 
 interface Data {
   sources: string[];
+  metadata: any
 }
 
 // Maps the sources with the right ai-message
@@ -64,6 +65,7 @@ export const getSources = ( role: string, index: number, data: Data[], initialMe
   
     const sourcesIndex = index===1? 0: (index - initialMessagesLengthPlusOne)/2;
     if (data[sourcesIndex] && data[sourcesIndex]?.sources) {
+      console.log(data[sourcesIndex]?.metadata)
       return data[sourcesIndex]?.sources ?? []
     }
   }

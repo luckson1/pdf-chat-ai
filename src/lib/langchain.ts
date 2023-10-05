@@ -80,14 +80,18 @@ export async function callChain({ question, chatHistory, userId, id }: callChain
         [handlers]
       )
       .then(async (res) => {
-        console.log(res)
+       
         const sourceDocuments = res?.sourceDocuments;
         const pageContents =  sourceDocuments.map(
           ({ pageContent }: { pageContent: string }) => pageContent
         );
+        const metadata =  sourceDocuments.map(
+          ({  metadata }: {  metadata: {chunck: number} }) => metadata
+        );
         console.log("already appended ", data);
         data.append({
           sources: pageContents,
+          metadata
         });
         data.close();
       });
