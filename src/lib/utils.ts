@@ -55,10 +55,10 @@ export const initialMessages: Message[] = [
 
 interface Data {
   sources: string[];
-  metadata: {loc : {
+  metadata: {
     pageNumber: number
 
-  }
+  
   }
 }
 
@@ -69,7 +69,7 @@ export const getSources = ( role: string, index: number, data: Data[], initialMe
   
     const sourcesIndex = index===1? 0: (index - initialMessagesLengthPlusOne)/2;
     if (data[sourcesIndex] && data[sourcesIndex]?.sources) {
-      console.log(data[sourcesIndex]?.metadata?.loc)
+      console.log(data[sourcesIndex]?.metadata?.pageNumber)
       return data[sourcesIndex]?.sources ?? []
     }
   }
