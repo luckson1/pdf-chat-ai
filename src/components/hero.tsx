@@ -31,8 +31,8 @@ export const Hero = () => {
               <span className="relative"> Get Instant Summaries and Explanations for Your Course Content.</span>
         
           </h1>
-          <p className=" mb-5 text-base  md:text-lg">Save hours reading e-books, journal articles, and lecture notes</p>
-          <p className=" mb-5 text-base  md:text-lg"> Turn an  audio recording of your lecture or a study session into notes </p>
+          <p className=" mb-5 text-base  md:text-lg">Save hours reading e-books, journal articles, and lecture notes.</p>
+          <p className=" mb-5 text-base  md:text-lg"> Turn an  audio recording of your lecture or a study session into notes. </p>
 
           <div className="flex flex-wrap items-center w-full">
             <Button
