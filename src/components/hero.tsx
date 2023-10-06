@@ -24,16 +24,16 @@ export const Hero = () => {
       <div className="flex flex-col items-center w-full max-w-5xl mx-auto">
         <div className=" flex flex-col mb-16 space-y-7 lg:my-10 w-full">
         
-          <h1 className="mx-auto w-full font-display text-xl md:text-4xl lg:text-7xl  font-bold tracking-normal leading-loose text-start h-auto">
+          <h1 className="mx-auto w-full font-display text-xl md:text-3xl lg:text-5xl  font-bold tracking-normal leading-loose text-start h-auto">
 
             <span className="relative whitespace-nowrap text-violet-600 mt-5">
               <SquigglyLines />
-              <span className="relative"> Chat With Your Course Content.</span>
+              <span className="relative"> Get Instant Summaries and Explanations for Your Courses.</span>
             </span>
           </h1>
-         
-          <p className=" mb-5 text-base  md:text-lg">Get summaries, explanations, and facts. <span className="text-primary font-bold"> Fast!</span></p>
-          <p className=" mb-5 text-base  md:text-lg">Save hours reading books, journal articles, and lecture notes.<span className="text-primary font-bold"> Just Chat!</span></p>
+          <p className=" mb-5 text-base  md:text-lg">Save hours reading e-books, journal articles, and lecture notes</p>
+          <p className=" mb-5 text-base  md:text-lg"> Turn an  audio recording of your lecture and study sessions into notes </p>
+
           <div className="flex flex-wrap items-center w-full">
             <Button
               size={"lg"}
