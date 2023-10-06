@@ -26,10 +26,10 @@ export const Hero = () => {
         
           <h1 className="mx-auto w-full font-display text-xl md:text-3xl lg:text-5xl  font-bold tracking-normal leading-loose text-start h-auto">
 
-            <span className="relative whitespace-nowrap text-violet-600 mt-5">
-              <SquigglyLines />
-              <span className="relative"> Get Instant Summaries and Explanations for Your Courses.</span>
-            </span>
+           
+            
+              <span className="relative"> Get Instant Summaries and Explanations for Your Course Content.</span>
+        
           </h1>
           <p className=" mb-5 text-base  md:text-lg">Save hours reading e-books, journal articles, and lecture notes</p>
           <p className=" mb-5 text-base  md:text-lg"> Turn an  audio recording of your lecture and study sessions into notes </p>
