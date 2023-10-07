@@ -98,7 +98,7 @@ import { useState } from 'react'
 //   Dialog,
 //   DialogContent,
 //   DialogTrigger,
-// } from './ui/dialog'
+
 import { Button } from './ui/button'
 import { Cloud, File, Loader2 } from 'lucide-react'
 import { Progress } from './ui/progress'
@@ -110,7 +110,7 @@ const Dropzone=({files, setFiles, audio, type,  handleSubmit, isUploading, setIs
     setFiles: React.Dispatch<React.SetStateAction<File[]>>,
     audio: boolean
     type: string
-    handleSubmit: () => Promise<void>
+    handleSubmit: (file: File[]) => Promise<void>
     isUploading: boolean
     setIsUploading: React.Dispatch<React.SetStateAction<boolean>>
   }) => {
@@ -158,7 +158,7 @@ const Dropzone=({files, setFiles, audio, type,  handleSubmit, isUploading, setIs
         setFiles(acceptedFiles);
         setIsUploading(true)
         const progressInterval = startSimulatedProgress()
-await  handleSubmit()
+await  handleSubmit(acceptedFiles)
      
         clearInterval(progressInterval)
         setUploadProgress(100)

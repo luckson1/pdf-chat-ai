@@ -73,6 +73,7 @@ export default function DocumentPage() {
     }
 try {
   const res= await axios.get(`/api/aws/upload_file?type=${type}&name=${name}`)
+ 
     const data: { uploadUrl: string; key: string } =
      res.data
    
@@ -170,11 +171,11 @@ try {
     },
   });
 
-  const handleSubmitDocs = async () => {
+  const handleSubmitDocs = async (docs: File[]) => {
   
     try {
       setIsUploading(true);
-      console.log('strarting')
+    
       const data = await uploadToS3(docs);
       if (!data) {
        
@@ -182,7 +183,7 @@ try {
 
         return;
       } else {
-console.log('data')
+
         addDoc(data);
       }
     } catch (error) {
@@ -253,7 +254,7 @@ console.log('data')
       setIsUploading(false);
     }
   }, [status]);
-  const handleSubmitAudio = async () => {
+  const handleSubmitAudio = async (audio:File[]) => {
     try {
       setIsUploading(true);
       const data = await uploadToS3(audio);
