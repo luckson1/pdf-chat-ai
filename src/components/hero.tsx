@@ -28,7 +28,7 @@ export const Hero = () => {
 
            
             
-              <span className="relative"> Get Instant Summaries and Explanations for Your Course Content.</span>
+              <span className="relative"> Get Instant Summaries and Explanations from your documents</span>
         
           </h1>
           <p className=" mb-5 text-base  md:text-lg">Save hours reading e-books, journal articles, and lecture notes.</p>
