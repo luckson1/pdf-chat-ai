@@ -186,13 +186,13 @@ export const documentRouter = createTRPCRouter({
           },
         });
         if (status === "completed") {
-       const document= ctx.prisma.document.findUnique({
+       const document= await ctx.prisma.document.findUnique({
         where: {
           key:Key
         }
        })
 if(!document) {
-  await ctx.prisma.document.create({
+  const newDocument= await ctx.prisma.document.create({
     data: {
       name: input.name,
       key:Key,
@@ -200,12 +200,12 @@ if(!document) {
       userId
     }
   })
-  return data
+  return { ...data, documentId:newDocument.id}
 }
-     return data   
+return { ...data, documentId:document.id}
         } 
 
-        return data;
+        return { ...data, documentId:undefined}
       } catch (error) {
         console.log(error);
       }

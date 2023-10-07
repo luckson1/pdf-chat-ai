@@ -140,9 +140,11 @@ try {
   const { mutate: getTranscription, data: transcription } =
     api.documents.getTranscription.useMutation({
       onSuccess(data) {
-        if (data?.status === "completed") {
+        if (data?.status === "completed" && data?.documentId) {
           ctx.documents.getAll.invalidate();
+          router.push(`/documents/[id]?id=${data.documentId}`);
         }
+        
       },
       onError: () => {
         toast({
@@ -222,6 +224,7 @@ try {
           );
         }
         if (status === "completed") {
+
           setAudio([]);
         }
         if (status === "error") {
@@ -380,7 +383,7 @@ try {
           <Card className="w-full max-w-sm h-32">
             <CardHeader>No Documents</CardHeader>
           </Card>
-        ) : docsData && !isUploading ? (
+        ) : docsData && !isLoading ? (
           <div className="w-full max-w-4xl grid grid-row lg:grid-cols-2 gap-2">
             {docsData.map((doc) => (
               <Card
