@@ -17,7 +17,7 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { z } from "zod";
 import { Icons } from "@/components/Icons";
-import { ChevronLeft, ChevronRight, PenIcon, Trash2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Files, PenIcon, Trash2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -43,14 +43,13 @@ import ToolTipComponent from "@/components/tooltip_component";
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
   const [audio, setAudio] = useState<File[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
   const sizeLimit = 4000000;
   const { toast } = useToast();
   const session = useSession();
   const isProMember = session.data?.user.isPro;
-  console.log(isProMember);
   const uploadToS3 = async (files: File[]) => {
     if (!files || files.length <= 0) {
       return null;
@@ -62,7 +61,8 @@ export default function DocumentPage() {
     if (!name || !type || !size) {
       return null;
     }
-    if (size >= sizeLimit && !isProMember) {
+    const isNotAllowedToUploadLargeFiles=(size >= sizeLimit) && !isProMember
+    if (isNotAllowedToUploadLargeFiles) {
       toast({
         title: "File larger than 4MB.",
         description: "Upgrade to upload larger files",
@@ -71,26 +71,31 @@ export default function DocumentPage() {
       });
       return;
     }
+try {
+  const res= await axios.get(`/api/aws/upload_file?type=${type}&name=${name}`)
+    const data: { uploadUrl: string; key: string } =
+     res.data
+   
 
-    const { data }: { data: { uploadUrl: string; key: string } } =
-      await axios.get(`/api/aws/upload_file?type=${type}&name=${name}`);
-    if (!data) {
-      toast({
-        description: "Upload failed",
-        variant: "destructive",
-        action: <ToastAction altText="Try again">Try Again</ToastAction>,
-      });
-    }
+ 
     const { uploadUrl, key } = data;
     await axios.put(uploadUrl, files[0]);
     return { key, name, type };
+} catch (error) {
+  toast({
+    title: "Upload failed",
+    description: "Failed to upload",
+    variant: "destructive",
+    action: <ToastAction altText="Try again">Try Again</ToastAction>,
+  });
+}
   };
   const ctx = api.useContext();
   const router = useRouter();
   const { mutate: addDoc } = api.documents.addDoc.useMutation({
     onSettled: () => {
       ctx.documents.getAll.invalidate();
-      setLoading(false);
+      setIsUploading(false);
       setDocs([]);
     },
     onError: (error) => {
@@ -165,16 +170,19 @@ export default function DocumentPage() {
     },
   });
 
-  const handleSubmitDocs = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmitDocs = async () => {
+  
     try {
-      setLoading(true);
+      setIsUploading(true);
+      console.log('strarting')
       const data = await uploadToS3(docs);
       if (!data) {
-        setLoading(false);
+       
+        setIsUploading(false);
 
         return;
       } else {
+console.log('data')
         addDoc(data);
       }
     } catch (error) {
@@ -188,7 +196,7 @@ export default function DocumentPage() {
 
   const transcribe = async (key: string) => {
     try {
-      setLoading(true);
+      setIsUploading(true);
       addTranscription({ key });
     } catch (error) {
       toast({
@@ -197,7 +205,7 @@ export default function DocumentPage() {
         action: <ToastAction altText="Try again">Try Again</ToastAction>,
       });
 
-      setLoading(false);
+      setIsUploading(false);
     }
   };
   const status = transcription?.status;
@@ -239,19 +247,18 @@ export default function DocumentPage() {
   }, [id, status, text]);
   useEffect(() => {
     if (status === "processing" || status === "queued") {
-      setLoading(true);
+      setIsUploading(true);
     }
     if (status === "error" || status === "completed") {
-      setLoading(false);
+      setIsUploading(false);
     }
   }, [status]);
-  const handleSubmitAudio = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmitAudio = async () => {
     try {
-      setLoading(true);
+      setIsUploading(true);
       const data = await uploadToS3(audio);
       if (!data) {
-        setLoading(false);
+        setIsUploading(false);
 
         return;
       }
@@ -309,7 +316,7 @@ export default function DocumentPage() {
           <TabsTrigger value="audio">Audio Recordings</TabsTrigger>
         </TabsList>
         <TabsContent value="docs">
-          <Card className="w-full max-w-sm h-fit min-h-[500px]">
+          <Card className="w-full max-w-sm h-auto">
             <CardHeader>
               <CardTitle>Upload a study material</CardTitle>
               <CardDescription>
@@ -317,28 +324,17 @@ export default function DocumentPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col space-y-5 py-5">
-              <form
-                className="flex flex-col space-y-5"
-                onSubmit={(e) => handleSubmitDocs(e)}
-                id="docs"
-              >
+            
                 <Dropzone
                   files={docs}
                   setFiles={setDocs}
                   audio={false}
                   type="a document"
+                  handleSubmit={handleSubmitDocs}
+                  setIsUploading={setIsUploading}
+                  isUploading={isUploading}
                 />
-                <Button
-                  type="submit"
-                  disabled={docs.length <= 0}
-                  className="w-full max-w-xs"
-                >
-                  {loading && (
-                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  {loading ? "Uploading doc..." : "Upload doc"}
-                </Button>
-              </form>
+              
             </CardContent>
           </Card>
         </TabsContent>
@@ -351,28 +347,17 @@ export default function DocumentPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col space-y-5 py-5">
-              <form
-                className="flex flex-col space-y-5"
-                onSubmit={(e) => handleSubmitAudio(e)}
-                id="audio"
-              >
+             
                 <Dropzone
                   files={audio}
                   setFiles={setAudio}
                   audio={true}
                   type="an audio recording"
+                  handleSubmit={handleSubmitAudio} 
+                  isUploading={isUploading}
+                  setIsUploading={setIsUploading}
                 />
-                <Button
-                  type="submit"
-                  disabled={audio.length <= 0}
-                  className="max-w-xs w-full"
-                >
-                  {loading && (
-                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  {loading ? "Uploading audio..." : "Upload audio"}
-                </Button>
-              </form>
+            
             </CardContent>
           </Card>
         </TabsContent>
@@ -390,11 +375,11 @@ export default function DocumentPage() {
               ))}
           </div>
         )}
-        {(!docsData || docsData.length <= 0) && !isLoading ? (
+        {(!docsData || docsData.length <= 0) && !isLoading  ? (
           <Card className="w-full max-w-sm h-32">
             <CardHeader>No Documents</CardHeader>
           </Card>
-        ) : docsData && !isLoading ? (
+        ) : docsData && !isUploading ? (
           <div className="w-full max-w-4xl grid grid-row lg:grid-cols-2 gap-2">
             {docsData.map((doc) => (
               <Card
