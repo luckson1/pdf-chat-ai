@@ -29,7 +29,7 @@ export const Hero = () => {
               <span className="relative"> Get Instant Answers and Explanations from your documents</span>
         
           </h1>
-          <p className=" mb-5 text-base  md:text-lg">Let our AI scan your documents and deliver the answers you need. Save hours reading e-books, research papers, and notes</p>
+          <p className=" mb-5 text-base  md:text-lg">Let AI scan your documents and deliver the answers you need. Save hours reading your e-books, research papers, and notes</p>
 
           <div className="flex flex-wrap items-center w-full">
             <Button
