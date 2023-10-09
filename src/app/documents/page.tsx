@@ -21,6 +21,9 @@ import ResourceTable from "@/components/source_tables";
 import Webform from "@/components/webform";
 import YouTubeForm from "@/components/youtube_form";
 import { Separator } from "@/components/ui/separator";
+import { Icons } from "@/components/Icons";
+import { buttonVariants } from "@/components/ui/button";
+import { NotionLogoIcon } from "@radix-ui/react-icons";
 
 export default function DocumentPage() {
   const [docFiles, setDocFiles] = useState<File[]>([]);
@@ -212,13 +215,20 @@ export default function DocumentPage() {
     }
   };
 
+  const importIcons=[
+    {name:"Notion", icon: NotionLogoIcon},
+    {name:"Google Drive", icon: Icons.googleDrive},
+    {name:"Confluence", icon: Icons.confluence},
+    {name:"One Drive", icon: Icons.oneDrove}
+  ]
+
   return (
     <div className="w-full h-fit flex flex-col space-x-0  space-y-5 justify-center items-center ">
       <Tabs defaultValue="docs" className="w-full max-w-3xl">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="docs">Add resource</TabsTrigger>
 
-          <TabsTrigger value="audio">Import resource</TabsTrigger>
+          <TabsTrigger value="audio">Connect popular apps</TabsTrigger>
         </TabsList>
         <TabsContent value="docs">
           <Card className="w-full max-w-3xl h-auto ">
@@ -269,27 +279,26 @@ export default function DocumentPage() {
         <TabsContent value="audio">
           <Card className="w-full max-w-3xl">
             <CardHeader>
-              <CardTitle>Connect and import from other apps</CardTitle>
-              <CardDescription>Import your notes and files</CardDescription>
+              <CardTitle>Connect with resources from other apps, soon...</CardTitle>
+              <CardDescription>Cooming soon...</CardDescription>
             </CardHeader>
-            <CardContent className="flex flex-col space-y-5 py-5">
-              {/* <Dropzone
-                  files={audio}
-                  setFiles={setAudio}
-                  audio={true}
-                  type="an audio recording"
-                  handleSubmit={handleSubmitAudio} 
-                  isUploading={isUploading}
-                  setIsUploading={setIsUploading}
-                /> */}
-              Coming Soon...
+            <CardContent className="grid grid-cols-2 gap-3">
+         
+            {importIcons.map(icon=> (
+              <div className={buttonVariants({
+                variant: "secondary",
+                className: 'flex flex-row justify-between items-center w-full'
+              })} key={icon.name}>
+<icon.icon className=" w-5 h-5"/> {icon.name}
+              </div>
+            ))}
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
       <div className="w-full bg-red-300">
-        <DocsCard />
-        <ResourceTable />
+        {/* <DocsCard />
+        <ResourceTable /> */}
       </div>
     </div>
   );
