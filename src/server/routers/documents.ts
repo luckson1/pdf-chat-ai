@@ -232,8 +232,8 @@ return { ...data, documentId:document.id}
     }),
 
   getAll: protectedProcedure.input(z.object({
-    skip: z.number(),
-    take: z.number(),
+    skip: z.number().optional(),
+    take: z.number().optional(),
   }),).query(async ({ ctx , input}) => {
     const userId = ctx.session.user.id;
     const {skip, take}=input
