@@ -99,17 +99,14 @@ import { useState } from 'react'
 //   DialogContent,
 //   DialogTrigger,
 
-import { Button } from './ui/button'
 import { Cloud, File, Loader2 } from 'lucide-react'
 import { Progress } from './ui/progress'
 import { useToast } from './ui/use-toast'
 import { useDropzone } from "react-dropzone";
 
-const Dropzone=({files, setFiles, audio, type,  handleSubmit, isUploading, setIsUploading }: {
-    files: File[],
+const Dropzone=({files, setFiles, handleSubmit, isUploading, setIsUploading }: {
+    files?: File[],
     setFiles: React.Dispatch<React.SetStateAction<File[]>>,
-    audio: boolean
-    type: string
     handleSubmit: (file: File[]) => Promise<void>
     isUploading: boolean
     setIsUploading: React.Dispatch<React.SetStateAction<boolean>>
@@ -120,15 +117,13 @@ const Dropzone=({files, setFiles, audio, type,  handleSubmit, isUploading, setIs
     "application/pdf": [],
     "text/plain": [],
     "application/vnd.ms-powerpoint": [],
-    "application/vnd.openxmlformats-officedocument.presentationml.presentation": []
-  }
-  const audioFiles = {
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation": [],
     "audio/*": [],
     "video/*": []
-  
   }
-  
 
+  
+  
 
   const [uploadProgress, setUploadProgress] =
     useState<number>(0)
@@ -153,11 +148,12 @@ const Dropzone=({files, setFiles, audio, type,  handleSubmit, isUploading, setIs
   }
     const { getRootProps, getInputProps, isDragActive  } = useDropzone({
       maxFiles: 1,
-      accept:audio? audioFiles :docFiles,
+      accept:docFiles,
       onDrop: async (acceptedFiles) => {
         setFiles(acceptedFiles);
         setIsUploading(true)
         const progressInterval = startSimulatedProgress()
+      
 await  handleSubmit(acceptedFiles)
      
         clearInterval(progressInterval)
@@ -172,7 +168,7 @@ await  handleSubmit(acceptedFiles)
     
         <div
           {...getRootProps({ className: "dropzone" })}
-          className='border h-64 m-4 border-dashed border-foreground/60 rounded-lg'>
+          className='border h-32  border-dashed border-foreground/60 rounded-lg   md:w-full md:max-w-xs'>
           <div className='flex items-center justify-center h-full w-full'>
             <label
               htmlFor='dropzone-file'
@@ -183,11 +179,9 @@ await  handleSubmit(acceptedFiles)
                   <span className='font-semibold'>
                     Click to upload
                   </span>{' '}
-                  or drag and drop
+                  or drag and drop file
                 </p>
-                <p className='text-xs text-foreground/90'>
-               {type}
-                </p>
+               
               </div>
 
               {files && files[0] ? (

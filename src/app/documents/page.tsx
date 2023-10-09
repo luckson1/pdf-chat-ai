@@ -18,11 +18,13 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import DocsCard from "@/components/docs_card";
 import ResourceTable from "@/components/source_tables";
-
+import Webform from "@/components/webform";
+import YouTubeForm from "@/components/youtube_form";
+import { Separator } from "@/components/ui/separator";
 
 export default function DocumentPage() {
-  const [docs, setDocs] = useState<File[]>([]);
-  const [audio, setAudio] = useState<File[]>([]);
+  const [docFiles, setDocFiles] = useState<File[]>([]);
+  const [audioFiles, setAudioFiles] = useState<File[]>([]);
   const [isUploading, setIsUploading] = useState(false);
 
   const sizeLimit = 4000000;
@@ -40,7 +42,7 @@ export default function DocumentPage() {
     if (!name || !type || !size) {
       return null;
     }
-    const isNotAllowedToUploadLargeFiles=(size >= sizeLimit) && !isProMember
+    const isNotAllowedToUploadLargeFiles = size >= sizeLimit && !isProMember;
     if (isNotAllowedToUploadLargeFiles) {
       toast({
         title: "File larger than 4MB.",
@@ -50,25 +52,24 @@ export default function DocumentPage() {
       });
       return;
     }
-try {
-  const res= await axios.get(`/api/aws/upload_file?type=${type}&name=${name}`)
- 
-    const data: { uploadUrl: string; key: string } =
-     res.data
-   
+    try {
+      const res = await axios.get(
+        `/api/aws/upload_file?type=${type}&name=${name}`
+      );
 
- 
-    const { uploadUrl, key } = data;
-    await axios.put(uploadUrl, files[0]);
-    return { key, name, type };
-} catch (error) {
-  toast({
-    title: "Upload failed",
-    description: "Failed to upload",
-    variant: "destructive",
-    action: <ToastAction altText="Try again">Try Again</ToastAction>,
-  });
-}
+      const data: { uploadUrl: string; key: string } = res.data;
+
+      const { uploadUrl, key } = data;
+      await axios.put(uploadUrl, files[0]);
+      return { key, name, type };
+    } catch (error) {
+      toast({
+        title: "Upload failed",
+        description: "Failed to upload",
+        variant: "destructive",
+        action: <ToastAction altText="Try again">Try Again</ToastAction>,
+      });
+    }
   };
   const ctx = api.useContext();
   const router = useRouter();
@@ -76,7 +77,7 @@ try {
     onSettled: () => {
       ctx.documents.getAll.invalidate();
       setIsUploading(false);
-      setDocs([]);
+      setDocFiles([]);
     },
     onError: (error) => {
       toast({
@@ -92,7 +93,6 @@ try {
     },
   });
 
-
   const { mutate: getTranscription, data: transcription } =
     api.documents.getTranscription.useMutation({
       onSuccess(data) {
@@ -100,7 +100,6 @@ try {
           ctx.documents.getAll.invalidate();
           router.push(`/documents/[id]?id=${data.documentId}`);
         }
-        
       },
       onError: () => {
         toast({
@@ -117,7 +116,7 @@ try {
   } = api.documents.transcribe.useMutation({
     onSuccess(id) {
       if (id) {
-        getTranscription({ id: id, name: audio[0]?.name ?? id });
+        getTranscription({ id: id, name: audioFiles[0]?.name ?? id });
       }
     },
     onError: () => {
@@ -129,29 +128,7 @@ try {
     },
   });
 
-  const handleSubmitDocs = async (docs: File[]) => {
-  
-    try {
-      setIsUploading(true);
-    
-      const data = await uploadToS3(docs);
-      if (!data) {
-       
-        setIsUploading(false);
 
-        return;
-      } else {
-
-        addDoc(data);
-      }
-    } catch (error) {
-      toast({
-        description: "Something went wrong",
-        variant: "destructive",
-        action: <ToastAction altText="Try again">Try Again</ToastAction>,
-      });
-    }
-  };
 
   const transcribe = async (key: string) => {
     try {
@@ -175,16 +152,15 @@ try {
       try {
         if (id && (status === "processing" || status === "queued")) {
           setTimeout(
-            () => getTranscription({ id, name: audio[0]?.name ?? id }),
+            () => getTranscription({ id, name: audioFiles[0]?.name ?? id }),
             5000
           );
         }
         if (status === "completed") {
-
-          setAudio([]);
+          setAudioFiles([]);
         }
         if (status === "error") {
-          setAudio([]);
+          setAudioFiles([]);
           toast({
             description: "Something went wrong",
             variant: "destructive",
@@ -213,16 +189,22 @@ try {
       setIsUploading(false);
     }
   }, [status]);
-  const handleSubmitAudio = async (audio:File[]) => {
+  const handleSubmit = async (docs: File[]) => {
     try {
       setIsUploading(true);
-      const data = await uploadToS3(audio);
+
+      const data = await uploadToS3(docs);
       if (!data) {
         setIsUploading(false);
 
         return;
+      } else {
+        const type=data.type
+        const isAudio=type.startsWith('audio/')
+        const isVideo=type.startsWith('video/')
+        const isMultimedia=isAudio || isVideo
+        isMultimedia?   transcribe(data.key) : addDoc(data);
       }
-      transcribe(data.key);
     } catch (error) {
       toast({
         description: "Something went wrong",
@@ -233,49 +215,53 @@ try {
   };
 
 
-
   return (
-    <div className="w-full h-fit flex flex-col md:flex-row space-x-0 md:space-x-10 space-y-5 md:space-y-0">
-      <Tabs defaultValue="docs" className="w-full max-w-sm">
+    <div className="w-full h-fit flex flex-col space-x-0  space-y-5 justify-center items-center ">
+      <Tabs defaultValue="docs" className="w-full max-w-3xl">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="docs">Study Documents</TabsTrigger>
+          <TabsTrigger value="docs">Add resource</TabsTrigger>
 
-          <TabsTrigger value="audio">Audio Recordings</TabsTrigger>
+          <TabsTrigger value="audio">Import resource</TabsTrigger>
         </TabsList>
         <TabsContent value="docs">
-          <Card className="w-full max-w-sm h-auto">
+          <Card className="w-full max-w-3xl h-auto ">
             <CardHeader>
-              <CardTitle>Upload a study material</CardTitle>
+              <CardTitle>Add a source by uploading a file or providing a link</CardTitle>
               <CardDescription>
-                Upload a pdf, word, text, or power point document
+                Supported file: pdfs, slides, excel, csv,
+                audio/video files (mp3 & mp4)
               </CardDescription>
             </CardHeader>
-            <CardContent className="flex flex-col space-y-5 py-5">
+            <CardContent >
+              <div className="flex w-full flex-col md:flex-row md:space-x-5 space-x-0 space-y-5 md:space-y-0">
+              <Dropzone
+                files={docFiles}
+                setFiles={setDocFiles}
+                handleSubmit={handleSubmit}
+                setIsUploading={setIsUploading}
+                isUploading={isUploading}
+              />
+               <Separator orientation="vertical" className="hidden md:block"/>
+               <Separator orientation='horizontal' className="md:hidden block"/>
+           
             
-                <Dropzone
-                  files={docs}
-                  setFiles={setDocs}
-                  audio={false}
-                  type="a document"
-                  handleSubmit={handleSubmitDocs}
-                  setIsUploading={setIsUploading}
-                  isUploading={isUploading}
-                />
-              
-            </CardContent>
+             <Webform />
+              </div>
+           
+  
+               </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="audio">
-          <Card className="w-full max-w-sm h-fit min-h-[500px]">
+          <Card  className="w-full max-w-3xl">
             <CardHeader>
-              <CardTitle>Upload an audio recording</CardTitle>
+              <CardTitle>Connect and import from other apps</CardTitle>
               <CardDescription>
-                Record your professor lecture and chat with him/her later
+             Import your notes and files
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col space-y-5 py-5">
-             
-                <Dropzone
+              {/* <Dropzone
                   files={audio}
                   setFiles={setAudio}
                   audio={true}
@@ -283,16 +269,16 @@ try {
                   handleSubmit={handleSubmitAudio} 
                   isUploading={isUploading}
                   setIsUploading={setIsUploading}
-                />
-            
+                /> */}
+              Coming Soon...
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
-     <div className="w-full max-w-4xl">
-<DocsCard />
-<ResourceTable />
-     </div>
+      <div className="w-full bg-red-300">
+        {/* <DocsCard />
+        <ResourceTable /> */}
+      </div>
     </div>
   );
 }
