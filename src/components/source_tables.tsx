@@ -166,8 +166,8 @@ export const columns: ColumnDef<Docs>[] = [
     ),
   },
   {
-    accessorKey: "id",
-    header: "id",
+    accessorKey: "name",
+    header: "Name",
     cell: ({ row }) => (
         <ToolTipComponent content="Name of the resource">
                   <Link
@@ -181,7 +181,7 @@ export const columns: ColumnDef<Docs>[] = [
                       query: { id: row.getValue('id') },
                     }}
                   >
-                    {row.getValue('id')}
+                    {row.getValue('name')}
                   </Link>
                 </ToolTipComponent>
     ),
@@ -226,8 +226,8 @@ export const columns: ColumnDef<Docs>[] = [
 
  
   {
-    accessorKey: "chat",
-    header: "chat",
+    accessorKey: "open",
+    header: "Open",
     cell: ({ row }) => (
         <ToolTipComponent content="Click to start chatting with this document">
         <Link

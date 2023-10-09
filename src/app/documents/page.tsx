@@ -289,7 +289,7 @@ try {
           </Card>
         </TabsContent>
       </Tabs>
-     <div className="w-full">
+     <div className="w-full max-w-4xl">
 <DocsCard />
 <ResourceTable />
      </div>
