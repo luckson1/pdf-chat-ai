@@ -106,7 +106,7 @@ export default function DocsCard() {
           >
             <CardHeader className="underline flex flex-row justify-between items-center w-full">
               <CardTitle className="w-4/6 truncate">
-                <ToolTipComponent content="Name of the document">
+                <ToolTipComponent content="Name of the resource">
                   <Link
                     className={buttonVariants({
                       variant: "link",

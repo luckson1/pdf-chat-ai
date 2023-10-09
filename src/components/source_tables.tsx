@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+    ChatBubbleIcon,
   ChevronDownIcon,
   DotsHorizontalIcon,
 } from "@radix-ui/react-icons";
@@ -20,7 +21,7 @@ import {
 
 
 import { DataTableColumnHeader } from "@/components/data_table_header";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -49,6 +50,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "./ui/label";
+import ToolTipComponent from "./tooltip_component";
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 
 
 export type Docs =  {id: string, name:string, createdAt: Date, messages: number}
@@ -165,34 +169,84 @@ export const columns: ColumnDef<Docs>[] = [
     accessorKey: "id",
     header: "id",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("name")}</div>
+        <ToolTipComponent content="Name of the resource">
+                  <Link
+                    className={buttonVariants({
+                      variant: "link",
+                      className: "truncate",
+                    })}
+                
+                    href={{
+                      pathname: "/documents/[id]",
+                      query: { id: row.getValue('id') },
+                    }}
+                  >
+                    {row.getValue('name')}
+                  </Link>
+                </ToolTipComponent>
     ),
   },
   {
     accessorKey: "createdAt",
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Date" />;
+      return <DataTableColumnHeader column={column} title="Date Created" />;
     },
     cell: ({ row }) => (
       <div className="lowercase">
-        {format(new Date(row.getValue("time")), "MM/dd/yyyy")}
+        {format(new Date(row.getValue('createdAt')), "MM/dd/yyyy")}
       </div>
     ),
   },
   {
     accessorKey: "messages",
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Date" />;
+      return <DataTableColumnHeader column={column} title="Chats" />;
     },
     cell: ({ row }) => (
-      <div className="lowercase">
-        {format(new Date(row.getValue("messages")), "MM/dd/yyyy")}
-      </div>
+        <ToolTipComponent content="Document's number of chats">
+       <Link
+                    className={buttonVariants({
+                      variant: "link",
+                      className: "truncate",
+                    })}
+                
+                    href={{
+                      pathname: "/documents/[id]",
+                      query: { id: row.getValue('id') },
+                    }}
+                  >
+          <ChatBubbleIcon className="w-5 h-5" />
+          <p className="text-xs font-extralight">
+            {row.getValue('messages')}
+          </p>
+        </Link>
+      </ToolTipComponent>
     ),
   },
 
  
- 
+  {
+    accessorKey: "chat",
+    header: "chat",
+    cell: ({ row }) => (
+        <ToolTipComponent content="Click to start chatting with this document">
+        <Link
+          href={{
+            pathname: "/documents/[id]",
+            query: { id: row.getValue('id') },
+          }}
+          className={buttonVariants({
+            className: "w-fit",
+            variant: "secondary",
+            size: "sm",
+          })}
+        >
+          Chat
+          <ChevronRight className="h-5 w-5 ml-1.5" />
+        </Link>
+      </ToolTipComponent>
+    ),
+  },
 
 
 
@@ -238,29 +292,14 @@ export function DataTable({data}: {data: Docs[]}) {
     <div className="w-full">
       <div className="flex  w-full flex-row flex-wrap items-center justify-between py-4">
         <Input
-          placeholder="Filter phone numbers..."
-          value={(table.getColumn("phone")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter by Name..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("phone")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="mr-4 max-w-xs"
         />
-        <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="mr-4 max-w-xs"
-        />
-        <Input
-          placeholder="Filter Gender..."
-          value={(table.getColumn("gender")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("gender")?.setFilterValue(event.target.value)
-          }
-          className="max-w-xs"
-        />
+    
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
