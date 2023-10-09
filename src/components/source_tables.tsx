@@ -1,6 +1,6 @@
 import * as React from "react";
 import {
-    ChatBubbleIcon,
+  ChatBubbleIcon,
   ChevronDownIcon,
   DotsHorizontalIcon,
 } from "@radix-ui/react-icons";
@@ -18,7 +18,6 @@ import {
   type VisibilityState,
   Row,
 } from "@tanstack/react-table";
-
 
 import { DataTableColumnHeader } from "@/components/data_table_header";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -44,7 +43,7 @@ import {
 } from "@/components/ui/table";
 import { api } from "@/app/api/_trpc/client";
 import AlertDialogComponent from "./alert_dialog_component";
-import {  useToast } from "./ui/use-toast";
+import { useToast } from "./ui/use-toast";
 import { ToastAction } from "./ui/toast";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -52,50 +51,54 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "./ui/label";
 import ToolTipComponent from "./tooltip_component";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Trash2 } from "lucide-react";
 
-
-export type Docs =  {id: string, name:string, createdAt: Date, messages: number}
-const Actions=({ row }: {row: Row<Docs>}) => {
-
-    const ctx=api.useContext()
-    const { mutate: del } = api.documents.deleteOne.useMutation({
-      onSuccess: () => {
-        ctx.documents.getAll.invalidate();
-      },
-      onError: () => {
-        toast({
-          description: "Something went wrong",
-          variant: "destructive",
-          action: <ToastAction altText="Try again">Try Again</ToastAction>,
-        });
-      },
-    });
-    const { mutate: rename } = api.documents.changeName.useMutation({
-      onSuccess: () => {
-        ctx.documents.getAll.invalidate();
-      },
-      onError: () => {
-        toast({
-          description: "Something went wrong",
-          variant: "destructive",
-          action: <ToastAction altText="Try again">Try Again</ToastAction>,
-        });
-      },
-    });
-    const NameSchema = z.object({
-      name: z.string(),
-    });
-    type TNameSchema = z.infer<typeof NameSchema>;
-    const {
-      register,
-      handleSubmit,
+export type Doc = {
+  id: string;
+  name: string;
+  createdAt: Date;
+  messages: number;
+};
+const Actions = ({ row }: { row: Row<Doc> }) => {
+  const doc = row.original;
+  const ctx = api.useContext();
+  const { mutate: del } = api.documents.deleteOne.useMutation({
+    onSuccess: () => {
+      ctx.documents.getAll.invalidate();
+    },
+    onError: () => {
+      toast({
+        description: "Something went wrong",
+        variant: "destructive",
+        action: <ToastAction altText="Try again">Try Again</ToastAction>,
+      });
+    },
+  });
+  const { mutate: rename } = api.documents.changeName.useMutation({
+    onSuccess: () => {
+      ctx.documents.getAll.invalidate();
+    },
+    onError: () => {
+      toast({
+        description: "Something went wrong",
+        variant: "destructive",
+        action: <ToastAction altText="Try again">Try Again</ToastAction>,
+      });
+    },
+  });
+  const NameSchema = z.object({
+    name: z.string(),
+  });
+  type TNameSchema = z.infer<typeof NameSchema>;
+  const {
+    register,
+    handleSubmit,
     //   formState: { errors },
     //   setValue
-    } = useForm<TNameSchema>({
-      resolver: zodResolver(NameSchema),
-    });
-    const { toast } = useToast();
+  } = useForm<TNameSchema>({
+    resolver: zodResolver(NameSchema),
+  });
+  const { toast } = useToast();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -106,39 +109,54 @@ const Actions=({ row }: {row: Row<Docs>}) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem
-        
-        >
-           <AlertDialogComponent form='edit' description='Edit the name of the resource. Click save when done' title="Edit Name" trigger="Edit name of Resource"  action={null}>
- <form
- id='edit'
-className="grid gap-4 py-4"
-onSubmit={handleSubmit((data) =>
-  rename({ id: row.getValue('id'), name: data.name})
-)}
->
-<div className="grid grid-cols-4 items-center gap-4">
-  <Label htmlFor="name" className="text-right">
-    Name
-  </Label>
-  <Input
-    id="name"
-    {...register(row.getValue('name') )}
-    defaultValue={row.getValue('name') }
-    className="col-span-3"
-  />
-</div>
-</form>
- </AlertDialogComponent>
+        <DropdownMenuItem>
+          <AlertDialogComponent
+            form="edit"
+            actionText="Rename"
+            description="Edit the name of the resource. Click save when done"
+            title="Edit Name"
+            trigger="Edit name of Resource"
+            action={null}
+          >
+            <form
+              id="edit"
+              className="grid gap-4 py-4"
+              onSubmit={handleSubmit((data) =>
+                rename({ id: doc.id, name: data.name })
+              )}
+            >
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="name" className="text-right">
+                  Name
+                </Label>
+                <Input
+                  id="name"
+                  {...register("name")}
+                  defaultValue={doc.name}
+                  className="col-span-3"
+                />
+              </div>
+            </form>
+          </AlertDialogComponent>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-      
-        <DropdownMenuItem>View user details</DropdownMenuItem>
+
+        <DropdownMenuItem>
+          <AlertDialogComponent
+            destructive={true}
+            actionText="Delete"
+            description="This action cannot be undone. This will permanently
+                        delete the file."
+            title="Are you sure you want to delete the document?"
+            trigger={<Trash2 className="w-5 h-5 text-destructive" />}
+            action={() => del({ id: doc.id })}
+          />
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
-export const columns: ColumnDef<Docs>[] = [
+};
+export const columns: ColumnDef<Doc>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -161,29 +179,26 @@ export const columns: ColumnDef<Docs>[] = [
   {
     accessorKey: "id",
     header: "id",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("id")}</div>
-    ),
+    cell: ({ row }) => <div className="capitalize">{row.getValue("id")}</div>,
   },
   {
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => (
-        <ToolTipComponent content="Name of the resource">
-                  <Link
-                    className={buttonVariants({
-                      variant: "link",
-                      className: "truncate max-w-20",
-                    })}
-                
-                    href={{
-                      pathname: "/documents/[id]",
-                      query: { id: row.getValue('id') },
-                    }}
-                  >
-                    {row.getValue('name')}
-                  </Link>
-                </ToolTipComponent>
+      <ToolTipComponent content="Name of the resource">
+        <Link
+          className={buttonVariants({
+            variant: "link",
+            className: "truncate max-w-20",
+          })}
+          href={{
+            pathname: "/documents/[id]",
+            query: { id: row.getValue("id") },
+          }}
+        >
+          {row.getValue("name")}
+        </Link>
+      </ToolTipComponent>
     ),
   },
   {
@@ -193,7 +208,7 @@ export const columns: ColumnDef<Docs>[] = [
     },
     cell: ({ row }) => (
       <div className="lowercase">
-        {format(new Date(row.getValue('createdAt')), "MM/dd/yyyy")}
+        {format(new Date(row.getValue("createdAt")), "MM/dd/yyyy")}
       </div>
     ),
   },
@@ -203,37 +218,33 @@ export const columns: ColumnDef<Docs>[] = [
       return <DataTableColumnHeader column={column} title="Chats" />;
     },
     cell: ({ row }) => (
-        <ToolTipComponent content="Document's number of chats">
-       <Link
-                    className={buttonVariants({
-                      variant: "link",
-                      className: "truncate",
-                    })}
-                
-                    href={{
-                      pathname: "/documents/[id]",
-                      query: { id: row.getValue('id') },
-                    }}
-                  >
+      <ToolTipComponent content="Document's number of chats">
+        <Link
+          className={buttonVariants({
+            variant: "link",
+            className: "truncate",
+          })}
+          href={{
+            pathname: "/documents/[id]",
+            query: { id: row.getValue("id") },
+          }}
+        >
           <ChatBubbleIcon className="w-5 h-5" />
-          <p className="text-xs font-extralight">
-            {row.getValue('messages')}
-          </p>
+          <p className="text-xs font-extralight">{row.getValue("messages")}</p>
         </Link>
       </ToolTipComponent>
     ),
   },
 
- 
   {
     accessorKey: "open",
     header: "Open",
     cell: ({ row }) => (
-        <ToolTipComponent content="Click to start chatting with this document">
+      <ToolTipComponent content="Click to start chatting with this document">
         <Link
           href={{
             pathname: "/documents/[id]",
-            query: { id: row.getValue('id') },
+            query: { id: row.getValue("id") },
           }}
           className={buttonVariants({
             className: "w-fit",
@@ -248,22 +259,19 @@ export const columns: ColumnDef<Docs>[] = [
     ),
   },
 
-
-
   {
     id: "actions",
     enableHiding: false,
-    cell: ({row})=> {
-        return <Actions row={row} />
-    }
+    cell: ({ row }) => {
+      return <Actions row={row} />;
+    },
   },
 ];
 
-export function DataTable({data}: {data: Docs[]}) {
- 
+export function DataTable({ data }: { data: Doc[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
+    []
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -299,7 +307,7 @@ export function DataTable({data}: {data: Docs[]}) {
           }
           className="mr-4 max-w-xs"
         />
-    
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -339,7 +347,7 @@ export function DataTable({data}: {data: Docs[]}) {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext(),
+                            header.getContext()
                           )}
                     </TableHead>
                   );
@@ -358,7 +366,7 @@ export function DataTable({data}: {data: Docs[]}) {
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext(),
+                        cell.getContext()
                       )}
                     </TableCell>
                   ))}
@@ -406,23 +414,27 @@ export function DataTable({data}: {data: Docs[]}) {
 }
 
 export default function ResourceTable() {
-    const {
-        data
-      } = api.documents.getAll.useQuery({})
+  const { data } = api.documents.getAll.useQuery({});
 
   return (
     <>
       <div className="hidden md:flex">
-      
-        
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">My Resources</h2>
-         
           </div>
           {!data &&
             Array(10).fill(<Skeleton className="h-16 w-full rounded-md" />)}
-          {data && <DataTable data={data.map(d=> ({id: d.id, name:d.name, createdAt: d.createdAt, messages: d.Message.length}))} />}
+          {data && (
+            <DataTable
+              data={data.map((d) => ({
+                id: d.id,
+                name: d.name,
+                createdAt: d.createdAt,
+                messages: d.Message.length,
+              }))}
+            />
+          )}
         </div>
       </div>
     </>
