@@ -301,7 +301,7 @@ export default function DocumentPage() {
           </Card>
         </TabsContent>
       </Tabs>
-      <div className="w-full bg-red-300">
+      <div className="w-full">
         <DocsCard />
         <ResourceTable />
       </div>
