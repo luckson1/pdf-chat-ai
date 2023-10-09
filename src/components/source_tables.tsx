@@ -159,10 +159,10 @@ export const columns: ColumnDef<Docs>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: "name",
+    accessorKey: "id",
+    header: "id",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("name")}</div>
+      <div className="capitalize">{row.getValue("id")}</div>
     ),
   },
   {
@@ -173,7 +173,7 @@ export const columns: ColumnDef<Docs>[] = [
                   <Link
                     className={buttonVariants({
                       variant: "link",
-                      className: "truncate",
+                      className: "truncate max-w-20",
                     })}
                 
                     href={{
@@ -181,7 +181,7 @@ export const columns: ColumnDef<Docs>[] = [
                       query: { id: row.getValue('id') },
                     }}
                   >
-                    {row.getValue('name')}
+                    {row.getValue('id')}
                   </Link>
                 </ToolTipComponent>
     ),
