@@ -215,12 +215,12 @@ export default function DocumentPage() {
     }
   };
 
-  const importIcons=[
-    {name:"Notion", icon: NotionLogoIcon},
-    {name:"Google Drive", icon: Icons.googleDrive},
-    {name:"Confluence", icon: Icons.confluence},
-    {name:"One Drive", icon: Icons.oneDrove}
-  ]
+  const importIcons = [
+    { name: "Notion", icon: NotionLogoIcon },
+    { name: "Google Drive", icon: Icons.googleDrive },
+    { name: "Confluence", icon: Icons.confluence },
+    { name: "One Drive", icon: Icons.oneDrove },
+  ];
 
   return (
     <div className="w-full h-fit flex flex-col space-x-0  space-y-5 justify-center items-center ">
@@ -250,26 +250,26 @@ export default function DocumentPage() {
                   setIsUploading={setIsUploading}
                   isUploading={isUploading}
                 />
-               <div className="relative md:hidden blocl">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background text-muted-foreground px-2">
-          Or
-          </span>
-        </div>
-      </div>
-      <div className=" relative  w-10 hidden md:block">
-    <div className="h-full flex justify-center">
-        <span className="h-full border-l " />
-    </div>
-    <div className=" flex items-center justify-center h-full text-xs uppercase absolute inset-0">
-        <span className="bg-background text-muted-foreground px-2 absolute ">
-            Or
-        </span>
-    </div>
-</div>
+                <div className="relative md:hidden blocl">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background text-muted-foreground px-2">
+                      Or
+                    </span>
+                  </div>
+                </div>
+                <div className=" relative  w-10 hidden md:block">
+                  <div className="h-full flex justify-center">
+                    <span className="h-full border-l " />
+                  </div>
+                  <div className=" flex items-center justify-center h-full text-xs uppercase absolute inset-0">
+                    <span className="bg-background text-muted-foreground px-2 absolute ">
+                      Or
+                    </span>
+                  </div>
+                </div>
 
                 <Webform />
               </div>
@@ -279,19 +279,24 @@ export default function DocumentPage() {
         <TabsContent value="audio">
           <Card className="w-full max-w-3xl">
             <CardHeader>
-              <CardTitle>Connect with resources from other apps, soon...</CardTitle>
+              <CardTitle>
+                Connect with resources from other apps, soon...
+              </CardTitle>
               <CardDescription>Cooming soon...</CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-3">
-         
-            {importIcons.map(icon=> (
-              <div className={buttonVariants({
-                variant: "secondary",
-                className: 'flex flex-row justify-between items-center w-full'
-              })} key={icon.name}>
-<icon.icon className=" w-5 h-5"/> {icon.name}
-              </div>
-            ))}
+              {importIcons.map((icon) => (
+                <div
+                  className={buttonVariants({
+                    variant: "secondary",
+                    className:
+                      "flex flex-row justify-between items-center w-full",
+                  })}
+                  key={icon.name}
+                >
+                  <icon.icon className=" w-5 h-5" /> {icon.name}
+                </div>
+              ))}
             </CardContent>
           </Card>
         </TabsContent>
