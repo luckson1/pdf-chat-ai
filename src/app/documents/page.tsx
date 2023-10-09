@@ -1,51 +1,30 @@
 "use client";
 import Dropzone from "@/components/Dropezone";
-import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { api } from "../api/_trpc/client";
-import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { z } from "zod";
-import { Icons } from "@/components/Icons";
-import { ChevronLeft, ChevronRight, Files, PenIcon, Trash2 } from "lucide-react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ChatBubbleIcon } from "@radix-ui/react-icons";
+
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import ToolTipComponent from "@/components/tooltip_component";
+import DocsCard from "@/components/docs_card";
+import ResourceTable from "@/components/source_tables";
+
 
 export default function DocumentPage() {
   const [docs, setDocs] = useState<File[]>([]);
   const [audio, setAudio] = useState<File[]>([]);
   const [isUploading, setIsUploading] = useState(false);
-  const [page, setPage] = useState(1);
-  const itemsPerPage = 10;
+
   const sizeLimit = 4000000;
   const { toast } = useToast();
   const session = useSession();
@@ -112,30 +91,7 @@ try {
       }
     },
   });
-  const { mutate: del } = api.documents.deleteOne.useMutation({
-    onSuccess: () => {
-      ctx.documents.getAll.invalidate();
-    },
-    onError: () => {
-      toast({
-        description: "Something went wrong",
-        variant: "destructive",
-        action: <ToastAction altText="Try again">Try Again</ToastAction>,
-      });
-    },
-  });
-  const { mutate: rename } = api.documents.changeName.useMutation({
-    onSuccess: () => {
-      ctx.documents.getAll.invalidate();
-    },
-    onError: () => {
-      toast({
-        description: "Something went wrong",
-        variant: "destructive",
-        action: <ToastAction altText="Try again">Try Again</ToastAction>,
-      });
-    },
-  });
+
 
   const { mutate: getTranscription, data: transcription } =
     api.documents.getTranscription.useMutation({
@@ -276,40 +232,7 @@ try {
     }
   };
 
-  const {
-    data: docsData,
-    isLoading,
-    isPreviousData,
-  } = api.documents.getAll.useQuery(
-    {
-      skip: (page - 1) * itemsPerPage,
-      take: itemsPerPage,
-    },
-    { keepPreviousData: true }
-  );
-  const hasMore = docsData && docsData?.length < itemsPerPage;
 
-  useEffect(() => {
-    if (!isPreviousData && hasMore) {
-      ctx.documents.getAll.prefetch({
-        skip: (page - 1) * itemsPerPage,
-        take: itemsPerPage,
-      });
-    }
-  }, [isPreviousData, page, hasMore]);
-  const NameSchema = z.object({
-    name: z.string(),
-  });
-
-  type TNameSchema = z.infer<typeof NameSchema>;
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue
-  } = useForm<TNameSchema>({
-    resolver: zodResolver(NameSchema),
-  });
 
   return (
     <div className="w-full h-fit flex flex-col md:flex-row space-x-0 md:space-x-10 space-y-5 md:space-y-0">
@@ -366,184 +289,10 @@ try {
           </Card>
         </TabsContent>
       </Tabs>
-      <div className="w-full flex flex-col space-y-5">
-        {isLoading && (
-          <div className=" w-full max-w-4xl grid grid-row lg:grid-cols-2 gap-2">
-            {Array.from({ length: itemsPerPage })
-              .fill(0)
-              .map((_, index) => (
-                <Skeleton
-                  className="w-full max-w-sm h-32 overflow-hidden"
-                  key={index}
-                />
-              ))}
-          </div>
-        )}
-        {(!docsData || docsData.length <= 0) && !isLoading  ? (
-          <Card className="w-full max-w-sm h-32">
-            <CardHeader>No Documents</CardHeader>
-          </Card>
-        ) : docsData && !isLoading ? (
-          <div className="w-full max-w-4xl grid grid-row lg:grid-cols-2 gap-2">
-            {docsData.map((doc) => (
-              <Card
-                className="w-full max-w-sm h-auto overflow-hidden"
-                key={doc.id}
-              >
-                <CardHeader className="underline flex flex-row justify-between items-center w-full">
-                  <CardTitle className="w-4/6 truncate">
-                    <ToolTipComponent content="Name of the document">
-                      <Link
-                        className={buttonVariants({
-                          variant: "link",
-                          className: "truncate",
-                        })}
-                    
-                        href={{
-                          pathname: "/documents/[id]",
-                          query: { id: doc.id },
-                        }}
-                      >
-                        {doc.name}
-                      </Link>
-                    </ToolTipComponent>
-                  </CardTitle>
-                  <div className=" flex flex-row justify-between items-center w-1/6">
-                  <ToolTipComponent content="Edit name of document">
-                    <AlertDialog>
-                      <AlertDialogTrigger>
-                        <PenIcon className="w-5 h-5 text-primary" onClick={()=>setValue('name', doc.name)}/>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Edit Name</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Change the name of the file. Click save when you are
-                            done.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <form
-                          className="grid gap-4 py-4"
-                          onSubmit={handleSubmit((data) =>
-                            rename({ id: doc.id, name: data.name })
-                          )}
-                        >
-                          <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="name" className="text-right">
-                              Name
-                            </Label>
-                            <Input
-                              id="name"
-                              {...register("name")}
-                              defaultValue={doc.name}
-                              className="col-span-3"
-                            />
-                          </div>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel type="button">
-                              Cancel
-                            </AlertDialogCancel>
-                            <AlertDialogAction type="submit">
-                              Save
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </form>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </ToolTipComponent>
-                  <ToolTipComponent content="Delete document">
-                    <AlertDialog>
-                      <AlertDialogTrigger>
-                        <Trash2 className="w-5 h-5 text-destructive" />
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Are you sure you want to delete the document?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This action cannot be undone. This will permanently
-                            delete the file.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={(e) => {
-                              del({ id: doc.id });
-                            }}
-                            className="bg-destructive hover:bg-destructive/10"
-                          >
-                            Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </ToolTipComponent>
-                  </div>
-              
-                </CardHeader>
-
-                <CardFooter className="flex flex-row justify-between items-center">
-                  <ToolTipComponent content="Document's number of chats">
-                    <Link
-                      className="flex flex-row space-x-1 items-start"
-                      key={doc.id}
-                      href={{
-                        pathname: "/documents/[id]",
-                        query: { id: doc.id },
-                      }}
-                    >
-                      <ChatBubbleIcon className="w-5 h-5" />
-                      <p className="text-xs font-extralight">
-                        {doc.Message.length}
-                      </p>
-                    </Link>
-                  </ToolTipComponent>
-                  <ToolTipComponent content="Click to start chatting with this document">
-                    <Link
-                      href={{
-                        pathname: "/documents/[id]",
-                        query: { id: doc.id },
-                      }}
-                      className={buttonVariants({
-                        className: "w-fit",
-                        variant: "secondary",
-                        size: "sm",
-                      })}
-                    >
-                      Open
-                      <ChevronRight className="h-5 w-5 ml-1.5" />
-                    </Link>
-                  </ToolTipComponent>
-                
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        ) : null}
-        <div className="flex flex-row w-full justify-center items-center text-sm space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setPage((p) => p - 1)}
-            disabled={page === 1}
-          >
-            <ChevronLeft className="w-8 h-8" />
-          </Button>
-
-          <span>Page {page}</span>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setPage((p) => p + 1)}
-            disabled={hasMore}
-          >
-            <ChevronRight className="w-8 h-8" />
-          </Button>
-        </div>
-      </div>
+     <div className="w-full">
+<DocsCard />
+<ResourceTable />
+     </div>
     </div>
   );
 }
