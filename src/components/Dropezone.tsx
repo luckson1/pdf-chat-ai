@@ -168,12 +168,12 @@ await  handleSubmit(acceptedFiles)
     
         <div
           {...getRootProps({ className: "dropzone" })}
-          className='border h-32  border-dashed border-foreground/60 rounded-lg   md:w-full md:max-w-xs'>
+          className='border h-40  border-dashed border-foreground/60 rounded-lg   md:w-full md:max-w-xs'>
           <div className='flex items-center justify-center h-full w-full'>
             <label
               htmlFor='dropzone-file'
               className='flex flex-col items-center justify-center w-full h-full rounded-lg cursor-pointer bg-secondary/70 hover:bg-secondary p-2'>
-              <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+              <div className='flex flex-col items-center justify-center pb-2 pt-2'>
                 <Cloud className='h-6 w-6 text-foreground/60 mb-2' />
                 <p className='mb-2 text-sm text-foreground/80'>
                   <span className='font-semibold'>

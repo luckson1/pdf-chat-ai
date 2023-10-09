@@ -128,8 +128,6 @@ export default function DocumentPage() {
     },
   });
 
-
-
   const transcribe = async (key: string) => {
     try {
       setIsUploading(true);
@@ -199,11 +197,11 @@ export default function DocumentPage() {
 
         return;
       } else {
-        const type=data.type
-        const isAudio=type.startsWith('audio/')
-        const isVideo=type.startsWith('video/')
-        const isMultimedia=isAudio || isVideo
-        isMultimedia?   transcribe(data.key) : addDoc(data);
+        const type = data.type;
+        const isAudio = type.startsWith("audio/");
+        const isVideo = type.startsWith("video/");
+        const isMultimedia = isAudio || isVideo;
+        isMultimedia ? transcribe(data.key) : addDoc(data);
       }
     } catch (error) {
       toast({
@@ -213,7 +211,6 @@ export default function DocumentPage() {
       });
     }
   };
-
 
   return (
     <div className="w-full h-fit flex flex-col space-x-0  space-y-5 justify-center items-center ">
@@ -226,39 +223,54 @@ export default function DocumentPage() {
         <TabsContent value="docs">
           <Card className="w-full max-w-3xl h-auto ">
             <CardHeader>
-              <CardTitle>Add a source by uploading a file or providing a link</CardTitle>
+              <CardTitle>
+                Add a source by uploading a file or providing a link
+              </CardTitle>
               <CardDescription>
-                Supported file: pdfs, slides, excel, csv,
-                audio/video files (mp3 & mp4)
+                Supported file: pdfs, office(word, slides, excel) audio, and
+                video files.
               </CardDescription>
             </CardHeader>
-            <CardContent >
+            <CardContent>
               <div className="flex w-full flex-col md:flex-row md:space-x-5 space-x-0 space-y-5 md:space-y-0">
-              <Dropzone
-                files={docFiles}
-                setFiles={setDocFiles}
-                handleSubmit={handleSubmit}
-                setIsUploading={setIsUploading}
-                isUploading={isUploading}
-              />
-               <Separator orientation="vertical" className="hidden md:block"/>
-               <Separator orientation='horizontal' className="md:hidden block"/>
-           
-            
-             <Webform />
+                <Dropzone
+                  files={docFiles}
+                  setFiles={setDocFiles}
+                  handleSubmit={handleSubmit}
+                  setIsUploading={setIsUploading}
+                  isUploading={isUploading}
+                />
+               <div className="relative md:hidden blocl">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-background text-muted-foreground px-2">
+          Or
+          </span>
+        </div>
+      </div>
+      <div className=" relative  w-10 hidden md:block">
+    <div className="h-full flex justify-center">
+        <span className="h-full border-l " />
+    </div>
+    <div className=" flex items-center justify-center h-full text-xs uppercase absolute inset-0">
+        <span className="bg-background text-muted-foreground px-2 absolute ">
+            Or
+        </span>
+    </div>
+</div>
+
+                <Webform />
               </div>
-           
-  
-               </CardContent>
+            </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="audio">
-          <Card  className="w-full max-w-3xl">
+          <Card className="w-full max-w-3xl">
             <CardHeader>
               <CardTitle>Connect and import from other apps</CardTitle>
-              <CardDescription>
-             Import your notes and files
-              </CardDescription>
+              <CardDescription>Import your notes and files</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col space-y-5 py-5">
               {/* <Dropzone
@@ -276,8 +288,8 @@ export default function DocumentPage() {
         </TabsContent>
       </Tabs>
       <div className="w-full bg-red-300">
-        {/* <DocsCard />
-        <ResourceTable /> */}
+        <DocsCard />
+        <ResourceTable />
       </div>
     </div>
   );
