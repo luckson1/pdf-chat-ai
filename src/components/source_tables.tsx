@@ -177,11 +177,6 @@ export const columns: ColumnDef<Doc>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "id",
-    header: "id",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("id")}</div>,
-  },
-  {
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => (
