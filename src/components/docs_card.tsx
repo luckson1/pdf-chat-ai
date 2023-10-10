@@ -102,7 +102,7 @@ export default function DocsCard() {
         <div className="w-full max-w-4xl grid grid-cols-1 gap-y-2 h-auto">
           {docsData.map((doc) => (
             <div
-              className="w-full p-2 h-auto overflow-hidden flex flex-col space-y-1 place-items-center"
+              className="w-full p-1 h-auto overflow-hidden flex flex-col space-y-0.5 place-items-center"
               key={doc.id}
             >
               <div className="flex flex-row justify-between items-center w-full">
@@ -115,12 +115,12 @@ export default function DocsCard() {
                         query: { id: doc.id },
                       }}
                     >
-                         <CardTitle className="w-4/6 truncate"></CardTitle>
-                      {doc.name}
+                         <CardTitle className="w-4/6 truncate">   {doc.name}</CardTitle>
+                   
                     </Link>
                  
              
-                <CardDescription className=" flex flex-row justify-between items-center w-1/6">
+                <CardDescription className=" w-1/6">
                 {customFormat(new Date(doc.createdAt))}
                 </CardDescription>
               </div>
