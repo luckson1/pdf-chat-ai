@@ -109,10 +109,7 @@ export default function DocsCard() {
              
                 
                     <Link
-                      className={buttonVariants({
-                        variant: "link",
-                        className: "truncate",
-                      })}
+                     
                       href={{
                         pathname: "/documents/[id]",
                         query: { id: doc.id },
