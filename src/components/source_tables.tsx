@@ -51,7 +51,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "./ui/label";
 import ToolTipComponent from "./tooltip_component";
 import Link from "next/link";
-import { ChevronRight, Trash2 } from "lucide-react";
+import { ChevronRight, PenIcon, Trash2 } from "lucide-react";
 
 export type Doc = {
   id: string;
@@ -70,70 +70,80 @@ function customFormat(date: Date): string {
     }
   }
   
-const Actions = ({ row }: { row: Row<Doc> }) => {
-  const doc = row.original;
-  const ctx = api.useContext();
-  const { mutate: del } = api.documents.deleteOne.useMutation({
-    onSuccess: () => {
-      ctx.documents.getAll.invalidate();
-    },
-    onError: () => {
-      toast({
-        description: "Something went wrong",
-        variant: "destructive",
-        action: <ToastAction altText="Try again">Try Again</ToastAction>,
-      });
-    },
-  });
-  const { mutate: rename } = api.documents.changeName.useMutation({
-    onSuccess: () => {
-      ctx.documents.getAll.invalidate();
-    },
-    onError: () => {
-      toast({
-        description: "Something went wrong",
-        variant: "destructive",
-        action: <ToastAction altText="Try again">Try Again</ToastAction>,
-      });
-    },
-  });
-  const NameSchema = z.object({
-    name: z.string(),
-  });
-  type TNameSchema = z.infer<typeof NameSchema>;
-  const {
-    register,
-    handleSubmit,
-    //   formState: { errors },
-    //   setValue
-  } = useForm<TNameSchema>({
-    resolver: zodResolver(NameSchema),
-  });
-  const { toast } = useToast();
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 p-0">
-          <span className="sr-only">Open menu</span>
-          <DotsHorizontalIcon className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem>
+  const Name = ({ row }: { row: Row<Doc> }) => {
+    const doc = row.original;
+    const {id, name}=doc
+    const ctx = api.useContext();
+    const { mutate: del } = api.documents.deleteOne.useMutation({
+      onSuccess: () => {
+        ctx.documents.getAll.invalidate();
+      },
+      onError: () => {
+        toast({
+          description: "Something went wrong",
+          variant: "destructive",
+          action: <ToastAction altText="Try again">Try Again</ToastAction>,
+        });
+      },
+    });
+    const { mutate: rename } = api.documents.changeName.useMutation({
+      onSuccess: () => {
+        ctx.documents.getAll.invalidate();
+      },
+      onError: () => {
+        toast({
+          description: "Something went wrong",
+          variant: "destructive",
+          action: <ToastAction altText="Try again">Try Again</ToastAction>,
+        });
+      },
+    });
+    const NameSchema = z.object({
+      name: z.string(),
+    });
+    type TNameSchema = z.infer<typeof NameSchema>;
+    const {
+      register,
+      handleSubmit,
+      //   formState: { errors },
+      //   setValue
+    } = useForm<TNameSchema>({
+      resolver: zodResolver(NameSchema),
+    });
+    const { toast } = useToast();
+    return (
+      <div className="underline flex flex-row justify-between items-center w-full">
+      <div className="w-4/6 truncate">
+        <ToolTipComponent content="Name of the resource">
+          <Link
+            className={buttonVariants({
+              variant: "link",
+              className: "truncate",
+            })}
+            href={{
+              pathname: "/documents/[id]",
+              query: { id },
+            }}
+          >
+            {name}
+          </Link>
+        </ToolTipComponent>
+      </div>
+      <div className=" flex flex-row justify-between items-center w-1/6">
+        <ToolTipComponent content="Edit name of document">
           <AlertDialogComponent
             form="edit"
             actionText="Rename"
             description="Edit the name of the resource. Click save when done"
             title="Edit Name"
-            trigger="Edit name of Resource"
+            trigger={<PenIcon />}
             action={null}
           >
             <form
               id="edit"
               className="grid gap-4 py-4"
               onSubmit={handleSubmit((data) =>
-                rename({ id: doc.id, name: data.name })
+                rename({ id, name: data.name })
               )}
             >
               <div className="grid grid-cols-4 items-center gap-4">
@@ -143,30 +153,18 @@ const Actions = ({ row }: { row: Row<Doc> }) => {
                 <Input
                   id="name"
                   {...register("name")}
-                  defaultValue={doc.name}
+                  defaultValue={name}
                   className="col-span-3"
                 />
               </div>
             </form>
           </AlertDialogComponent>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-
-        <DropdownMenuItem>
-          <AlertDialogComponent
-            destructive={true}
-            actionText="Delete"
-            description="This action cannot be undone. This will permanently
-                        delete the file."
-            title="Are you sure you want to delete the document?"
-            trigger={<Trash2 className="w-5 h-5 text-destructive" />}
-            action={() => del({ id: doc.id })}
-          />
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};
+        </ToolTipComponent>
+      
+      </div>
+    </div>
+    );
+  };
 export const columns: ColumnDef<Doc>[] = [
   {
     id: "select",
@@ -191,20 +189,7 @@ export const columns: ColumnDef<Doc>[] = [
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => (
-      <ToolTipComponent content="Name of the resource">
-        <Link
-          className={buttonVariants({
-            variant: "link",
-            className: "truncate max-w-20",
-          })}
-          href={{
-            pathname: "/documents/[id]",
-            query: { id: row.getValue("id") },
-          }}
-        >
-          {row.getValue("name")}
-        </Link>
-      </ToolTipComponent>
+      <Name row={row} />
     ),
   },
   {
@@ -265,13 +250,6 @@ export const columns: ColumnDef<Doc>[] = [
     ),
   },
 
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      return <Actions row={row} />;
-    },
-  },
 ];
 
 export function DataTable({ data }: { data: Doc[] }) {
