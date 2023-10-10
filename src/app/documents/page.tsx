@@ -218,8 +218,10 @@ export default function DocumentPage() {
   const importIcons = [
     { name: "Notion", icon: NotionLogoIcon },
     { name: "Google Drive", icon: Icons.googleDrive },
-    { name: "Confluence", icon: Icons.confluence },
     { name: "One Drive", icon: Icons.oneDrove },
+    {name: "Zoom", icons: Icons.zoom},
+    {name: "Google Meet", icons: Icons.googleMeet},
+    {name: "Teams", icons: Icons.teams}
   ];
 
   return (
