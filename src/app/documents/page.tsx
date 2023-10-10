@@ -228,7 +228,7 @@ export default function DocumentPage() {
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="docs">Add resource</TabsTrigger>
 
-          <TabsTrigger value="audio">Connect popular apps</TabsTrigger>
+          <TabsTrigger value="audio">Connect data providers</TabsTrigger>
         </TabsList>
         <TabsContent value="docs">
           <Card className="w-full max-w-3xl h-auto ">

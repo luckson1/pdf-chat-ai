@@ -4,7 +4,7 @@ import {
   ChevronDownIcon,
   DotsHorizontalIcon,
 } from "@radix-ui/react-icons";
-import { format } from "date-fns";
+import { differenceInHours, format } from "date-fns";
 import {
   flexRender,
   getCoreRowModel,
@@ -59,6 +59,17 @@ export type Doc = {
   createdAt: Date;
   messages: number;
 };
+
+function customFormat(date: Date): string {
+    const now = new Date();
+  
+    if (differenceInHours(now, date) < 24) {
+      return format(date, 'ha').toLowerCase(); // e.g., "9am"
+    } else {
+      return format(date, 'd MMM'); // e.g., "9 Oct"
+    }
+  }
+  
 const Actions = ({ row }: { row: Row<Doc> }) => {
   const doc = row.original;
   const ctx = api.useContext();
@@ -203,7 +214,7 @@ export const columns: ColumnDef<Doc>[] = [
     },
     cell: ({ row }) => (
       <div className="lowercase">
-        {format(new Date(row.getValue("createdAt")), "MM/dd/yyyy")}
+        {customFormat(new Date(row.getValue("createdAt")))}
       </div>
     ),
   },
