@@ -14,9 +14,7 @@ export const env = createEnv({
     PINECONE_API_KEY: z.string().trim().min(1),
     PINECONE_ENVIRONMENT: z.string().trim().min(1),
     PINECONE_INDEX_NAME: z.string().trim().min(1),
-    INDEX_INIT_TIMEOUT: z.coerce.number().min(1),
     DATABASE_URL: z.string().url(),
-    NODE_ENV: z.enum(["development", "test", "production"]),
     NEXTAUTH_SECRET:
       process.env.NODE_ENV === "production"
         ? z.string().min(1)
@@ -60,9 +58,7 @@ UPSTASH_REDIS_REST_TOKEN:  z.string()
     PINECONE_API_KEY: process.env.PINECONE_API_KEY,
     PINECONE_ENVIRONMENT: process.env. PINECONE_ENVIRONMENT, 
     PINECONE_INDEX_NAME: process.env. PINECONE_INDEX_NAME,
-    INDEX_INIT_TIMEOUT: process.env. INDEX_INIT_TIMEOUT,
     DATABASE_URL: process.env. DATABASE_URL,
-    NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
