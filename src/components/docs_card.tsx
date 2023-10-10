@@ -4,7 +4,7 @@ import { api } from "@/app/api/_trpc/client";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Card, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import ToolTipComponent from "./tooltip_component";
 import Link from "next/link";
 import { Button, buttonVariants } from "./ui/button";
@@ -16,6 +16,7 @@ import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import { ToastAction } from "./ui/toast";
 import { useToast } from "./ui/use-toast";
 import AlertDialogComponent from "./alert_dialog_component";
+import { customFormat } from "@/lib/utils";
 
 export default function DocsCard() {
   const [page, setPage] = useState(1);
@@ -82,31 +83,31 @@ export default function DocsCard() {
   return (
     <div className="w-full flex flex-col space-y-5 md:hidden">
       {isLoading && (
-        <div className=" w-full max-w-4xl grid grid-row lg:grid-cols-2 gap-2">
+        <div className=" w-full max-w-4xl grid grid-col gap-y-4">
           {Array.from({ length: itemsPerPage })
             .fill(0)
             .map((_, index) => (
               <Skeleton
-                className="w-full max-w-sm h-32 overflow-hidden"
+                className="w-full max-w-sm h-20 overflow-hidden"
                 key={index}
               />
             ))}
         </div>
       )}
       {(!docsData || docsData.length <= 0) && !isLoading ? (
-        <Card className="w-full max-w-sm h-32">
-          <CardHeader>No Documents</CardHeader>
+        <Card className="w-full max-w-sm h-20">
+          <CardHeader>No Documents Found</CardHeader>
         </Card>
       ) : docsData && !isLoading ? (
-        <div className="w-full max-w-4xl grid grid-row lg:grid-cols-2 gap-2">
+        <div className="w-full max-w-4xl grid grid-cols-1 gap-y-4 h-auto">
           {docsData.map((doc) => (
-            <Card
-              className="w-full max-w-sm h-auto overflow-hidden"
+            <div
+              className="w-full max-w-sm h-auto overflow-hidden flex flex-col space-y-2 place-items-center"
               key={doc.id}
             >
-              <CardHeader className="underline flex flex-row justify-between items-center w-full">
-                <CardTitle className="w-4/6 truncate">
-                  <ToolTipComponent content="Name of the resource">
+              <div className="flex flex-row justify-between items-center w-full">
+             
+                
                     <Link
                       className={buttonVariants({
                         variant: "link",
@@ -117,71 +118,17 @@ export default function DocsCard() {
                         query: { id: doc.id },
                       }}
                     >
+                         <CardTitle className="w-4/6 truncate"></CardTitle>
                       {doc.name}
                     </Link>
-                  </ToolTipComponent>
-                </CardTitle>
-                <div className=" flex flex-row justify-between items-center w-1/6">
-                  <ToolTipComponent content="Edit name of document">
-                    <AlertDialogComponent
-                      form="edit"
-                      actionText="Rename"
-                      description="Edit the name of the resource. Click save when done"
-                      title="Edit Name"
-                      trigger={<PenIcon />}
-                      action={null}
-                    >
-                      <form
-                        id="edit"
-                        className="grid gap-4 py-4"
-                        onSubmit={handleSubmit((data) =>
-                          rename({ id: doc.id, name: data.name })
-                        )}
-                      >
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="name" className="text-right">
-                            Name
-                          </Label>
-                          <Input
-                            id="name"
-                            {...register("name")}
-                            defaultValue={doc.name}
-                            className="col-span-3"
-                          />
-                        </div>
-                      </form>
-                    </AlertDialogComponent>
-                  </ToolTipComponent>
-                  <ToolTipComponent content="Delete document">
-                    <AlertDialogComponent
-                      description="This action cannot be undone. This will permanently
-                        delete the file."
-                      destructive={true}
-                      actionText="Delete"
-                      title="Are you sure you want to delete the document?"
-                      trigger={<Trash2 className="w-5 h-5 text-destructive" />}
-                      action={() => del({ id: doc.id })}
-                    />
-                  </ToolTipComponent>
-                </div>
-              </CardHeader>
+                 
+             
+                <CardDescription className=" flex flex-row justify-between items-center w-1/6">
+                {customFormat(new Date(doc.createdAt))}
+                </CardDescription>
+              </div>
 
-              <CardFooter className="flex flex-row justify-between items-center">
-                <ToolTipComponent content="Document's number of chats">
-                  <Link
-                    className="flex flex-row space-x-1 items-start"
-                    key={doc.id}
-                    href={{
-                      pathname: "/documents/[id]",
-                      query: { id: doc.id },
-                    }}
-                  >
-                    <ChatBubbleIcon className="w-5 h-5" />
-                    <p className="text-xs font-extralight">
-                      {doc.Message.length}
-                    </p>
-                  </Link>
-                </ToolTipComponent>
+              <div className="flex flex-row justify-end items-center w-full">
                 <ToolTipComponent content="Click to start chatting with this document">
                   <Link
                     href={{
@@ -190,16 +137,16 @@ export default function DocsCard() {
                     }}
                     className={buttonVariants({
                       className: "w-fit",
-                      variant: "secondary",
+                      variant: 'link',
                       size: "sm",
                     })}
                   >
-                    Open
+                    Chat
                     <ChevronRight className="h-5 w-5 ml-1.5" />
                   </Link>
                 </ToolTipComponent>
-              </CardFooter>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
       ) : null}

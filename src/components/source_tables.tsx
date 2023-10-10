@@ -52,6 +52,7 @@ import { Label } from "./ui/label";
 import ToolTipComponent from "./tooltip_component";
 import Link from "next/link";
 import { ChevronRight, PenIcon, Trash2 } from "lucide-react";
+import { customFormat } from "@/lib/utils";
 
 export type Doc = {
   id: string;
@@ -60,15 +61,7 @@ export type Doc = {
   messages: number;
 };
 
-function customFormat(date: Date): string {
-    const now = new Date();
-  
-    if (differenceInHours(now, date) < 24) {
-      return format(date, 'ha').toLowerCase(); // e.g., "9am"
-    } else {
-      return format(date, 'd MMM'); // e.g., "9 Oct"
-    }
-  }
+
   
   const Name = ({ row }: { row: Row<Doc> }) => {
     const doc = row.original;
@@ -136,7 +129,7 @@ function customFormat(date: Date): string {
             actionText="Rename"
             description="Edit the name of the resource. Click save when done"
             title="Edit Name"
-            trigger={<PenIcon className="w-4 h-4 text-secondary"/>}
+            trigger={<PenIcon className="w-4 h-4 text-primary"/>}
             action={null}
           >
             <form

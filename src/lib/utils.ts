@@ -4,6 +4,7 @@ import { type ClassValue, clsx } from "clsx";
 import { Metadata } from "next";
 import { twMerge } from "tailwind-merge";
 import { siteConfig } from "./config";
+import { differenceInHours, format } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -118,5 +119,15 @@ export function constructMetadata({
         follow: false
       }
     })
+  }
+}
+
+export function customFormat(date: Date): string {
+  const now = new Date();
+
+  if (differenceInHours(now, date) < 24) {
+    return format(date, 'ha').toLowerCase(); // e.g., "9am"
+  } else {
+    return format(date, 'd MMM'); // e.g., "9 Oct"
   }
 }
