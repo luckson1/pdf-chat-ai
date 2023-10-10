@@ -203,29 +203,7 @@ export const columns: ColumnDef<Doc>[] = [
       </div>
     ),
   },
-  {
-    accessorKey: "messages",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Chats" />;
-    },
-    cell: ({ row }) => (
-      <ToolTipComponent content="Document's number of chats">
-        <Link
-          className={buttonVariants({
-            variant: "link",
-            className: "truncate",
-          })}
-          href={{
-            pathname: "/documents/[id]",
-            query: { id: row.getValue("id") },
-          }}
-        >
-          <ChatBubbleIcon className="w-5 h-5" />
-          <p className="text-xs font-extralight">{row.getValue("messages")}</p>
-        </Link>
-      </ToolTipComponent>
-    ),
-  },
+
 
   {
     accessorKey: "open",
@@ -235,7 +213,7 @@ export const columns: ColumnDef<Doc>[] = [
         <Link
           href={{
             pathname: "/documents/[id]",
-            query: { id: row.getValue("id") },
+            query: { id: row.original.id },
           }}
           className={buttonVariants({
             className: "w-fit",
