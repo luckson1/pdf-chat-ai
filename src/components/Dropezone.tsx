@@ -146,7 +146,8 @@ const Dropzone=({files, setFiles, handleSubmit, isUploading, setIsUploading }: {
 
     return interval
   }
-    const { getRootProps, getInputProps, isDragActive  } = useDropzone({
+    const { getRootProps, getInputProps, isDragActive , open } = useDropzone({
+      noClick:true,
       maxFiles: 1,
       accept:docFiles,
       onDrop: async (acceptedFiles) => {
@@ -167,8 +168,11 @@ await  handleSubmit(acceptedFiles)
 
     
         <div
+        
           {...getRootProps({ className: "dropzone" })}
+          onClick={open} 
           className='border h-40  border-dashed border-foreground/60 rounded-lg   md:w-full md:max-w-xs'>
+             
           <div className='flex items-center justify-center h-full w-full'>
             <label
               htmlFor='dropzone-file'
