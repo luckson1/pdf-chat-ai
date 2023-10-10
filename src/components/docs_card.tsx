@@ -111,12 +111,12 @@ export default function DocsCard() {
                         query: { id: doc.id },
                       }}
                     >
-                         <CardTitle className="w-4/6 truncate">   {doc.name}</CardTitle>
+                         <p className="w-4/6 truncate text-sm font-semibold">   {doc.name}</p>
                    
                     </Link>
                  
              
-                <CardDescription className=" w-1/6">
+                <CardDescription className=" w-1/6 text-xs">
                 {customFormat(new Date(doc.createdAt))}
                 </CardDescription>
               </div>
@@ -125,6 +125,7 @@ export default function DocsCard() {
                 <div className="w-1/2">
 
                 </div>
+                <CardDescription className=" w-1/6">
                 <ToolTipComponent content="Click to start chatting with this document">
                   <Link
                     href={{
@@ -138,9 +139,10 @@ export default function DocsCard() {
                     })}
                   >
                     Chat
-                    <ChevronRight className="h-5 w-5 ml-1.5" />
+                    <ChevronRight className="h-4 w-4" />
                   </Link>
                 </ToolTipComponent>
+                </CardDescription>
               </div>
             </div>
           ))}
