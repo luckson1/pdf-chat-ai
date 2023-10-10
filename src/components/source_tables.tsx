@@ -112,7 +112,7 @@ function customFormat(date: Date): string {
     });
     const { toast } = useToast();
     return (
-      <div className="underline flex flex-row justify-between items-center w-full">
+      <div className="underline flex flex-row justify-between items-center w-auto max-w-xs">
       <div className="w-4/6 truncate">
         <ToolTipComponent content="Name of the resource">
           <Link
@@ -136,7 +136,7 @@ function customFormat(date: Date): string {
             actionText="Rename"
             description="Edit the name of the resource. Click save when done"
             title="Edit Name"
-            trigger={<PenIcon />}
+            trigger={<PenIcon className="w-4 h-4 text-secondary"/>}
             action={null}
           >
             <form
