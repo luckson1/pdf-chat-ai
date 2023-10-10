@@ -83,26 +83,26 @@ export default function DocsCard() {
   return (
     <div className="w-full flex flex-col space-y-5 md:hidden">
       {isLoading && (
-        <div className=" w-full max-w-4xl grid grid-col gap-y-4">
+        <div className=" w-full max-w-4xl grid grid-col gap-y-2">
           {Array.from({ length: itemsPerPage })
             .fill(0)
             .map((_, index) => (
               <Skeleton
-                className="w-full max-w-sm h-20 overflow-hidden"
+                className="w-full p-2 h-20 overflow-hidden"
                 key={index}
               />
             ))}
         </div>
       )}
       {(!docsData || docsData.length <= 0) && !isLoading ? (
-        <Card className="w-full max-w-sm h-20">
+        <Card className="w-full p-2 h-20">
           <CardHeader>No Documents Found</CardHeader>
         </Card>
       ) : docsData && !isLoading ? (
-        <div className="w-full max-w-4xl grid grid-cols-1 gap-y-4 h-auto">
+        <div className="w-full max-w-4xl grid grid-cols-1 gap-y-2 h-auto">
           {docsData.map((doc) => (
             <div
-              className="w-full max-w-sm h-auto overflow-hidden flex flex-col space-y-2 place-items-center"
+              className="w-full p-2 h-auto overflow-hidden flex flex-col space-y-1 place-items-center"
               key={doc.id}
             >
               <div className="flex flex-row justify-between items-center w-full">
