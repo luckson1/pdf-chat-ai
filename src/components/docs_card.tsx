@@ -125,7 +125,10 @@ export default function DocsCard() {
                 </CardDescription>
               </div>
 
-              <div className="flex flex-row justify-end items-center w-full">
+              <div className="flex flex-row justify-between items-center w-full">
+                <div className="w-1/2">
+
+                </div>
                 <ToolTipComponent content="Click to start chatting with this document">
                   <Link
                     href={{
