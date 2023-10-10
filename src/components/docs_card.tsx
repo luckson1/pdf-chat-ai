@@ -4,18 +4,14 @@ import { api } from "@/app/api/_trpc/client";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardDescription,CardHeader, CardTitle } from "./ui/card";
 import ToolTipComponent from "./tooltip_component";
 import Link from "next/link";
 import { Button, buttonVariants } from "./ui/button";
 
 import { ChevronLeft, ChevronRight, PenIcon, Trash2 } from "lucide-react";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import { ToastAction } from "./ui/toast";
 import { useToast } from "./ui/use-toast";
-import AlertDialogComponent from "./alert_dialog_component";
 import { customFormat } from "@/lib/utils";
 
 export default function DocsCard() {
