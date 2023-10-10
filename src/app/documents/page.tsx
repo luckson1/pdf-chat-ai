@@ -19,11 +19,9 @@ import { useRouter } from "next/navigation";
 import DocsCard from "@/components/docs_card";
 import ResourceTable from "@/components/source_tables";
 import Webform from "@/components/webform";
-import YouTubeForm from "@/components/youtube_form";
-import { Separator } from "@/components/ui/separator";
+
 import { Icons } from "@/components/Icons";
 import { buttonVariants } from "@/components/ui/button";
-import { NotionLogoIcon } from "@radix-ui/react-icons";
 
 export default function DocumentPage() {
   const [docFiles, setDocFiles] = useState<File[]>([]);
@@ -216,12 +214,12 @@ export default function DocumentPage() {
   };
 
   const importIcons = [
-    { name: "Notion", icon: NotionLogoIcon },
+    { name: "Notion", icon: Icons.notion },
     { name: "Google Drive", icon: Icons.googleDrive },
     { name: "One Drive", icon: Icons.oneDrove },
-    {name: "Zoom", icons: Icons.zoom},
-    {name: "Google Meet", icons: Icons.googleMeet},
-    {name: "Teams", icons: Icons.teams}
+    {name: "Zoom", icon: Icons.zoom},
+    {name: "Google Meet", icon: Icons.googleMeet},
+    {name: "Teams", icon: Icons.teams}
   ];
 
   return (
