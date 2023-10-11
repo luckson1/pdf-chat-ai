@@ -9,6 +9,7 @@ import { EmptyScreen } from "./empty_screen";
 import { useToast } from "./ui/use-toast";
 import { ToastAction } from "./ui/toast";
 import { ChatPanel } from "./chat_panel";
+import { Separator } from "./ui/separator";
 
 export function Chat({ id }: { id: string }) {
   interface ExtendedMsg extends Message {
@@ -99,17 +100,22 @@ export function Chat({ id }: { id: string }) {
   );
   return (
     <div className="rounded-2xl border h-[85vh] flex flex-col justify-between p-3" >
-      <div className="p-3 overflow-auto" ref={containerRef} >
+      <div className="relative mx-auto max-w-2xl px-4 overflow-auto" ref={containerRef} >
         { messages.length<=0 && <EmptyScreen setInput={setInput} id={id}/>}
         {messages.length > 0 &&
           messages.map(({ id, role, content, sources }: ExtendedMsg, index) => (
+            <div key={index}>
+
             <ChatLine
-              key={id}
               role={role}
               content={content}
               // Start from the third message of the assistant
               sources={sources ?? handleGetSources(role, index)}
             />
+               {index < messages.length - 1 && (
+            <Separator className="my-4 md:my-8" />
+          )}
+            </div>
           ))}
           <div className="h-4 w-full"></div>
       </div>

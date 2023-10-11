@@ -1,12 +1,6 @@
-'use client'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+"use client";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 import {
   Accordion,
   AccordionContent,
@@ -14,55 +8,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Message } from "ai/react";
-import { User2Icon } from "lucide-react";
-import { IconOpenAI } from "./ui/icons";
-import { ChatMessage } from "./chat_message";
-
-
-
-import { Button } from '@/components/ui/button'
-import { IconCheck, IconCopy } from '@/components/ui/icons'
-import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
-import { cn } from '@/lib/utils'
-
-interface ChatMessageActionsProps extends React.ComponentProps<'div'> {
-  content: Message['content']
-}
-
-export function ChatMessageActions({
-  content,
-  className,
-  ...props
-}: ChatMessageActionsProps) {
-  const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 })
-
-  const onCopy = () => {
-    if (isCopied) return
-    copyToClipboard(content)
-  }
-
-  return (
-    <div
-      className={cn(
-        'flex items-center justify-end transition-opacity group-hover:opacity-100',
-        className
-      )}
-      {...props}
-    >
-      <Button variant="ghost" size="icon" onClick={onCopy}>
-        {isCopied ? <IconCheck /> : <IconCopy />}
-        <span className="sr-only">Copy message</span>
-      </Button>
-    </div>
-  )
-}
-const convertNewLines = (text: string) =>
-  text.split("\n").map((line, i) => (
-    <span key={i}>
-      {line}
-      <br />
-    </span>
-  ));
+import { ChatMessage, ChatMessageActions } from "./chat_message";
+import { MemoizedReactMarkdown } from "./markdown";
+import { CodeBlock } from "./ui/codeblock";
 
 interface ChatLineProps extends Partial<Message> {
   sources?: string[];
@@ -76,47 +24,72 @@ export function ChatLine({
   if (!content) {
     return null;
   }
-  const formattedMessage = convertNewLines(content);
   return (
-    <div>
-      <Card className="mb-2">
-        <CardHeader className="flex flex-row justify-between items-center">
-        <div
-            className={
-              role != "assistant"
-                ? "text-amber-500 dark:text-amber-200"
-                : "text-blue-500 dark:text-blue-200"
-            }
-          >
-            {role === 'user' ? <User2Icon /> : <IconOpenAI />}
-        
-          </div>
-          <ChatMessageActions content={content}/>
-        </CardHeader>
-        <CardContent className="text-sm">
-        <ChatMessage message={content} />
-        </CardContent>
-        <CardFooter>
-          <CardDescription className="w-full">
-            {sources && sources.length ? (
-              <Accordion type="single" collapsible className="w-full">
-                {sources.map((source, index) => (
-                  <AccordionItem value={`source-${index}`} key={index}>
-                    <AccordionTrigger>{`Source ${index + 1}`}</AccordionTrigger>
-                    <AccordionContent>
-                   
-                      <ChatMessage message={source} />
-                   
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            ) : (
-              <></>
-            )}
-          </CardDescription>
-        </CardFooter>
-      </Card>
+    <div className="flex w-full flex-col space-y-2">
+      <ChatMessage message={content} role={role} />
+
+      {sources && sources.length ? (
+        <Accordion type="single" collapsible className="w-full">
+          {sources.map((source, index) => (
+            <AccordionItem value={`source-${index}`} key={index}>
+              <AccordionTrigger>{`Source ${index + 1}`}</AccordionTrigger>
+              <AccordionContent>
+                <div className="flex-1 px-1  space-y-2 overflow-hidden">
+                  <MemoizedReactMarkdown
+                    className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
+                    remarkPlugins={[remarkGfm, remarkMath]}
+                    components={{
+                      p({ children }) {
+                        return <p className="mb-2 last:mb-0">{children}</p>;
+                      },
+                      code({ node, inline, className, children, ...props }) {
+                        if (children.length) {
+                          if (children[0] == "▍") {
+                            return (
+                              <span className="mt-1 cursor-default animate-pulse">
+                                ▍
+                              </span>
+                            );
+                          }
+
+                          children[0] = (children[0] as string).replace(
+                            "`▍`",
+                            "▍"
+                          );
+                        }
+
+                        const match = /language-(\w+)/.exec(className || "");
+
+                        if (inline) {
+                          return (
+                            <code className={className} {...props}>
+                              {children}
+                            </code>
+                          );
+                        }
+
+                        return (
+                          <CodeBlock
+                            key={Math.random()}
+                            language={(match && match[1]) || ""}
+                            value={String(children).replace(/\n$/, "")}
+                            {...props}
+                          />
+                        );
+                      },
+                    }}
+                  >
+                    {source}
+                  </MemoizedReactMarkdown>
+                  <ChatMessageActions content={source} />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
