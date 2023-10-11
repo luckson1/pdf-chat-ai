@@ -40,7 +40,7 @@ function QuestionsButtonGroup(props: {
           className="h-auto p-0 text-base mb-4 flex flex-row justify-start items-center text-start text-primary"
           onClick={() => props.setInput(question)}
         >
-          <ChatMessage message={question} />
+          <ChatMessage message={question} role='assistant' />
         </Button>
       ))}
     </div>
@@ -107,7 +107,7 @@ export function EmptyScreen({
             className="h-auto p-0 text-base text-primary"
             onClick={() => setInput(summaryMessage.message)}
           >
-            <ChatMessage message={`- ${summaryMessage.heading}`} />
+            <ChatMessage message={`- ${summaryMessage.heading}`} role='assistant'/>
           </Button>
         </div>
         {content && (
