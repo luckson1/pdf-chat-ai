@@ -228,7 +228,7 @@ export default function DocumentPage() {
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="docs">Add resource</TabsTrigger>
 
-          <TabsTrigger value="audio">Connect data providers</TabsTrigger>
+          <TabsTrigger value="audio">Connect providers</TabsTrigger>
         </TabsList>
         <TabsContent value="docs">
           <Card className="w-full max-w-3xl h-auto ">
@@ -256,7 +256,7 @@ export default function DocumentPage() {
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
                     <span className="bg-background text-muted-foreground px-2">
-                      Or
+                      Or Link
                     </span>
                   </div>
                 </div>
@@ -266,7 +266,7 @@ export default function DocumentPage() {
                   </div>
                   <div className=" flex items-center justify-center h-full text-xs uppercase absolute inset-0">
                     <span className="bg-background text-muted-foreground px-2 absolute ">
-                      Or
+                      Or Link
                     </span>
                   </div>
                 </div>
@@ -302,8 +302,8 @@ export default function DocumentPage() {
         </TabsContent>
       </Tabs>
       <div className="w-full">
-        <DocsCard />
-        <ResourceTable />
+        {/* <DocsCard />
+        <ResourceTable /> */}
       </div>
     </div>
   );
