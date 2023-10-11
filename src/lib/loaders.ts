@@ -2,21 +2,22 @@ import { UnstructuredLoader } from "langchain/document_loaders/fs/unstructured";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { S3Loader } from "langchain/document_loaders/web/s3";
 import { PuppeteerWebBaseLoader } from "langchain/document_loaders/web/puppeteer";
-import { PDFLoader } from "langchain/document_loaders/fs/pdf";
+import { WebPDFLoader } from "langchain/document_loaders/web/pdf";
 import { env } from "./env.mjs";
+import { YoutubeLoader } from "langchain/document_loaders/web/youtube";
+
+
+const textSplitter = new RecursiveCharacterTextSplitter({
+  chunkSize: 2000,
+  chunkOverlap: 100,
+});
+
 
 export async function getChunkedDocsFromPDF(blob: Blob, userId:string, id:string) {
   try {
     "got the message"
-    const loader = new PDFLoader(blob);
+    const loader = new WebPDFLoader(blob);
     const chunkedDocs = await loader.loadAndSplit();
-
-    // const textSplitter = new RecursiveCharacterTextSplitter({
-    //   chunkSize: 1000,
-    //   chunkOverlap: 200,
-    // });
-
-    // const chunkedDocs = await textSplitter.splitDocuments(docs);
     for (const doc of chunkedDocs) {
       doc.metadata={...doc.metadata, userId, id}
     }
@@ -40,11 +41,7 @@ export async function getChunkedDocsFromUnstrucuted(path: string, userId:string,
     );
     const docs = await loader.load();
   
-    // From the docs https://www.pinecone.io/learn/chunking-strategies/
-    const textSplitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 1000,
-      chunkOverlap: 200,
-    });
+   
 
     const chunkedDocs = await textSplitter.splitDocuments(docs);
 for (const doc of chunkedDocs) {
@@ -76,10 +73,7 @@ export async function getChunkedDocsFromS3Files(key: string, userId:string, id:s
       unstructuredAPIKey: env.UNSD_KEY
     });
 
-    const textSplitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 1000,
-      chunkOverlap: 200,
-    });
+  
     const docs = await loader.loadAndSplit(textSplitter)
 
     for (const doc of docs) {
@@ -98,10 +92,29 @@ export async function getChunkedDocsFromWeb(path: string, userId:string, id:stri
 
     const docs = await loader.load();
 
-    const textSplitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 1000,
-      chunkOverlap: 200,
+  
+
+    const chunkedDocs = await textSplitter.splitDocuments(docs);
+    for (const doc of chunkedDocs) {
+      doc.metadata={...doc.metadata, userId, id}
+    }
+    return chunkedDocs;
+  } catch (e) {
+    console.error(e);
+    throw new Error("PDF docs chunking failed !");
+  }
+}
+
+export async function getChunkedDocsFromYT(path: string, userId:string, id:string) {
+  try {
+    const loader = YoutubeLoader.createFromUrl(path, {
+      language: "en",
+      addVideoInfo: true,
     });
+
+    const docs = await loader.load();
+
+  
 
     const chunkedDocs = await textSplitter.splitDocuments(docs);
     for (const doc of chunkedDocs) {
