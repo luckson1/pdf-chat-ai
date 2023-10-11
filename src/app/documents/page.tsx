@@ -302,8 +302,8 @@ export default function DocumentPage() {
         </TabsContent>
       </Tabs>
       <div className="w-full">
-        {/* <DocsCard />
-        <ResourceTable /> */}
+        <DocsCard />
+        <ResourceTable />
       </div>
     </div>
   );
