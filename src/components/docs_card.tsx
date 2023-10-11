@@ -4,7 +4,7 @@ import { api } from "@/app/api/_trpc/client";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Card, CardDescription,CardHeader, CardTitle } from "./ui/card";
+import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import ToolTipComponent from "./tooltip_component";
 import Link from "next/link";
 import { Button, buttonVariants } from "./ui/button";
@@ -77,7 +77,7 @@ export default function DocsCard() {
     },
   });
   return (
-    <div className="w-full flex flex-col space-y-5 md:hidden">
+    <div className="w-full flex flex-col md:hidden">
       {isLoading && (
         <div className=" w-full max-w-4xl grid grid-col gap-y-2">
           {Array.from({ length: itemsPerPage })
@@ -95,37 +95,28 @@ export default function DocsCard() {
           <CardHeader>No Documents Found</CardHeader>
         </Card>
       ) : docsData && !isLoading ? (
-        <div className="w-full max-w-4xl grid grid-cols-1 gap-y-2 h-auto">
+        <div className="space-y-8">
           {docsData.map((doc) => (
-            <div
-              className="w-full p-1 h-auto overflow-hidden flex flex-col space-y-0.5 place-items-center"
-              key={doc.id}
-            >
-              <div className="flex flex-row justify-between items-center w-full">
-             
-                
-                    <Link
-                     
-                      href={{
-                        pathname: "/documents/[id]",
-                        query: { id: doc.id },
-                      }}
-                    >
-                         <p className="w-4/6 truncate text-sm font-semibold">   {doc.name}</p>
-                   
-                    </Link>
-                 
-             
-                <CardDescription className=" w-1/6 text-xs">
-                {customFormat(new Date(doc.createdAt))}
-                </CardDescription>
+            <div className="flex items-center" key={doc.id}>
+              <div className="ml-4 space-y-1">
+                <Link
+                  href={{
+                    pathname: "/documents/[id]",
+                    query: { id: doc.id },
+                  }}
+                >
+                  <p className="text-sm font-medium leading-none">
+                    {" "}
+                    {doc.name}
+                  </p>
+                </Link>
+
+                <p className="text-sm text-muted-foreground">
+                  {customFormat(new Date(doc.createdAt))}
+                </p>
               </div>
-
-              <div className="flex flex-row justify-between items-center w-full">
-                <div className="w-1/2">
-
-                </div>
-                <CardDescription className=" w-1/6">
+              <div className="ml-auto font-medium">
+                {" "}
                 <ToolTipComponent content="Click to start chatting with this document">
                   <Link
                     href={{
@@ -134,7 +125,7 @@ export default function DocsCard() {
                     }}
                     className={buttonVariants({
                       className: "w-fit",
-                      variant: 'link',
+                      variant: "link",
                       size: "sm",
                     })}
                   >
@@ -142,7 +133,6 @@ export default function DocsCard() {
                     <ChevronRight className="h-4 w-4" />
                   </Link>
                 </ToolTipComponent>
-                </CardDescription>
               </div>
             </div>
           ))}
