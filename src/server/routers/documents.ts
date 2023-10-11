@@ -143,7 +143,7 @@ export const documentRouter = createTRPCRouter({
               message: "Somethingwent  wrong ",
             });
           }
-          const docs = await getChunkedDocsFromPDF(blob, userId, document.id);
+          const docs = await getChunkedDocsFromPDF(blob, userId, document.id, document.name);
           if (!docs) {
             throw new TRPCError({
               code: "INTERNAL_SERVER_ERROR",
@@ -166,7 +166,8 @@ export const documentRouter = createTRPCRouter({
           const docs = await getChunkedDocsFromS3Files(
             input.key,
             userId,
-            document.id
+            document.id,
+            document.name
           );
           if (!docs) {
             throw new TRPCError({
@@ -295,7 +296,7 @@ export const documentRouter = createTRPCRouter({
           type: "html",
         },
       });
-      const docs = await getChunkedDocsFromWeb(input.url, userId, document.id);
+      const docs = await getChunkedDocsFromWeb(input.url, userId, document.id, document.name);
       await pineconeEmbedAndStore(pineconeClient, docs);
 
       const promptTemplate = `You are an expert in summarizing online articles.
@@ -352,7 +353,7 @@ Total output will be a summary of the online article. SUMMARY: `;
           type: "YT",
         },
       });
-      const docs = await getChunkedDocsFromYT(input.url, userId, document.id);
+      const docs = await getChunkedDocsFromYT(input.url, userId, document.id, document.name);
       await pineconeEmbedAndStore(pineconeClient, docs);
 
       const promptTemplate = `
@@ -419,7 +420,7 @@ Total output will be a summary of thetranscript of a podcast. SUMMARY: `;
           message: "Somethingwent  wrong ",
         });
       }
-      const docs = await getChunkedDocsFromPDF(blob, userId, document.id);
+      const docs = await getChunkedDocsFromPDF(blob, userId, document.id, document.name);
       if (!docs) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
