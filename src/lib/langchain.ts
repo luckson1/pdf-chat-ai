@@ -1,12 +1,12 @@
 import { ConversationalRetrievalQAChain } from "langchain/chains";
-import { getVectorStore } from "./vector-store";
-import { getPineconeClient } from "./pinecone-client";
+
 import {
   StreamingTextResponse,
   experimental_StreamData,
   LangChainStream,
 } from "ai";
 import { ChatOpenAI } from "langchain/chat_models/openai";
+import { PineconeStore } from "langchain/vectorstores/pinecone";
 
 export const streamingModel = new ChatOpenAI({
   modelName: "gpt-3.5-turbo",
@@ -23,8 +23,7 @@ export const nonStreamingModel = new ChatOpenAI({
 type callChainArgs = {
   question: string;
   chatHistory: string;
-   userId:string,
- id:string
+ vectorStore: PineconeStore
 };
  
 // Creates a standalone question from the chat-history and the current question
@@ -44,12 +43,13 @@ If the question is not related to the context, politely respond that you are tun
 
 Question: {question}
 Helpful answer in markdown:`;
-export async function callChain({ question, chatHistory, userId, id }: callChainArgs) {
+
+export async function callChain({ question, chatHistory, vectorStore }: callChainArgs) {
   try {
     // Open AI recommendation
     const sanitizedQuestion = question.trim().replaceAll("\n", " ");
-    const pineconeClient = await getPineconeClient();
- const vectorStore = await getVectorStore(pineconeClient, userId, id);
+
+
     const { stream, handlers } = LangChainStream({
       experimental_streamData: true,
     });

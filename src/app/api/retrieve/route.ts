@@ -18,7 +18,7 @@ import {
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
 import { getPineconeClient } from "@/lib/pinecone-client";
-import { getVectorStore } from "@/lib/vector-store";
+import { getSingleDocVectorStore } from "@/lib/vector-store";
 import { ConversationalRetrievalQAChain } from "langchain/chains";
 
 
@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
     
 
     const pineconeClient = await getPineconeClient();
-    const vectorStore = await getVectorStore(pineconeClient, userId, id);
+    const vectorStore = await getSingleDocVectorStore(pineconeClient, userId, id);
 
     const retriever = vectorStore.asRetriever();
 

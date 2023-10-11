@@ -24,7 +24,7 @@ export async function pineconeEmbedAndStore(
   }
 }
 
-export async function getVectorStore(
+export async function getSingleDocVectorStore(
   client: PineconeClient,
   userId: string,
   id: string
@@ -37,6 +37,47 @@ export async function getVectorStore(
       pineconeIndex: index,
       textKey: "text",
       filter: { userId: { $eq: userId }, id: { $eq: id } },
+    });
+
+    return vectorStore;
+  } catch (error) {
+    console.log("error ", error);
+    throw new Error("Something went wrong while getting vector store !");
+  }
+}
+
+export async function getAllDocsVectorStore(
+  client: PineconeClient,
+  userId: string,
+) {
+  try {
+    const embeddings = new OpenAIEmbeddings();
+    const index = client.Index(env.PINECONE_INDEX_NAME);
+
+    const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
+      pineconeIndex: index,
+      textKey: "text",
+      filter: { userId: { $eq: userId } },
+    });
+
+    return vectorStore;
+  } catch (error) {
+    console.log("error ", error);
+    throw new Error("Something went wrong while getting vector store !");
+  }
+}
+export async function getSharedDocVectorStore(
+  client: PineconeClient,
+  id: string,
+) {
+  try {
+    const embeddings = new OpenAIEmbeddings();
+    const index = client.Index(env.PINECONE_INDEX_NAME);
+
+    const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
+      pineconeIndex: index,
+      textKey: "text",
+      filter: { id: { $eq: id } },
     });
 
     return vectorStore;

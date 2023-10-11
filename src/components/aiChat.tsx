@@ -23,7 +23,7 @@ export function Chat({ id }: { id: string }) {
   });
   const { mutate: saveMessage } = api.messages.create.useMutation();
   const {toast}=useToast()
-  const { messages, input,setInput, handleInputChange, handleSubmit, isLoading, data } =
+  const { messages, input,setInput,  handleSubmit, isLoading, data } =
     useChat({
       initialMessages: savedMessages ?? [],
       body: { id },
@@ -104,7 +104,7 @@ export function Chat({ id }: { id: string }) {
         { messages.length<=0 && <EmptyScreen setInput={setInput} id={id}/>}
         {messages.length > 0 &&
           messages.map(({ id, role, content, sources }: ExtendedMsg, index) => (
-            <div key={index}>
+            <div key={id}>
 
             <ChatLine
               role={role}
