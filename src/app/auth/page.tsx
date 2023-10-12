@@ -22,9 +22,8 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const signInWithGoogle = async () => {
   try {
     setIsLoading(true);
-    const data=await supabase.auth.signInWithOAuth({
+   await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/documents`},
     })
   } catch (error) {
     toast({
