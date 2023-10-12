@@ -31,7 +31,7 @@ import useGetSession from "@/lib/hooks/useGetSession"
       router.push('/auth')
       router.refresh()
     }
-  const {isSessionLoading, session}=useGetSession()
+  const { session, image, name}=useGetSession()
     const router=useRouter()
   const user=session?.user
     return (
@@ -62,14 +62,14 @@ import useGetSession from "@/lib/hooks/useGetSession"
               {user &&  <DropdownMenuItem>
                 <div className="flex items-center text-xs">
         <Avatar className="h-7 w-7">
-          <AvatarImage src={user ?? "/c.jpg"} alt="Avatar" />
-          <AvatarFallback>User</AvatarFallback>
+          <AvatarImage src={image?? "/c.jpg"} alt="Avatar" />
+          <AvatarFallback>U</AvatarFallback>
         </Avatar>
         <div className="ml-4 space-y-1">
-          <p className=" font-medium leading-none">{user?.}</p>
-          <p className=" text-muted-foreground">
-          {user?.email}
-          </p>
+        {name  && <p className=" font-medium leading-none">{name}</p>}
+      { user?.email &&  <p className=" text-muted-foreground">
+          {user.email}
+          </p>}
         </div>
         </div>
                 </DropdownMenuItem>}
