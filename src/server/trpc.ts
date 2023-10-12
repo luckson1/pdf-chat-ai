@@ -8,8 +8,9 @@
  */
 
 import { initTRPC, TRPCError } from "@trpc/server";
+import { type FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 import {
-  createMiddlewareClient ,
+  createMiddlewareClient,
   type User,
 } from "@supabase/auth-helpers-nextjs";
 import superjson from "superjson";
@@ -45,6 +46,7 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     user: opts.user,
     prisma,
+  
   };
 };
 
@@ -54,11 +56,14 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = async ( req:NextRequest, res: NextResponse) => {
-  const supabase = createMiddlewareClient ({ req, res });
+
+export const createTRPCContext = async (opts:  FetchCreateContextFnOptions) => {
+  const res = NextResponse.next()
+  //@ts-expect-error
+  const supabase = createMiddlewareClient({req:opts.req, res});
 // React Native will pass their token through headers,
   // browsers will have the session cookie set
-  const token = req.headers.get("authorization");
+  const token = opts.req.headers.get("authorization");
 
   const user = token
     ? await supabase.auth.getUser(token)
