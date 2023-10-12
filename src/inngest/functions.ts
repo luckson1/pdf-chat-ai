@@ -16,7 +16,7 @@ import { prisma } from "@/server/db";
 import { BufferValue } from "@/components/pdf";
 import { Resend } from "resend";
 import WelcomeEmail from "@/components/welcome_email";
-import { User } from "next-auth";
+import { User } from "@supabase/supabase-js";
 AWS.config.update({
   accessKeyId: env.ACCESS_KEY,
   secretAccessKey: env.SECRET_KEY,
@@ -44,7 +44,7 @@ function sendEmail({
 type s3Prams = {
   data: {
     key: string;
-    userId: string;
+    usersId: string;
     id: string;
     name: string
   };
@@ -52,14 +52,14 @@ type s3Prams = {
 type webPrams = {
   data: {
     url: string;
-    userId: string;
+    usersId: string;
     id: string;
     name: string
   };
 };
 type AudioPrams = {
   data: {
-    userId: string;
+    usersId: string;
     id: string;
     name: string
     Key: string
@@ -73,7 +73,7 @@ type TextPrams = {
 };
 type PDFPrams = {
   data: {
-    userId: string;
+    usersId: string;
     id: string;
     name: string
     Key: string;
@@ -120,7 +120,7 @@ export const createS3Embeddings = inngest.createFunction(
 
       const docs = await getChunkedDocsFromS3Files(
         event.data.key,
-        event.data.userId,
+        event.data.usersId,
         event.data.id,
         event.data.name
       );
@@ -141,8 +141,8 @@ export const createWebEmbeddings = inngest.createFunction(
 
       const docs = await getChunkedDocsFromWeb(
         event.data.url,
-        event.data.userId,
-        event.data.userId,
+        event.data.usersId,
+        event.data.usersId,
         event.data.name
       );
 
@@ -160,7 +160,7 @@ export const createAudioEmbeddings = inngest.createFunction(
     const embeddings = await step.run(
       "create embeddings from audio",
       async () => {
-        const { userId, id, name, Key } = event.data;
+        const { usersId, id, name, Key } = event.data;
 
         const assembly = axios.create({
           baseURL: "https://api.assemblyai.com/v2",
@@ -209,7 +209,7 @@ export const createAudioEmbeddings = inngest.createFunction(
           data: {
             key: Key,
             name: name,
-            userId,
+            usersId: usersId,
             type: "application/pdf",
           },
         });
@@ -226,7 +226,7 @@ export const createAudioEmbeddings = inngest.createFunction(
 
         const chunkedDocs = await textSplitter.splitDocuments(docs);
         for (const doc of chunkedDocs) {
-          doc.metadata = { ...doc.metadata, userId, id:document.id };
+          doc.metadata = { ...doc.metadata, usersId, id:document.id };
         }
         const pineconeClient = await getPineconeClient();
        
@@ -281,7 +281,7 @@ export const createPdfDocs = inngest.createFunction(
   { event: "docs/pdf.create" },
   async ({ event, step }) => {
     const pdfDocs = await step.run("create pdf docs from s3 url", async () => {
-      const { userId, id, Key , name} = event.data;
+      const { usersId, id, Key , name} = event.data;
       function generateSignedUrl() {
         const params = {
           Bucket: env.BUCKET_NAME,
@@ -306,7 +306,7 @@ export const createPdfDocs = inngest.createFunction(
       }
       const blob = await fetchBlobFromSignedUrl(signedUrl);
 
-      const docs = await getChunkedDocsFromPDF(blob, userId, id, name);
+      const docs = await getChunkedDocsFromPDF(blob, usersId, id, name);
       const pineconeClient = await getPineconeClient();
 
       await pineconeEmbedAndStore(pineconeClient, docs);

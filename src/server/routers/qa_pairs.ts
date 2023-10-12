@@ -5,11 +5,11 @@ import { prisma } from "../db";
 export const QAPairsRouter = createTRPCRouter({
 
     create: protectedProcedure.input(z.object({question: z.string(), answer: z.string(), documentId: z.string()})).mutation(async({ctx, input})=> {
-        const userId=ctx.session.user.id
+        const usersId = ctx.user.id;
         const {question, answer, documentId}=input
         const QAPair= await ctx.prisma.qAPairs.create({
             data: {
-                userId,
+                usersId,
                 question, 
                 answer,
                 documentId

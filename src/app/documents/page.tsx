@@ -14,7 +14,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import DocsCard from "@/components/docs_card";
 import ResourceTable from "@/components/source_tables";
@@ -22,6 +21,7 @@ import Webform from "@/components/webform";
 
 import { Icons } from "@/components/Icons";
 import { buttonVariants } from "@/components/ui/button";
+import useGetSession from "@/lib/hooks/useGetSession";
 
 export default function DocumentPage() {
   const [docFiles, setDocFiles] = useState<File[]>([]);
@@ -30,8 +30,8 @@ export default function DocumentPage() {
 
   const sizeLimit = 4000000;
   const { toast } = useToast();
-  const session = useSession();
-  const isProMember = session.data?.user.isPro;
+const {isPro}=useGetSession()
+
   const uploadToS3 = async (files: File[]) => {
     if (!files || files.length <= 0) {
       return null;
@@ -43,7 +43,7 @@ export default function DocumentPage() {
     if (!name || !type || !size) {
       return null;
     }
-    const isNotAllowedToUploadLargeFiles = size >= sizeLimit && !isProMember;
+    const isNotAllowedToUploadLargeFiles = size >= sizeLimit && !isPro;
     if (isNotAllowedToUploadLargeFiles) {
       toast({
         title: "File larger than 4MB.",

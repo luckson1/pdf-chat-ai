@@ -4,8 +4,6 @@ import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "../lib/utils";
-import { useSession } from "next-auth/react";
-import { Session} from "next-auth";
 import { siteConfig } from "@/lib/config";
 
 

@@ -9,13 +9,11 @@ import { Button } from "./ui/button";
 import { ScrollArea } from "./ui/scroll-area";
 import { cn } from "../lib/utils";
 import { useRouter } from "next/navigation";
-import { Home } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { Home } from "lucide-react"
 import { siteConfig } from "@/lib/config";
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);
-  const { data: session } = useSession();
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>

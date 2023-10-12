@@ -114,12 +114,12 @@ export const documentRouter = createTRPCRouter({
     .input(z.object({ key: z.string(), name: z.string(), type: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
-        const userId = ctx.session.user.id;
+        const usersId = ctx.user.id;
         const document = await ctx.prisma.document.create({
           data: {
             key: input.key,
             name: input.name,
-            userId,
+            usersId,
             type: input.type,
           },
         });
@@ -143,7 +143,7 @@ export const documentRouter = createTRPCRouter({
               message: "Somethingwent  wrong ",
             });
           }
-          const docs = await getChunkedDocsFromPDF(blob, userId, document.id, document.name);
+          const docs = await getChunkedDocsFromPDF(blob, usersId, document.id, document.name);
           if (!docs) {
             throw new TRPCError({
               code: "INTERNAL_SERVER_ERROR",
@@ -165,7 +165,7 @@ export const documentRouter = createTRPCRouter({
         } else {
           const docs = await getChunkedDocsFromS3Files(
             input.key,
-            userId,
+            usersId,
             document.id,
             document.name
           );
@@ -232,7 +232,7 @@ export const documentRouter = createTRPCRouter({
     .input(z.object({ id: z.string(), name: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
-        const userId = ctx.session.user.id;
+         const usersId = ctx.user.id;
         const assembly = axios.create({
           baseURL: "https://api.assemblyai.com/v2",
           headers: {
@@ -252,7 +252,7 @@ export const documentRouter = createTRPCRouter({
         inngest.send({
           name: "docs/audio.create",
           data: {
-            userId,
+            usersId,
             id: input.id,
             name: input.name,
             Key,
@@ -270,7 +270,7 @@ export const documentRouter = createTRPCRouter({
                 name: input.name,
                 key: Key,
                 type: "application/pdf",
-                userId,
+                usersId,
               },
             });
             return { ...data, documentId: newDocument.id };
@@ -286,17 +286,17 @@ export const documentRouter = createTRPCRouter({
   addWebDoc: protectedProcedure
     .input(z.object({ url: z.string().url() }))
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session.user.id;
+       const usersId = ctx.user.id;
       const key = nanoid();
       const document = await ctx.prisma.document.create({
         data: {
           key,
           name: input.url,
-          userId,
+          usersId,
           type: "html",
         },
       });
-      const docs = await getChunkedDocsFromWeb(input.url, userId, document.id, document.name);
+      const docs = await getChunkedDocsFromWeb(input.url, usersId, document.id, document.name);
       await pineconeEmbedAndStore(pineconeClient, docs);
 
       const promptTemplate = `You are an expert in summarizing online articles.
@@ -343,17 +343,17 @@ Total output will be a summary of the online article. SUMMARY: `;
   addYTDoc: protectedProcedure
     .input(z.object({ url: z.string().url() }))
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session.user.id;
+       const usersId = ctx.user.id;
       const key = nanoid();
       const document = await ctx.prisma.document.create({
         data: {
           key,
           name: input.url,
-          userId,
+          usersId,
           type: "YT",
         },
       });
-      const docs = await getChunkedDocsFromYT(input.url, userId, document.id, document.name);
+      const docs = await getChunkedDocsFromYT(input.url, usersId, document.id, document.name);
       await pineconeEmbedAndStore(pineconeClient, docs);
 
       const promptTemplate = `
@@ -402,13 +402,13 @@ Total output will be a summary of thetranscript of a podcast. SUMMARY: `;
   addWebPDF: protectedProcedure
     .input(z.object({ url: z.string().url() }))
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session.user.id;
+       const usersId = ctx.user.id;
       const key = nanoid();
       const document = await ctx.prisma.document.create({
         data: {
           key,
           name: input.url,
-          userId,
+          usersId,
           type: "application/json",
         },
       });
@@ -420,7 +420,7 @@ Total output will be a summary of thetranscript of a podcast. SUMMARY: `;
           message: "Somethingwent  wrong ",
         });
       }
-      const docs = await getChunkedDocsFromPDF(blob, userId, document.id, document.name);
+      const docs = await getChunkedDocsFromPDF(blob, usersId, document.id, document.name);
       if (!docs) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
@@ -449,11 +449,11 @@ Total output will be a summary of thetranscript of a podcast. SUMMARY: `;
       })
     )
     .query(async ({ ctx, input }) => {
-      const userId = ctx.session.user.id;
+       const usersId = ctx.user.id;
       const { skip, take } = input;
       const docs = await ctx.prisma.document.findMany({
         where: {
-          userId,
+          usersId,
           isDeleted: false,
         },
         skip,

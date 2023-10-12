@@ -8,6 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import useGetSession from '@/lib/hooks/useGetSession'
 import { cn } from '@/lib/utils'
 import {
   ArrowRight,
@@ -15,15 +16,13 @@ import {
   HelpCircle,
   Minus,
 } from 'lucide-react'
-import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 const UpgradeButton=() => {
-  const session=useSession()
-const isAuthenticated = session.status==='authenticated'
-const userId=session.data?.user.id
-const isPro=session.data?.user.isPro
-const email=session.data?.user.email
-  const url=(isAuthenticated && userId && email) ? `https://chatpaperz.lemonsqueezy.com/checkout/buy/1d797c55-f46d-42ce-af38-49f0c1b462d8?checkout[custom][userId]=${userId}&checkout[email]=${email}` : "/auth"
+  const {session, isPro}= useGetSession()
+const isAuthenticated = session?.user !== undefined
+const usersId=session?.user?.id
+const email=session?.user.email
+  const url=(isAuthenticated && usersId && email) ? `https://chatpaperz.lemonsqueezy.com/checkout/buy/1d797c55-f46d-42ce-af38-49f0c1b462d8?checkout[custom][usersId]=${usersId}&checkout[email]=${email}` : "/auth"
   return (
     <Link href={url} target="_blank" rel="noopener noreferrer" className='w-full'>
       <Button className='w-full'>
@@ -33,9 +32,9 @@ Claim your Discount
   )
 }
   const Prices = () => {
-  const session=useSession()
-  const user=session.data?.user.id
-  const isPro=session.data?.user.isPro
+    const {session, isPro}= useGetSession()
+    const isAuthenticated = session?.user !== undefined
+    const user=session?.user?.id
 
   const pricingItems = [
     {

@@ -1,7 +1,6 @@
 'use client'
 import {
     ChevronDownIcon,
-    PlusIcon,
 
   } from "@radix-ui/react-icons"
   
@@ -19,20 +18,22 @@ import Link from "next/link"
 
 import { useRouter } from "next/navigation"
 import { User } from "lucide-react"
-import { signOut, useSession } from "next-auth/react"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import useGetSession from "@/lib/hooks/useGetSession"
 
 
   
   export function Account() {
-
-    const { data: session, } = useSession()
-const user=session?.user
-const handleSignOut = async () => {
-  await signOut()
- router.replace('/auth')
-}
+    const supabase = createClientComponentClient()
+    const handleSignOut = async () => {
+      await supabase.auth.signOut()
+      router.push('/auth')
+      router.refresh()
+    }
+  const {isSessionLoading, session}=useGetSession()
     const router=useRouter()
+  const user=session?.user
     return (
     
           <div className="flex items-center space-x-1 rounded-md bg-accent text-accent-foreground">
@@ -58,14 +59,14 @@ const handleSignOut = async () => {
                 forceMount
               >
                 <DropdownMenuLabel>{session? "Hi" : "Have an account?"}</DropdownMenuLabel>
-              {session &&  <DropdownMenuItem>
+              {user &&  <DropdownMenuItem>
                 <div className="flex items-center text-xs">
         <Avatar className="h-7 w-7">
-          <AvatarImage src={user?.image ?? "/c.jpg"} alt="Avatar" />
+          <AvatarImage src={user ?? "/c.jpg"} alt="Avatar" />
           <AvatarFallback>User</AvatarFallback>
         </Avatar>
         <div className="ml-4 space-y-1">
-          <p className=" font-medium leading-none">{user?.name}</p>
+          <p className=" font-medium leading-none">{user?.}</p>
           <p className=" text-muted-foreground">
           {user?.email}
           </p>

@@ -160,7 +160,7 @@ export  async function POST(req: Request) {
       });
 
       if (status === "active") {
-        await prisma.user.update({
+        await prisma.profile.update({
           where: {
             email: user_email,
           },

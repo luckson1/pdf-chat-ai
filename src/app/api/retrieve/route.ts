@@ -15,11 +15,11 @@ import {
   StringOutputParser,
 } from "langchain/schema/output_parser";
 
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/server/auth";
+
 import { getPineconeClient } from "@/lib/pinecone-client";
 import { getSingleDocVectorStore } from "@/lib/vector-store";
 import { ConversationalRetrievalQAChain } from "langchain/chains";
+import { getUserServer } from "@/lib/authSession";
 
 
 
@@ -76,12 +76,11 @@ export async function POST(req: NextRequest) {
   try {
 
     const { question, chatHistory, id } = await req.json();
-    const session = await getServerSession(authOptions);
-      const userId = session?.user?.id;
+    const {usersId}= await getUserServer()
   
       // make entries to image table for the product images
   
-      if (!userId) {
+      if (!usersId) {
         return NextResponse.json("Un authenticated", {
           status: 401,
         });
@@ -99,7 +98,7 @@ export async function POST(req: NextRequest) {
     
 
     const pineconeClient = await getPineconeClient();
-    const vectorStore = await getSingleDocVectorStore(pineconeClient, userId, id);
+    const vectorStore = await getSingleDocVectorStore(pineconeClient, usersId, id);
 
     const retriever = vectorStore.asRetriever();
 

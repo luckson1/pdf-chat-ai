@@ -26,7 +26,7 @@ export async function pineconeEmbedAndStore(
 
 export async function getSingleDocVectorStore(
   client: PineconeClient,
-  userId: string,
+  usersId: string,
   id: string
 ) {
   try {
@@ -36,7 +36,7 @@ export async function getSingleDocVectorStore(
     const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
       pineconeIndex: index,
       textKey: "text",
-      filter: { userId: { $eq: userId }, id: { $eq: id } },
+      filter: { usersId: { $eq: usersId }, id: { $eq: id } },
     });
 
     return vectorStore;
@@ -48,7 +48,7 @@ export async function getSingleDocVectorStore(
 
 export async function getAllDocsVectorStore(
   client: PineconeClient,
-  userId: string,
+  usersId: string,
 ) {
   try {
     const embeddings = new OpenAIEmbeddings();
@@ -57,7 +57,7 @@ export async function getAllDocsVectorStore(
     const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
       pineconeIndex: index,
       textKey: "text",
-      filter: { userId: { $eq: userId } },
+      filter: { usersId: { $eq: usersId } },
     });
 
     return vectorStore;

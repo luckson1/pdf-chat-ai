@@ -2,15 +2,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { callChain } from "@/lib/langchain";
 import { Message } from "ai";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/server/auth";
 import { Redis } from "@upstash/redis/nodejs";
 import { env } from "@/lib/env.mjs";
 import { Ratelimit } from "@upstash/ratelimit";
 import { getPineconeClient } from "@/lib/pinecone-client";
 import { getSingleDocVectorStore } from "@/lib/vector-store";
 import { z } from "zod";
-
+import { getUserServer } from "@/lib/authSession";
 const formatMessage = (message: Message) => {
   return `${message.role === "user" ? "Human" : "Assistant"}: ${
     message.content
@@ -31,15 +29,14 @@ export async function POST(req: NextRequest) {
     });
   }
   
-  const session = await getServerSession(authOptions);
-  if (!session) {
+  const {usersId, isPro}= await getUserServer()
+  if (! usersId) {
     return NextResponse.json("Un authenticated", {
       status: 401,
     });
   }
-    const userId = session.user.id;
-    const isPro=session.user.isPro
-
+  
+   
     // make entries to image table for the product images
 
  const idSchema=z.string()
@@ -60,7 +57,7 @@ export async function POST(req: NextRequest) {
       redis: redis,
       limiter: Ratelimit.fixedWindow(allowedDailyMessages, "1 d"),
     });
-    const { success } = await ratelimit.limit(userId)
+    const { success } = await ratelimit.limit(usersId)
 
     if (!success) {
       return new NextResponse("Exceeded allowed daily requests. Please upgrade", {
@@ -68,7 +65,7 @@ export async function POST(req: NextRequest) {
       })
     }
     const pineconeClient = await getPineconeClient();
-    const vectorStore = await getSingleDocVectorStore(pineconeClient, userId, docId);
+    const vectorStore = await getSingleDocVectorStore(pineconeClient, usersId, docId);
   try {
     const streamingTextResponse = callChain({
       question,
