@@ -8,8 +8,6 @@
  */
 
 import { initTRPC, TRPCError } from "@trpc/server";
-import { type FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
-import { cookies } from 'next/headers'
 import {
   createMiddlewareClient ,
   type User,
@@ -41,7 +39,7 @@ type CreateContextOptions = {
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-const cookieStore = cookies()
+
 export const createInnerTRPCContext = (opts: CreateContextOptions) => {
 
   return {
