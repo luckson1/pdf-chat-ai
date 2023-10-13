@@ -23,71 +23,71 @@
 //   region: env.REGION,
 // });
 
-// const s3 = new AWS.S3();
-// const resend = new Resend(env.RESEND_API_KEY);
-// function sendEmail({
-//   to,
-//   subject,
-//   react,
-// }: {
-//   to: string;
-//   subject: string;
-//   react: JSX.Element;
-// }) {
-//   return resend.emails.send({
-//     from: "jack@chatpaperz.com",
-//     to,
-//     subject,
-//     react,
-//   });
-// }
-// type s3Prams = {
-//   data: {
-//     key: string;
-//     userId: string;
-//     id: string;
-//   };
-// };
-// type webPrams = {
-//   data: {
-//     url: string;
-//     userId: string;
-//     id: string;
-//   };
-// };
-// type AudioPrams = {
-//   data: {
-//     userId: string;
-//     id: string;
-//     name: string;
-//     Key: string
-//   };
-// };
-// type TextPrams = {
-//   data: {
-//     text: string;
-//     Key: string;
-//   };
-// };
-// type PDFPrams = {
-//   data: {
-//     userId: string;
-//     id: string;
-//     Key: string;
-//   };
-// };
-// type createUser = {
-//   name: "user/chatpaperz.created",
-//   data: { user: User };
-// };
-// export type Events = {
-//   "docs/s3.create": s3Prams;
-//   "docs/web.create": webPrams;
-//   "docs/audio.create": AudioPrams;
-//   "aws/txt.create": TextPrams;
-//   "docs/pdf.create": PDFPrams;
-//   "user/created": createUser
-// };
+const s3 = new AWS.S3();
+const resend = new Resend(env.RESEND_API_KEY);
+function sendEmail({
+  to,
+  subject,
+  react,
+}: {
+  to: string;
+  subject: string;
+  react: JSX.Element;
+}) {
+  return resend.emails.send({
+    from: "jack@chatpaperz.com",
+    to,
+    subject,
+    react,
+  });
+}
+type s3Prams = {
+  data: {
+    key: string;
+    userId: string;
+    id: string;
+  };
+};
+type webPrams = {
+  data: {
+    url: string;
+    userId: string;
+    id: string;
+  };
+};
+type AudioPrams = {
+  data: {
+    userId: string;
+    id: string;
+    name: string;
+    Key: string
+  };
+};
+type TextPrams = {
+  data: {
+    text: string;
+    Key: string;
+  };
+};
+type PDFPrams = {
+  data: {
+    userId: string;
+    id: string;
+    Key: string;
+  };
+};
+type createUser = {
+  name: "user/chatpaperz.created",
+  data: { user: User };
+};
+export type Events = {
+  "docs/s3.create": s3Prams;
+  "docs/web.create": webPrams;
+  "docs/audio.create": AudioPrams;
+  "aws/txt.create": TextPrams;
+  "docs/pdf.create": PDFPrams;
+  "user/created": createUser
+};
 
 // export const ChatPaperUserCreated = inngest.createFunction(
 //   { name: "A User Was Created" },
@@ -115,11 +115,12 @@
 //     const embeddings = await step.run("create embeddings from s3", async () => {
 //       const pineconeClient = await getPineconeClient();
 
-//       const docs = await getChunkedDocsFromS3Files(
-//         event.data.key,
-//         event.data.userId,
-//         event.data.id
-//       );
+      const docs = await getChunkedDocsFromS3Files(
+        event.data.key,
+        event.data.userId,
+        event.data.id,
+        event.data.name
+      );
 
 //       await pineconeEmbedAndStore(pineconeClient, docs);
 //     });
@@ -135,11 +136,12 @@
 //     const embeddings = await step.run("create embeddings from s3", async () => {
 //       const pineconeClient = await getPineconeClient();
 
-//       const docs = await getChunkedDocsFromWeb(
-//         event.data.url,
-//         event.data.userId,
-//         event.data.userId
-//       );
+      const docs = await getChunkedDocsFromWeb(
+        event.data.url,
+        event.data.userId,
+        event.data.userId,
+        event.data.name
+      );
 
 //       await pineconeEmbedAndStore(pineconeClient, docs);
 //     });
@@ -271,23 +273,17 @@
 //   }
 // );
 
-// export const createPdfDocs = inngest.createFunction(
-//   { name: "pdf file docs created" },
-//   { event: "docs/pdf.create" },
-//   async ({ event, step }) => {
-//     const pdfDocs = await step.run("create pdf docs from s3 url", async () => {
-// <<<<<<< HEAD
-
-//       const { usersId, id, Key } = event.data;
-
-// =======
-//       const { userId, id, Key } = event.data;
-// >>>>>>> parent of bdf4e73 (fix: background events)
-//       function generateSignedUrl() {
-//         const params = {
-//           Bucket: env.BUCKET_NAME,
-//           Key,
-//         };
+export const createPdfDocs = inngest.createFunction(
+  { name: "pdf file docs created" },
+  { event: "docs/pdf.create" },
+  async ({ event, step }) => {
+    const pdfDocs = await step.run("create pdf docs from s3 url", async () => {
+      const { userId, id, Key } = event.data;
+      function generateSignedUrl() {
+        const params = {
+          Bucket: env.BUCKET_NAME,
+          Key,
+        };
 
 //         return s3.getSignedUrl("getObject", params);
 //       }
@@ -307,13 +303,8 @@
 //       }
 //       const blob = await fetchBlobFromSignedUrl(signedUrl);
 
-// <<<<<<< HEAD
-//       const docs = await getChunkedDocsFromPDF(blob, usersId, id);
-
-// =======
-//       const docs = await getChunkedDocsFromPDF(blob, userId, id);
-// >>>>>>> parent of bdf4e73 (fix: background events)
-//       const pineconeClient = await getPineconeClient();
+      const docs = await getChunkedDocsFromPDF(blob, userId, id);
+      const pineconeClient = await getPineconeClient();
 
 //       await pineconeEmbedAndStore(pineconeClient, docs);
 //     });
