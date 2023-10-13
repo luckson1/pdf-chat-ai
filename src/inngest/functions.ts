@@ -118,8 +118,7 @@ export type Events = {
       const docs = await getChunkedDocsFromS3Files(
         event.data.key,
         event.data.userId,
-        event.data.id,
-        event.data.name
+        event.data.id
       );
 
 //       await pineconeEmbedAndStore(pineconeClient, docs);
@@ -139,8 +138,7 @@ export type Events = {
       const docs = await getChunkedDocsFromWeb(
         event.data.url,
         event.data.userId,
-        event.data.userId,
-        event.data.name
+        event.data.userId
       );
 
 //       await pineconeEmbedAndStore(pineconeClient, docs);
