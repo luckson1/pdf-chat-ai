@@ -29,6 +29,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 type CreateContextOptions = {
   user: User | undefined;
+  res: NextResponse
 };
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
@@ -67,6 +68,7 @@ export const createTRPCContext = async (req: NextRequest) => {
 
   return createInnerTRPCContext({
     user: session?.user,
+    res,
   });
 
 };
