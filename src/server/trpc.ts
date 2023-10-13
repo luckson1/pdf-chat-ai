@@ -28,7 +28,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 type CreateContextOptions = {
-  user: User | null;
+  user: User | undefined;
 };
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
@@ -57,21 +57,18 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
  * @see https://trpc.io/docs/context
  */
 
-export const createTRPCContext = async (opts:  FetchCreateContextFnOptions) => {
-  const res = NextResponse.next()
-  //@ts-expect-error
-  const supabase = createMiddlewareClient({req:opts.req, res});
-// React Native will pass their token through headers,
-  // browsers will have the session cookie set
-  const token = opts.req.headers.get("authorization");
+export const createTRPCContext = async (req: NextRequest) => {
 
-  const user = token
-    ? await supabase.auth.getUser(token)
-    : await supabase.auth.getUser();
+  const res=NextResponse.next()
+  const supabase = createMiddlewareClient({req, res});
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
 
   return createInnerTRPCContext({
-    user: user.data.user,
+    user: session?.user,
   });
+
 };
 
 /**
