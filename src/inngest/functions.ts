@@ -44,20 +44,20 @@ function sendEmail({
 type s3Prams = {
   data: {
     key: string;
-    usersId: string;
+    userId: string;
     id: string;
   };
 };
 type webPrams = {
   data: {
     url: string;
-    usersId: string;
+    userId: string;
     id: string;
   };
 };
 type AudioPrams = {
   data: {
-    usersId: string;
+    userId: string;
     id: string;
     name: string;
     Key: string
@@ -71,7 +71,7 @@ type TextPrams = {
 };
 type PDFPrams = {
   data: {
-    usersId: string;
+    userId: string;
     id: string;
     Key: string;
   };
@@ -117,10 +117,8 @@ export const createS3Embeddings = inngest.createFunction(
 
       const docs = await getChunkedDocsFromS3Files(
         event.data.key,
-        event.data.usersId,
-        event.data.id,
-        event.data.name
-
+        event.data.userId,
+        event.data.id
       );
 
       await pineconeEmbedAndStore(pineconeClient, docs);
@@ -139,9 +137,8 @@ export const createWebEmbeddings = inngest.createFunction(
 
       const docs = await getChunkedDocsFromWeb(
         event.data.url,
-        event.data.usersId,
-        event.data.usersId,
-        event.data.name
+        event.data.userId,
+        event.data.userId
       );
 
       await pineconeEmbedAndStore(pineconeClient, docs);
@@ -158,7 +155,7 @@ export const createAudioEmbeddings = inngest.createFunction(
     const embeddings = await step.run(
       "create embeddings from audio",
       async () => {
-        const { usersId, id, name, Key } = event.data;
+        const { userId, id, name, Key } = event.data;
 
         const assembly = axios.create({
           baseURL: "https://api.assemblyai.com/v2",
@@ -207,7 +204,7 @@ export const createAudioEmbeddings = inngest.createFunction(
           data: {
             key: Key,
             name: name,
-            usersId: usersId,
+            userId,
             type: "application/pdf",
           },
         });
@@ -224,7 +221,7 @@ export const createAudioEmbeddings = inngest.createFunction(
 
         const chunkedDocs = await textSplitter.splitDocuments(docs);
         for (const doc of chunkedDocs) {
-          doc.metadata = { ...doc.metadata, usersId, id:document.id };
+          doc.metadata = { ...doc.metadata, userId, id:document.id };
         }
         const pineconeClient = await getPineconeClient();
        
@@ -280,7 +277,7 @@ export const createPdfDocs = inngest.createFunction(
   async ({ event, step }) => {
     const pdfDocs = await step.run("create pdf docs from s3 url", async () => {
 
-      const { usersId, id, Key , name} = event.data;
+      const { usersId, id, Key } = event.data;
 
       function generateSignedUrl() {
         const params = {
@@ -306,7 +303,7 @@ export const createPdfDocs = inngest.createFunction(
       }
       const blob = await fetchBlobFromSignedUrl(signedUrl);
 
-      const docs = await getChunkedDocsFromPDF(blob, usersId, id, name);
+      const docs = await getChunkedDocsFromPDF(blob, usersId, id);
 
       const pineconeClient = await getPineconeClient();
 
