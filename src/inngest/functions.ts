@@ -46,7 +46,6 @@ type s3Prams = {
     key: string;
     usersId: string;
     id: string;
-    name: string
   };
 };
 type webPrams = {
@@ -54,14 +53,13 @@ type webPrams = {
     url: string;
     usersId: string;
     id: string;
-    name: string
   };
 };
 type AudioPrams = {
   data: {
     usersId: string;
     id: string;
-    name: string
+    name: string;
     Key: string
   };
 };
@@ -75,7 +73,6 @@ type PDFPrams = {
   data: {
     usersId: string;
     id: string;
-    name: string
     Key: string;
   };
 };
@@ -123,6 +120,7 @@ export const createS3Embeddings = inngest.createFunction(
         event.data.usersId,
         event.data.id,
         event.data.name
+
       );
 
       await pineconeEmbedAndStore(pineconeClient, docs);
@@ -281,7 +279,9 @@ export const createPdfDocs = inngest.createFunction(
   { event: "docs/pdf.create" },
   async ({ event, step }) => {
     const pdfDocs = await step.run("create pdf docs from s3 url", async () => {
+
       const { usersId, id, Key , name} = event.data;
+
       function generateSignedUrl() {
         const params = {
           Bucket: env.BUCKET_NAME,
@@ -307,6 +307,7 @@ export const createPdfDocs = inngest.createFunction(
       const blob = await fetchBlobFromSignedUrl(signedUrl);
 
       const docs = await getChunkedDocsFromPDF(blob, usersId, id, name);
+
       const pineconeClient = await getPineconeClient();
 
       await pineconeEmbedAndStore(pineconeClient, docs);
