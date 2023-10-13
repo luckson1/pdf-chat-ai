@@ -4,7 +4,7 @@ import { S3Loader } from "langchain/document_loaders/web/s3";
 import { PuppeteerWebBaseLoader } from "langchain/document_loaders/web/puppeteer";
 import { WebPDFLoader } from "langchain/document_loaders/web/pdf";
 import { env } from "./env.mjs";
-import { YoutubeLoader } from "langchain/document_loaders/web/youtube";
+// import { YoutubeLoader } from "langchain/document_loaders/web/youtube";
 
 
 const textSplitter = new RecursiveCharacterTextSplitter({
@@ -105,24 +105,24 @@ export async function getChunkedDocsFromWeb(path: string, usersId:string, id:str
   }
 }
 
-export async function getChunkedDocsFromYT(path: string, usersId:string, id:string, name:string) {
-  try {
-    const loader = YoutubeLoader.createFromUrl(path, {
-      language: "en",
-      addVideoInfo: true,
-    });
+// export async function getChunkedDocsFromYT(path: string, usersId:string, id:string, name:string) {
+//   try {
+//     const loader = YoutubeLoader.createFromUrl(path, {
+//       language: "en",
+//       addVideoInfo: true,
+//     });
 
-    const docs = await loader.load();
+//     const docs = await loader.load();
 
   
 
-    const chunkedDocs = await textSplitter.splitDocuments(docs);
-    for (const doc of chunkedDocs) {
-      doc.metadata={...doc.metadata, usersId, id, name}
-    }
-    return chunkedDocs;
-  } catch (e) {
-    console.error(e);
-    throw new Error("PDF docs chunking failed !");
-  }
-}
+//     const chunkedDocs = await textSplitter.splitDocuments(docs);
+//     for (const doc of chunkedDocs) {
+//       doc.metadata={...doc.metadata, usersId, id, name}
+//     }
+//     return chunkedDocs;
+//   } catch (e) {
+//     console.error(e);
+//     throw new Error("PDF docs chunking failed !");
+//   }
+// }
