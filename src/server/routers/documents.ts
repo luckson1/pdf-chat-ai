@@ -12,7 +12,7 @@ import {
   getChunkedDocsFromPDF,
   getChunkedDocsFromS3Files,
   getChunkedDocsFromWeb,
-  getChunkedDocsFromYT,
+  // getChunkedDocsFromYT,
 } from "@/lib/loaders";
 import { getPineconeClient } from "@/lib/pinecone-client";
 import { pineconeEmbedAndStore } from "@/lib/vector-store";
@@ -353,50 +353,50 @@ Total output will be a summary of the online article. SUMMARY: `;
           type: "YT",
         },
       });
-      const docs = await getChunkedDocsFromYT(input.url, usersId, document.id, document.name);
-      await pineconeEmbedAndStore(pineconeClient, docs);
+      // const docs = await getChunkedDocsFromYT(input.url, usersId, document.id, document.name);
+      // await pineconeEmbedAndStore(pineconeClient, docs);
 
-      const promptTemplate = `
-      You are an expert in summarizing YouTube videos.
-      Your goal is to create a summary of a podcast.
-      Based on this list of docs, please identify the main themes.
-      Below you find the transcript of a podcast:
-      --------
-      {text}
-      --------
+//       const promptTemplate = `
+//       You are an expert in summarizing YouTube videos.
+//       Your goal is to create a summary of a podcast.
+//       Based on this list of docs, please identify the main themes.
+//       Below you find the transcript of a podcast:
+//       --------
+//       {text}
+//       --------
       
-SUMMARY:`;
-      const qPrompt = PromptTemplate.fromTemplate(promptTemplate);
-      const refineTemplate = `  You are an expert in summarizing YouTube videos.
-      Your goal is to create a summary of a podcast.
-We have provided an existing summary up to a certain point: {existing_answer}
+// SUMMARY:`;
+//       const qPrompt = PromptTemplate.fromTemplate(promptTemplate);
+//       const refineTemplate = `  You are an expert in summarizing YouTube videos.
+//       Your goal is to create a summary of a podcast.
+// We have provided an existing summary up to a certain point: {existing_answer}
 
-Below you find the transcript of a podcast content:
---------
-{text}
---------
+// Below you find the transcript of a podcast content:
+// --------
+// {text}
+// --------
 
-Given the new context, refine the summary. If the context isn't useful, return the original summary.
-Total output will be a summary of thetranscript of a podcast. SUMMARY: `;
-      const refinePrompt = PromptTemplate.fromTemplate(refineTemplate);
+// Given the new context, refine the summary. If the context isn't useful, return the original summary.
+// Total output will be a summary of thetranscript of a podcast. SUMMARY: `;
+//       const refinePrompt = PromptTemplate.fromTemplate(refineTemplate);
 
-      const summarizeChain = loadSummarizationChain(llm, {
-        type: "refine",
-        verbose: true,
-        questionPrompt: qPrompt,
-        refinePrompt: refinePrompt,
-      });
+//       const summarizeChain = loadSummarizationChain(llm, {
+//         type: "refine",
+//         verbose: true,
+//         questionPrompt: qPrompt,
+//         refinePrompt: refinePrompt,
+//       });
 
-      const summary = await summarizeChain.run(docs);
-      ctx.prisma.document.update({
-        where: {
-          id: document.id,
-        },
-        data: {
-          summary,
-        },
-      });
-      return document;
+//       const summary = await summarizeChain.run(docs);
+//       ctx.prisma.document.update({
+//         where: {
+//           id: document.id,
+//         },
+//         data: {
+//           summary,
+//         },
+//       });
+//       return document;
     }),
 
   addWebPDF: protectedProcedure
