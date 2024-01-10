@@ -3,8 +3,9 @@ import { Chat } from "@/components/aiChat";
 import { MainDocumentViewer } from "@/components/documentViewer";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent } from "@/components/ui/card";
-import useGetSession from "@/lib/hooks/useGetSession";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { XCircleIcon} from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -12,9 +13,11 @@ export default function Home() {
   const [numPages, setNumPages] = useState<number>();
   const params = useSearchParams();
   const id = params?.get("id");
-  const {isPro}=useGetSession()
+ 
+  const session=useSession()
+  const isProMember=session.data?.user.isPro
   const pageLimit=20
-  const exceededPageCount = numPages ? (!isPro && numPages > pageLimit ): false;
+  const exceededPageCount = numPages ? (!isProMember && numPages > pageLimit ): false;
   if (!id) return null;
 
   return (

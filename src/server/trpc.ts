@@ -9,14 +9,11 @@
 
 import { initTRPC, TRPCError } from "@trpc/server";
 import { type FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
-import {
-  createMiddlewareClient,
-  type User,
-} from "@supabase/auth-helpers-nextjs";
+import { getServerSession, type Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { authOptions } from "@/server/auth";
 import { prisma } from "@/server/db";
-import { NextRequest, NextResponse } from "next/server";
 
 /**
  * 1. CONTEXT
@@ -26,11 +23,10 @@ import { NextRequest, NextResponse } from "next/server";
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 
+interface CreateContextOptions {
+  session: Session | null;
+}
 
-type CreateContextOptions = {
-  user: User | undefined;
-  res: NextResponse
-};
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
  * it from here.
@@ -41,13 +37,10 @@ type CreateContextOptions = {
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-
-export const createInnerTRPCContext = (opts: CreateContextOptions) => {
-
+const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
-    user: opts.user,
+    session: opts.session,
     prisma,
-  
   };
 };
 
@@ -57,20 +50,15 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
+export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
+  const { req} = opts;
 
-export const createTRPCContext = async (req: NextRequest) => {
-
-  const res=NextResponse.next()
-  const supabase = createMiddlewareClient({req, res});
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+  // Get the session from the server using the getServerSession wrapper function
+  const session = await getServerSession(authOptions);
 
   return createInnerTRPCContext({
-    user: session?.user,
-    res,
+    session,
   });
-
 };
 
 /**
@@ -119,22 +107,15 @@ export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure;
 
 /** Reusable middleware that enforces users are logged in before running the procedure. */
-const enforceUserIsAuthed = t.middleware(async({ ctx, next }) => {
-  if (!ctx.user?.id) {
+const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+  console.log('got here!')
+  if (!ctx.session?.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-  const user = await prisma.users.findUniqueOrThrow({
-    where: {
-      id: ctx.user.id,
-    },
-    include: {
-      Profile: true
-    }
-  });
   return next({
     ctx: {
       // infers the `session` as non-nullable
-      user
+      session: { ...ctx.session, user: ctx.session.user },
     },
   });
 });

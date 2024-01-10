@@ -7,24 +7,22 @@ import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { signIn } from "next-auth/react";
 import { siteConfig } from "@/lib/config";
 import { Icons } from "@/components/Icons";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>
 
 function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast()
-  const supabase = createClientComponentClient()
+
   const signInWithGoogle = async () => {
   try {
     setIsLoading(true);
-   await supabase.auth.signInWithOAuth({
-      provider: 'google',
-    })
+    await signIn("google", { callbackUrl: "/documents" })
   } catch (error) {
     toast({
     
@@ -42,10 +40,7 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     setIsLoading(true);
     try {
       setIsLoading(true);
-      await supabase.auth.signInWithOtp({
-        email,
-        options: { emailRedirectTo: `${window.location.origin}/documents`},
-      })
+      await signIn('email', { callbackUrl: "/" , email})
     } catch (error) {
       console.log(error)
     } finally {

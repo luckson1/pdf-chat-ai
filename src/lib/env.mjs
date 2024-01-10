@@ -14,9 +14,20 @@ export const env = createEnv({
     PINECONE_API_KEY: z.string().trim().min(1),
     PINECONE_ENVIRONMENT: z.string().trim().min(1),
     PINECONE_INDEX_NAME: z.string().trim().min(1),
-    DATABASE_URL: z.string().url(),
-    DIRECT_URL:  z.string().url(),
+    POSTGRES_URL: z.string().url(),
     NODE_ENV: z.enum(["development", "test", "production"]),
+    NEXTAUTH_SECRET:
+      process.env.NODE_ENV === "production"
+        ? z.string().min(1)
+        : z.string().min(1).optional(),
+    NEXTAUTH_URL: z.preprocess(
+      // This makes Vercel deployments not fail if you don't set NEXTAUTH_URL
+      // Since NextAuth.js automatically uses the VERCEL_URL if present.
+      (str) => process.env.VERCEL_URL ?? str,
+      // VERCEL_URL doesn't include `https` so it cant be validated as a URL
+      process.env.VERCEL ? z.string().min(1) : z.string().url()
+    ),
+    // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     CLIENT_ID: z.string(),
     CLIENT_SECRET: z.string(),
   ACCESS_KEY: z.string(), 
@@ -29,7 +40,9 @@ export const env = createEnv({
   UNSD_KEY:z.string(),
   ASSEMBLYAI_API_KEY: z.string(),
   UPSTASH_REDIS_REST_URL:  z.string(),
-UPSTASH_REDIS_REST_TOKEN:  z.string()
+UPSTASH_REDIS_REST_TOKEN:  z.string(),
+POSTGRES_PRISMA_URL:  z.string().url(),
+POSTGRES_URL_NON_POOLING:  z.string().url(),
   },
 
   /**
@@ -38,10 +51,7 @@ UPSTASH_REDIS_REST_TOKEN:  z.string()
    * `NEXT_PUBLIC_`.
    */
 
-client: {
-  NEXT_PUBLIC_SUPABASE_URL:  z.string(),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY:  z.string(),
-},
+
   /**
    * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
    * middlewares) or client-side so we need to destruct manually.
@@ -49,13 +59,11 @@ client: {
   runtimeEnv: {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     PINECONE_API_KEY: process.env.PINECONE_API_KEY,
-    NEXT_PUBLIC_SUPABASE_URL:  process.env.NEXT_PUBLIC_SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY:  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     PINECONE_ENVIRONMENT: process.env. PINECONE_ENVIRONMENT, 
     PINECONE_INDEX_NAME: process.env. PINECONE_INDEX_NAME,
-    DATABASE_URL: process.env. DATABASE_URL,
-   DIRECT_URL: process.env.DIRECT_URL,
-
+    POSTGRES_URL: process.env. POSTGRES_URL,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     CLIENT_ID: process.env.CLIENT_ID,
     CLIENT_SECRET: process.env.  CLIENT_SECRET,
@@ -70,7 +78,9 @@ client: {
   ASSEMBLYAI_API_KEY: process.env.ASSEMBLYAI_API_KEY,
   UPSTASH_REDIS_REST_URL:  process.env.UPSTASH_REDIS_REST_URL,
   UPSTASH_REDIS_REST_TOKEN:  process.env.UPSTASH_REDIS_REST_TOKEN,
-  NODE_ENV: process.env.NODE_ENV
+  NODE_ENV: process.env.NODE_ENV,
+  POSTGRES_PRISMA_URL:  process.env.POSTGRES_PRISMA_URL,
+  POSTGRES_URL_NON_POOLING:  process.env.POSTGRES_URL_NON_POOLING,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import Provider from "@/components/provider";
 import TRPCProvider from "./api/_trpc/Provider";
 import { SiteHeader } from "@/components/site-header";
 import dynamic from 'next/dynamic'
@@ -80,6 +81,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             inter.className
           )}>
         <CrispWithNoSSR />
+          <Provider>
            <TRPCProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="relative flex-col">
@@ -91,6 +93,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <Toaster />
             </ThemeProvider>
             </TRPCProvider> 
+          </Provider>
         </body>
       </html>
     </>

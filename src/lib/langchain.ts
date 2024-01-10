@@ -7,17 +7,16 @@ import {
 } from "ai";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
+import { PromptTemplate } from "langchain/prompts";
 
 export const streamingModel = new ChatOpenAI({
   modelName: "gpt-3.5-turbo",
   streaming: true,
-  verbose: true,
   temperature: 0,
 });
 
 export const nonStreamingModel = new ChatOpenAI({
   modelName: "gpt-3.5-turbo",
-  verbose: true,
   temperature: 0,
 });
 type callChainArgs = {
@@ -58,14 +57,19 @@ export async function callChain({ question, chatHistory, vectorStore }: callChai
     const chain = ConversationalRetrievalQAChain.fromLLM(
       streamingModel,
       vectorStore.asRetriever(),
+      
       {
-        qaTemplate: QA_TEMPLATE,
-        questionGeneratorTemplate: STANDALONE_QUESTION_TEMPLATE,
+        qaChainOptions:{
+          prompt: PromptTemplate.fromTemplate(QA_TEMPLATE),
+          
+        },
         returnSourceDocuments: true, //default 4
        
         questionGeneratorChainOptions: {
           llm: nonStreamingModel,
+          template: STANDALONE_QUESTION_TEMPLATE
         },
+     
       }
     );
 
@@ -74,6 +78,7 @@ export async function callChain({ question, chatHistory, vectorStore }: callChai
     chain
       .call(
         {
+          
           question: sanitizedQuestion,
           chat_history: chatHistory,
         },

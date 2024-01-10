@@ -1,11 +1,13 @@
 
 import S3 from "aws-sdk/clients/s3";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/server/auth";
 import { NextResponse , NextRequest} from "next/server";
 import { env } from "@/lib/env.mjs";
 import { nanoid } from "nanoid";
 import {Ratelimit} from "@upstash/ratelimit";
 import {Redis} from "@upstash/redis";
-import { getUserServer } from "@/lib/authSession";
+
 const s3 = new S3({
   apiVersion: "2006-03-01",
   accessKeyId: env.ACCESS_KEY,
@@ -24,10 +26,11 @@ export  async function GET(
 
 
   try {
-  
+   
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
 
-const {usersId}= await getUserServer()
-    if (!usersId) {
+    if (!userId) {
       return NextResponse.json("Un authenticated", {
         status: 401,
       });
@@ -47,7 +50,7 @@ const {usersId}= await getUserServer()
       redis: redis,
       limiter: Ratelimit.slidingWindow(10, "10 s"),
     });
-    const { success } = await ratelimit.limit(usersId)
+    const { success } = await ratelimit.limit(userId)
 
     if (!success) {
       return new NextResponse("Too many requests", {
@@ -77,3 +80,59 @@ const {usersId}= await getUserServer()
 }
 
 
+// import { nanoid } from "nanoid";
+// import { env } from "@/lib/env";
+// import { getServerSession } from "next-auth";
+// import { authOptions } from "@/server/auth";
+// import { NextResponse, NextRequest } from "next/server";
+// import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+// import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
+// const s3 = new S3Client({
+//   region: env.REGION,
+//   credentials: {
+//     accessKeyId: env.ACCESS_KEY,
+//     secretAccessKey: env.SECRET_KEY,
+//   },
+// });
+
+// export async function GET(request: Request) {
+//   const { searchParams } = new URL(request.url);
+//   const type = searchParams.get("type") ;
+//   try {
+//     const session = await getServerSession(authOptions);
+//     const userId = session?.user?.id;
+
+//     // make entries to image table for the product images
+
+//     if (!userId) {
+//       return NextResponse.json("Un authenticated", {
+//         status: 401,
+//       });
+//     }
+//     const Key = nanoid();
+// console.log(1, Key)
+//     const command = new GetObjectCommand({
+//       Bucket: env.BUCKET_NAME,
+  
+//       Key,
+//       // ResponseContentType: type ?? undefined
+//     });
+//     console.log(2, Key)
+//     // Create a request from the command
+
+//     // Get the signed URL
+//     const uploadUrl = await getSignedUrl(s3, command, {
+//       expiresIn: 15 * 60 ,
+//       signingRegion: env.REGION,
+//     });
+// console.log(3,
+//   Key)
+//     return NextResponse.json({
+//       uploadUrl,
+//       key: Key,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }

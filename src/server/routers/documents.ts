@@ -12,7 +12,7 @@ import {
   getChunkedDocsFromPDF,
   getChunkedDocsFromS3Files,
   getChunkedDocsFromWeb,
-  // getChunkedDocsFromYT,
+  getChunkedDocsFromYT,
 } from "@/lib/loaders";
 import { getPineconeClient } from "@/lib/pinecone-client";
 import { pineconeEmbedAndStore } from "@/lib/vector-store";
@@ -114,15 +114,17 @@ export const documentRouter = createTRPCRouter({
     .input(z.object({ key: z.string(), name: z.string(), type: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
-        const usersId = ctx.user.id;
+        const userId = ctx.session.user.id;
+        'starting...'
         const document = await ctx.prisma.document.create({
           data: {
             key: input.key,
             name: input.name,
-            usersId,
+            userId,
             type: input.type,
           },
         });
+        "done..."
         const extention = path.extname(input.name).slice(1);
         const isPdf = extention === "pdf";
         if (isPdf) {
@@ -143,7 +145,7 @@ export const documentRouter = createTRPCRouter({
               message: "Somethingwent  wrong ",
             });
           }
-          const docs = await getChunkedDocsFromPDF(blob, usersId, document.id, document.name);
+          const docs = await getChunkedDocsFromPDF(blob, userId, document.id, document.name);
           if (!docs) {
             throw new TRPCError({
               code: "INTERNAL_SERVER_ERROR",
@@ -165,7 +167,7 @@ export const documentRouter = createTRPCRouter({
         } else {
           const docs = await getChunkedDocsFromS3Files(
             input.key,
-            usersId,
+            userId,
             document.id,
             document.name
           );
@@ -175,15 +177,15 @@ export const documentRouter = createTRPCRouter({
               message: "Somethingwent  wrong ",
             });
           }
-          const summary = await getSummary(docs);
-          ctx.prisma.document.update({
-            where: {
-              id: document.id,
-            },
-            data: {
-              summary,
-            },
-          });
+          // const summary = await getSummary(docs);
+          // ctx.prisma.document.update({
+          //   where: {
+          //     id: document.id,
+          //   },
+          //   data: {
+          //     summary,
+          //   },
+          // });
           await pineconeEmbedAndStore(pineconeClient, docs);
           return document;
         }
@@ -232,7 +234,7 @@ export const documentRouter = createTRPCRouter({
     .input(z.object({ id: z.string(), name: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
-         const usersId = ctx.user.id;
+        const userId = ctx.session.user.id;
         const assembly = axios.create({
           baseURL: "https://api.assemblyai.com/v2",
           headers: {
@@ -252,7 +254,7 @@ export const documentRouter = createTRPCRouter({
         inngest.send({
           name: "docs/audio.create",
           data: {
-            usersId,
+            userId,
             id: input.id,
             name: input.name,
             Key,
@@ -270,7 +272,7 @@ export const documentRouter = createTRPCRouter({
                 name: input.name,
                 key: Key,
                 type: "application/pdf",
-                usersId,
+                userId,
               },
             });
             return { ...data, documentId: newDocument.id };
@@ -286,17 +288,17 @@ export const documentRouter = createTRPCRouter({
   addWebDoc: protectedProcedure
     .input(z.object({ url: z.string().url() }))
     .mutation(async ({ ctx, input }) => {
-       const usersId = ctx.user.id;
+      const userId = ctx.session.user.id;
       const key = nanoid();
       const document = await ctx.prisma.document.create({
         data: {
           key,
           name: input.url,
-          usersId,
+          userId,
           type: "html",
         },
       });
-      const docs = await getChunkedDocsFromWeb(input.url, usersId, document.id, document.name);
+      const docs = await getChunkedDocsFromWeb(input.url, userId, document.id, document.name);
       await pineconeEmbedAndStore(pineconeClient, docs);
 
       const promptTemplate = `You are an expert in summarizing online articles.
@@ -343,72 +345,72 @@ Total output will be a summary of the online article. SUMMARY: `;
   addYTDoc: protectedProcedure
     .input(z.object({ url: z.string().url() }))
     .mutation(async ({ ctx, input }) => {
-       const usersId = ctx.user.id;
+      const userId = ctx.session.user.id;
       const key = nanoid();
       const document = await ctx.prisma.document.create({
         data: {
           key,
           name: input.url,
-          usersId,
+          userId,
           type: "YT",
         },
       });
-      // const docs = await getChunkedDocsFromYT(input.url, usersId, document.id, document.name);
-      // await pineconeEmbedAndStore(pineconeClient, docs);
+      const docs = await getChunkedDocsFromYT(input.url, userId, document.id, document.name);
+      await pineconeEmbedAndStore(pineconeClient, docs);
 
-//       const promptTemplate = `
-//       You are an expert in summarizing YouTube videos.
-//       Your goal is to create a summary of a podcast.
-//       Based on this list of docs, please identify the main themes.
-//       Below you find the transcript of a podcast:
-//       --------
-//       {text}
-//       --------
+      const promptTemplate = `
+      You are an expert in summarizing YouTube videos.
+      Your goal is to create a summary of a podcast.
+      Based on this list of docs, please identify the main themes.
+      Below you find the transcript of a podcast:
+      --------
+      {text}
+      --------
       
-// SUMMARY:`;
-//       const qPrompt = PromptTemplate.fromTemplate(promptTemplate);
-//       const refineTemplate = `  You are an expert in summarizing YouTube videos.
-//       Your goal is to create a summary of a podcast.
-// We have provided an existing summary up to a certain point: {existing_answer}
+SUMMARY:`;
+      const qPrompt = PromptTemplate.fromTemplate(promptTemplate);
+      const refineTemplate = `  You are an expert in summarizing YouTube videos.
+      Your goal is to create a summary of a podcast.
+We have provided an existing summary up to a certain point: {existing_answer}
 
-// Below you find the transcript of a podcast content:
-// --------
-// {text}
-// --------
+Below you find the transcript of a podcast content:
+--------
+{text}
+--------
 
-// Given the new context, refine the summary. If the context isn't useful, return the original summary.
-// Total output will be a summary of thetranscript of a podcast. SUMMARY: `;
-//       const refinePrompt = PromptTemplate.fromTemplate(refineTemplate);
+Given the new context, refine the summary. If the context isn't useful, return the original summary.
+Total output will be a summary of thetranscript of a podcast. SUMMARY: `;
+      const refinePrompt = PromptTemplate.fromTemplate(refineTemplate);
 
-//       const summarizeChain = loadSummarizationChain(llm, {
-//         type: "refine",
-//         verbose: true,
-//         questionPrompt: qPrompt,
-//         refinePrompt: refinePrompt,
-//       });
+      const summarizeChain = loadSummarizationChain(llm, {
+        type: "refine",
+        verbose: true,
+        questionPrompt: qPrompt,
+        refinePrompt: refinePrompt,
+      });
 
-//       const summary = await summarizeChain.run(docs);
-//       ctx.prisma.document.update({
-//         where: {
-//           id: document.id,
-//         },
-//         data: {
-//           summary,
-//         },
-//       });
-//       return document;
+      const summary = await summarizeChain.run(docs);
+      ctx.prisma.document.update({
+        where: {
+          id: document.id,
+        },
+        data: {
+          summary,
+        },
+      });
+      return document;
     }),
 
   addWebPDF: protectedProcedure
     .input(z.object({ url: z.string().url() }))
     .mutation(async ({ ctx, input }) => {
-       const usersId = ctx.user.id;
+      const userId = ctx.session.user.id;
       const key = nanoid();
       const document = await ctx.prisma.document.create({
         data: {
           key,
           name: input.url,
-          usersId,
+          userId,
           type: "application/json",
         },
       });
@@ -420,7 +422,7 @@ Total output will be a summary of the online article. SUMMARY: `;
           message: "Somethingwent  wrong ",
         });
       }
-      const docs = await getChunkedDocsFromPDF(blob, usersId, document.id, document.name);
+      const docs = await getChunkedDocsFromPDF(blob, userId, document.id, document.name);
       if (!docs) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
@@ -449,11 +451,13 @@ Total output will be a summary of the online article. SUMMARY: `;
       })
     )
     .query(async ({ ctx, input }) => {
-       const usersId = ctx.user.id;
+      
+      const userId = ctx.session.user.id;
+      console.log("usser", userId)
       const { skip, take } = input;
       const docs = await ctx.prisma.document.findMany({
         where: {
-          usersId,
+          userId,
           isDeleted: false,
         },
         skip,
